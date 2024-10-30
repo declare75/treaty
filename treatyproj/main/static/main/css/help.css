@@ -29,7 +29,6 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-
 }
 
 .faq-section { /* Новый контейнер для вопросов */
@@ -37,8 +36,8 @@
     max-width: 600px; /* Увеличиваем максимальную ширину блока вопросов */
     display: flex; /* Используем Flexbox для вертикального выравнивания */
     flex-direction: column; /* Располагаем элементы вертикально */
-    justify-content: center; /* Выравниваем по центру */
-    align-items: flex-start; /* Выравниваем элементы по левому краю */
+    justify-content: flex-start; /* Выравниваем элементы по верхнему краю */
+    align-items: stretch; /* Растягиваем элементы на всю ширину */
     margin-top: 50px; /* Уменьшаем отступ сверху для вопросов */
     margin-left: auto; /* Центрируем блок по горизонтали */
     margin-right: auto; /* Центрируем блок по горизонтали */
@@ -67,14 +66,12 @@
     font-style: normal;
     font-weight: 600;
     line-height: normal;
-
-
 }
 
 .faq-answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease;
+    transition: max-height 0.3s ease; /* Плавный переход */
     text-align: left;
     margin-top: 10px;
     width: 100%; /* Занимаем всю ширину родительского элемента */
@@ -84,7 +81,6 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-
 }
 
 .contact-button {
@@ -106,7 +102,6 @@
     justify-content: center; /* Горизонтальное выравнивание содержимого */
 }
 
-
 .faq-question .plus-icon {
     transition: transform 0.3s ease;
     width: 18px;
@@ -118,7 +113,7 @@
 }
 
 .faq-question.active .plus-icon {
-    transform: rotate(45deg);
+    transform: rotate(45deg); /* Поворачиваем иконку при активном вопросе */
 }
 
 .welcome-text img {
