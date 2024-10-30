@@ -1,55 +1,82 @@
+{% extends 'main/layout.html' %}
 {% load static %}
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block title %}{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-2">
-                    <img src="{% static 'main/img/Treaty.svg' %}" alt="Лого">
-                </div>
-                <div class="headline">
-                    <img src="{% static 'main/img/headline.svg' %}" alt="ЛинияШапки">
-                </div>
-                <div class="col-6">
-                    <nav>
-                        <ul>
-                            <li><a href="{% url 'home' %}">Главная</a></li>
-                            <li><a href="{% url 'catalog2_home' %}">Каталог</a></li>
-                            <li><a href="{% url 'help' %}">Помощь</a></li>
-                            <li><a href="{% url 'profile' %}">Профиль</a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="col-4">
-                    <span class="phone-number">7 (999) 999-99-99</span>
-                    <a href="https://vk.com/alongeson" target="_blank"><img src="{% static 'main/img/VK.svg' %}" alt="VK" style="width: 30px; height: 30px;"></a>
-                    <a href="https://t.me/declare7" target="_blank"><img src="{% static 'main/img/TG.svg' %}" alt="Telegram" style="width: 30px; height: 30px;"></a>
-                </div>
-            </div>
-        </div>
-    </header>
-    <img src="{% static 'main/img/ell.svg' %}" alt="ell" class="fixed-image">
-    <div class="image-container">
-        <img src="{% static 'main/img/help.svg' %}" alt="help" class="fixed-image14">
-        <img src="{% static 'main/img/circle2.svg' %}" alt="circle2" class="fixed-image6">
-        <img src="{% static 'main/img/lines.svg' %}" alt="lines" class="fixed-image9">
+
+{% block title %} Помощь {% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+<link rel="stylesheet" href="{% static 'main/css/help.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container6">
+    <div class="welcome-text">
+        <img src="{% static 'main/img/sinichel.svg' %}" alt="Illustration">
+        <h2>Добро пожаловать на страницу помощи!</h2>
+        <p>Здесь мы собрали ответы на самые популярные вопросы, которые помогут вам разобраться в работе нашей платформы</p>
     </div>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-</body>
-</html>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleAnswer(this)">
+            Как зарегистрироваться и начать искать репетитора? <span class="plus-icon">+</span>
+        </div>
+        <div class="faq-answer">
+            Для регистрации на платформе нажмите кнопку “Вход” в правом верхнем углу и следуйте инструкциям.
+            После успешной регистрации вы сможете войти в свой профиль, перейти к поиску репетиторов и настроить нужные вам фильтры.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleAnswer(this)">
+            Как найти подходящего репетитора? <span class="plus-icon">+</span>
+        </div>
+        <div class="faq-answer">
+            Здесь будет текст о том, как найти подходящего репетитора.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleAnswer(this)">
+            Как связаться с репетитором и договориться о занятиях? <span class="plus-icon">+</span>
+        </div>
+        <div class="faq-answer">
+            Здесь будет текст о том, как связаться с репетитором и договориться о занятиях.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleAnswer(this)">
+            Как проходят онлайн-занятия? <span class="plus-icon">+</span>
+        </div>
+        <div class="faq-answer">
+            Здесь будет текст о том, как проходят онлайн-занятия.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleAnswer(this)">
+            Как оставить отзыв о репетиторе? <span class="plus-icon">+</span>
+        </div>
+        <div class="faq-answer">
+            Здесь будет текст о том, как оставить отзыв о репетиторе.
+        </div>
+    </div>
+
+    <a href="https://t.me/TreatySupportBot" class="contact-button">Связаться с нами</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function toggleAnswer(element) {
+        const answer = element.nextElementSibling;
+        const icon = element.querySelector('.plus-icon');
+        element.classList.toggle('active');
+        if (answer.style.maxHeight) {
+            answer.style.maxHeight = null;
+        } else {
+            answer.style.maxHeight = answer.scrollHeight + "px";
+        }
+    }
+</script>
+{% endblock %}
