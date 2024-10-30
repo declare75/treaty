@@ -71,7 +71,7 @@ def user_prepods(request):
     user_prepods = Prepods.objects.filter(user=request.user)
     return render(request, 'catalog2/posts.html', {'prepods': user_prepods})
 
-login_required
+@login_required
 def edit_prepod(request):
     if request.method == 'POST':
         data = request.POST
