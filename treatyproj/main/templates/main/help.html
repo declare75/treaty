@@ -10,60 +10,64 @@
 
 {% block content %}
 <div class="container6">
-    <div class="welcome-text">
-        <img src="{% static 'main/img/sinichel.svg' %}" alt="Illustration">
-        <h2>Добро пожаловать на страницу помощи!</h2>
-        <p>Здесь мы собрали ответы на самые популярные вопросы, которые помогут вам разобраться в работе нашей платформы</p>
+    <div class="faq-section">
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+                Как зарегистрироваться и начать искать репетитора? <span class="plus-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                Для регистрации на платформе нажмите кнопку “Вход” в правом верхнем углу и следуйте инструкциям.
+                После успешной регистрации вы сможете войти в свой профиль, перейти к поиску репетиторов и настроить нужные вам фильтры.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+                Как найти подходящего репетитора? <span class="plus-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                Здесь будет текст о том, как найти подходящего репетитора.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+                Как связаться с репетитором и договориться о занятиях? <span class="plus-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                Здесь будет текст о том, как связаться с репетитором и договориться о занятиях.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+                Как проходят онлайн-занятия? <span class="plus-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                Здесь будет текст о том, как проходят онлайн-занятия.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+                Как оставить отзыв о репетиторе? <span class="plus-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                Здесь будет текст о том, как оставить отзыв о репетиторе.
+            </div>
+        </div>
+
     </div>
 
-    <div class="faq-item">
-        <div class="faq-question" onclick="toggleAnswer(this)">
-            Как зарегистрироваться и начать искать репетитора? <span class="plus-icon">+</span>
-        </div>
-        <div class="faq-answer">
-            Для регистрации на платформе нажмите кнопку “Вход” в правом верхнем углу и следуйте инструкциям.
-            После успешной регистрации вы сможете войти в свой профиль, перейти к поиску репетиторов и настроить нужные вам фильтры.
+    <div class="welcome-section">
+        <div class="welcome-text">
+            <img src="{% static 'main/img/sinichel.svg' %}" alt="Illustration">
+            <p>Добро пожаловать на страницу помощи!<br><br> Здесь мы собрали ответы на самые популярные вопросы, которые помогут вам разобраться в работе нашей платформы</p>
+            <a href="https://t.me/TreatySupportBot" class="contact-button">Связаться с нами</a>
         </div>
     </div>
-
-    <div class="faq-item">
-        <div class="faq-question" onclick="toggleAnswer(this)">
-            Как найти подходящего репетитора? <span class="plus-icon">+</span>
-        </div>
-        <div class="faq-answer">
-            Здесь будет текст о том, как найти подходящего репетитора.
-        </div>
-    </div>
-
-    <div class="faq-item">
-        <div class="faq-question" onclick="toggleAnswer(this)">
-            Как связаться с репетитором и договориться о занятиях? <span class="plus-icon">+</span>
-        </div>
-        <div class="faq-answer">
-            Здесь будет текст о том, как связаться с репетитором и договориться о занятиях.
-        </div>
-    </div>
-
-    <div class="faq-item">
-        <div class="faq-question" onclick="toggleAnswer(this)">
-            Как проходят онлайн-занятия? <span class="plus-icon">+</span>
-        </div>
-        <div class="faq-answer">
-            Здесь будет текст о том, как проходят онлайн-занятия.
-        </div>
-    </div>
-
-    <div class="faq-item">
-        <div class="faq-question" onclick="toggleAnswer(this)">
-            Как оставить отзыв о репетиторе? <span class="plus-icon">+</span>
-        </div>
-        <div class="faq-answer">
-            Здесь будет текст о том, как оставить отзыв о репетиторе.
-        </div>
-    </div>
-
-    <a href="https://t.me/TreatySupportBot" class="contact-button">Связаться с нами</a>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
