@@ -1,0 +1,126 @@
+.container6 {
+    display: flex; /* Используем Flexbox для компоновки колонок */
+    justify-content: right; /* Центрируем содержимое по горизонтали */
+    width: 90%; /* Увеличиваем ширину общего контейнера */
+    max-width: 1920px; /* Увеличиваем максимальную ширину контейнера */
+    margin: auto; /* Центрируем контейнер по горизонтали */
+    margin-left: 250px;
+    margin-top: 70px;
+}
+
+.welcome-section {
+    display: flex; /* Используем Flexbox для выравнивания содержимого */
+    flex-direction: column; /* Элементы будут расположены вертикально */
+    align-items: center; /* Центрируем по горизонтали */
+    margin-top: 10px; /* Уменьшаем отступ сверху для разделения с блоком вопросов */
+}
+
+.welcome-text {
+    width: 50%; /* Увеличиваем ширину блока приветственного текста */
+    display: flex; /* Используем Flexbox для вертикального выравнивания */
+    flex-direction: column; /* Располагаем элементы вертикально */
+    justify-content: center; /* Выравниваем по центру */
+    align-items: center; /* Центрируем элементы по горизонтали */
+    margin-top: -30px; /* Увеличиваем отрицательный отступ для поднятия блока вверх */
+    color: #242424;
+    text-align: center;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+}
+
+.faq-section { /* Новый контейнер для вопросов */
+    width: 100%; /* Увеличиваем ширину блока вопросов до 100% */
+    max-width: 600px; /* Увеличиваем максимальную ширину блока вопросов */
+    display: flex; /* Используем Flexbox для вертикального выравнивания */
+    flex-direction: column; /* Располагаем элементы вертикально */
+    justify-content: center; /* Выравниваем по центру */
+    align-items: flex-start; /* Выравниваем элементы по левому краю */
+    margin-top: 50px; /* Уменьшаем отступ сверху для вопросов */
+    margin-left: auto; /* Центрируем блок по горизонтали */
+    margin-right: auto; /* Центрируем блок по горизонтали */
+}
+
+.faq-item {
+    margin: 20px 0;
+    width: 100%; /* Занимаем всю ширину колонки */
+    color: #242424;
+    font-family: Manrope;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.faq-question {
+    width: 100%; /* Занимаем всю ширину блока вопросов */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #242424;
+    text-align: center;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    text-align: left;
+    margin-top: 10px;
+    width: 100%; /* Занимаем всю ширину родительского элемента */
+    color: #242424;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+}
+
+.contact-button {
+    width: 243px;
+    height: 32px;
+    border-radius: 57px;
+    border: 2px dashed #466EE5;
+    background: rgba(70, 110, 229, 0.20);
+    margin-top: 20px;
+    color: #466EE5; /* Цвет текста */
+    font-family: Manrope; /* Шрифт текста */
+    font-size: 26px; /* Размер шрифта */
+    font-style: normal; /* Стиль шрифта */
+    font-weight: 600; /* Насыщенность шрифта */
+    line-height: normal; /* Высота строки */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-flex; /* Чтобы кнопка работала как блок и содержимое было выровнено */
+    align-items: center; /* Вертикальное выравнивание содержимого */
+    justify-content: center; /* Горизонтальное выравнивание содержимого */
+}
+
+
+.faq-question .plus-icon {
+    transition: transform 0.3s ease;
+    width: 18px;
+    height: 41px;
+    color: #242424;
+    font-family: Manrope;
+    font-size: 30px;
+    font-weight: 300;
+}
+
+.faq-question.active .plus-icon {
+    transform: rotate(45deg);
+}
+
+.welcome-text img {
+    max-width: 100%; /* Делаем изображение отзывчивым */
+}
