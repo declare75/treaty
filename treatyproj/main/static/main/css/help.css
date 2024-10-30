@@ -110,12 +110,24 @@
     font-family: Manrope;
     font-size: 30px;
     font-weight: 300;
+    -webkit-user-drag: none;
+    user-drag: none;
+    pointer-events: none;
+    user-select: none;
 }
 
 .faq-question.active .plus-icon {
     transform: rotate(45deg); /* Поворачиваем иконку при активном вопросе */
+    -webkit-user-drag: none;
+    user-drag: none;
+    pointer-events: none;
+    user-select: none;
 }
 
 .welcome-text img {
-    max-width: 100%; /* Делаем изображение отзывчивым */
+    max-width: 100%;
+    -webkit-user-drag: none;
+    user-drag: none;
+    pointer-events: none;
+    user-select: none;
 }
