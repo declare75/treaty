@@ -482,7 +482,7 @@ main .features p {
     cursor: pointer;
     margin-left: 1470px;
     position: absolute;
-    margin-top: -26px;
+    margin-top: 0px;
 }
 .logreg-content {
     display: none;

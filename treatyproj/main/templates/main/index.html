@@ -3,7 +3,7 @@
 
 {% block title %}Главная страница{% endblock %}
 
-{% block styles %}
+{% block style %}
 
 {% endblock %}
 
@@ -13,58 +13,7 @@
         <h2>услуг</h2>
         <h3>репетиторов</h3>
     </div>
-    <img src="{% static 'main/img/logreg.svg' %}" id="logregOpenBtn" class="logreg" style="cursor: pointer;">
-    <div id="overlay2" class="overlay2"></div>
-    <div class="container" id="container">
-        <span class="close">&times;</span>
-        <div class="form-container sign-up">
 
-            <form id="registerForm">
-                <h1>Регистрация</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
-                </div>
-                <span>или используй вход по почте</span>
-                  <input type="text" id="regName" name="regName" placeholder="Имя" required>
-                  <input type="email" id="regEmail" name="regEmail" placeholder="Email" required>
-                  <input type="password" id="regPassword" name="regPassword" placeholder="Пароль" required>
-                  <button type="submit">Регистрация</button>
-            </form>
-        </div>
-        <div class="form-container sign-in">
-            <form id="loginForm">
-                <h1>Вход</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
-                </div>
-                <span>или используй вход по почте</span>
-                 <input type="email" id="email" name="email" class="input-email" placeholder="Email" required>
-                <input type="password" id="password" name="password" class="input-password" placeholder="Пароль" required>
-                <a href="#">Забыли пароль?</a>
-                <button type="submit">Вход</button>
-            </form>
-        </div>
-        <div class="toggle-container">
-            <div class="toggle">
-                <div class="toggle-panel toggle-left">
-                    <h1>Есть аккаунт?</h1>
-                    <p>Укажи свои данные, чтобы использовать весь функционал сайта</p>
-                    <button id="login" class="declare">Вход</button>  <!-- Удален класс hidden -->
-                </div>
-                <div class="toggle-panel toggle-right">
-                    <h1>Новенький?</h1>
-                    <p>Зарегистрируйся, указав свои данные, чтобы использовать весь функционал сайта</p>
-                    <button id="register" class="declare">Регистрация</button>  <!-- Удален класс hidden -->
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="image-container2">
         <img src="{% static 'main/img/logomove.svg' %}" alt="bigmove" class="fixed-image10">
         <img src="{% static 'main/img/logo.svg' %}" alt="notmove" class="fixed-image11">
@@ -78,5 +27,5 @@
         <img src="{% static 'main/img/lines.svg' %}" alt="lines" class="fixed-image9">
         <img src="{% static 'main/img/waves.svg' %}" alt="waves" class="waves">
     </div>
-    <script src="{% static 'main/js/logreg.js' %}"></script>
+
 {% endblock %}

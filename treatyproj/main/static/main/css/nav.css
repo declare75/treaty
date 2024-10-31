@@ -1,31 +1,123 @@
-.col-2 img {
-    margin-left: 450px;
-    margin-top: 15px;
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+.col-2 {
+    position: absolute;
+    width: 96px;
+    height: 31px;
+    top: 8px;
+    left: 1px;
+    color: #242424;
+    text-align: center;
+    font-family: Raleway;
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.headlogo {
+    position: relative; /* Позиционируем элемент для псевдоэлемента */
+    display: inline-block; /* Для корректного отображения псевдоэлемента */
+}
+
+.headlogo::after {
+    content: ""; /* Необходимо для отображения псевдоэлемента */
+    position: absolute;
+    left: 50%; /* Центрируем линию */
+    bottom: -5px; /* Располагаем линию ниже текста */
+    width: 0; /* Начальная ширина линии */
+    height: 2px; /* Высота линии */
+    background-color: black; /* Цвет линии */
+    transition: width 0.3s ease, left 0.3s ease; /* Плавный переход для ширины и позиции */
+}
+
+.headlogo:hover::after {
+    width: 100%; /* При наведении устанавливаем ширину до 100% */
+    left: 0; /* Смещаем влево для корректного расположения */
+}
+
+.headgroup {
+    position: absolute;
+    width: 1660px;
+    height: 40px;
+    top: 10px;
+    left: 146px;
+}
+
+.row align-items-center {
+    background-color: #ffffff;
+    width: 1920px;
+    height: 3542px;
+    position: relative;
 }
 
 .headline {
     position: absolute;
-    margin-left: 375px;
-    margin-top: 55px;
+    width: 1px;
+    height: 29px;
+    top: 15px;
+    left: 126px;
+    object-fit: cover;
 }
 
-.col-6 {
-    margin-left: 250px;
-    margin-top: 15px;
+
+
+.textprepod,
+.textfaq,
+.texthelp {
+    width: 130.0px;
+    height: 23.0px;
+    text-align: center;
+    font-family: 'Manrope', sans-serif;
+    color: #b4b4b4;
+    font-size: 17px;
+    position: absolute;
+    letter-spacing: 0;
+    line-height: normal;
+    transition: color 0.3s ease, font-weight 0.1s ease; /* Добавляем плавный переход для font-weight */
+    font-weight: normal; /* Устанавливаем нормальный вес текста */
+}
+
+.textprepod:hover,
+.textfaq:hover,
+.texthelp:hover {
+    color: #466ee5; /* Изменяем цвет текста при наведении */
+    font-weight: bold; /* Делаем текст жирным при наведении */
+}
+
+.textprepod {
+    top: 15px;
+    left: 154px;
+}
+
+.textfaq {
+    top: 15px;
+    left: 280px;
+}
+
+.texthelp {
+    top: 15px;
+    left: 375px;
 }
 
 .col-4 {
     position: absolute;
-    margin-left: 1250px;
     margin-top: 15px;
 }
 
 .phone-number {
-    margin-right: 70px;
-    font-size: 13px;
-    font-weight: bold;
     font-family: 'Manrope', sans-serif;
-    margin-right: 10px;
+    position: absolute;
+    top: 8px;
+    left: 1410px;
+    font-weight: 500;
+    color: #242424;
+    font-size: 17px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    width: 151.0px;
+    height: 23.0px;
 }
 
 nav ul li img {
@@ -46,7 +138,6 @@ nav ul li:last-child {
 header nav ul li a {
     color: black;
     text-decoration: none;
-    font-weight: bold;
     font-family: 'Manrope', sans-serif;
 }
 
@@ -54,13 +145,7 @@ header nav ul li a:hover {
     color: #466ee5;
 }
 
-header h1 {
-    color: black;
-    font-size: 24px;
-    margin: 0;
-    padding-left: 50px;
-    margin-top: 20px;
-}
+
 
 header nav ul {
     list-style: none;
@@ -69,14 +154,18 @@ header nav ul {
     gap: 20px;
 }
 
-header a i {
-    font-size: 24px;
-    color: black;
-    margin-left: 15px;
-}
+
 
 header a i:hover {
     color: #466ee5;
+}
+
+.container-fluid {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
 }
 
 
