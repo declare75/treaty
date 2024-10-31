@@ -8,11 +8,11 @@
 {% block content %}
 <div class="profile">
       <div class="div">
-        <div class="overlap">
-          <div class="overlap-2">
-            <div class="text-wrapper-7">Манякин Даниил<br />Никитович</div>
-            <div class="overlap-group-2">
-              <img class="element" src="img/57889-3.png" />
+        <div class="rectangle">
+          <div class="rectangle-2">
+            <div class="name">Манякин Даниил<br />Никитович</div>
+            <div class="rectangle-group-2">
+              <img class="photo" src="img/57889-3.png" />
               <div class="ellipse"></div>
               <div class="ellipse-2"></div>
               <div class="ellipse-3"></div>
@@ -21,39 +21,36 @@
               <div class="ellipse-6"></div>
             </div>
           </div>
-          <div class="group-2">
-            <div class="text-wrapper-8">Редактировать</div>
+          <div class="rectangle-group">
+            <div class="edit">Редактировать</div>
             <img class="iconamoon-edit-light" src="img/iconamoon-edit-light.svg" />
           </div>
-          <div class="text-wrapper-9">Профиль</div>
-          <div class="text-wrapper-10">Настройки</div>
-          <div class="text-wrapper-11">Email</div>
-          <div class="text-wrapper-12">Тема</div>
-          <div class="text-wrapper-13">Уведомления</div>
-          <div class="text-wrapper-14">Телефон</div>
-          <div class="text-wrapper-15">Дата рождения</div>
-          <div class="text-wrapper-16">Связь</div>
-          <div class="text-wrapper-17">ikonikdd@gmail.com</div>
-          <div class="text-wrapper-18">09.03.2003</div>
-          <div class="text-wrapper-19">7 (999) 999-99-99</div>
-          <div class="text-wrapper-20">t.me/declare7</div>
-          <div class="overlap-3">
-            <div class="ellipse-7"></div>
-            <img class="emojione-monotone" src="img/emojione-monotone-crescent-moon.svg" />
+          <div class="title">Профиль</div>
+          <div class="settings">Настройки</div>
+          <div class="email-title">Email</div>
+          <div class="theme">Тема</div>
+          <div class="notification">Уведомления</div>
+          <div class="phone-title">Телефон</div>
+          <div class="birthday-title">Дата рождения</div>
+          <div class="contact-title">Связь</div>
+          <div class="email">ikonikdd@gmail.com</div>
+          <div class="birthday">09.03.2003</div>
+          <div class="phone">7 (999) 999-99-99</div>
+          <div class="contact">t.me/declare7</div>
+          <div class="theme-switch">
+              <input type="checkbox" id="theme-toggle">
+              <label for="theme-toggle"></label>
+              <img src="{% static 'main/img/themelight.svg' %}" id="themeImage"/>
           </div>
-          <div class="overlap-4">
-            <div class="ellipse-8"></div>
-            <img class="fontisto-sun" src="img/fontisto-sun.svg" />
-          </div>
-          <div class="overlap-5">
-            <div class="ellipse-7"></div>
-            <img class="mingcute" src="img/mingcute-notification-line.svg" />
-          </div>
-          <div class="overlap-6">
-            <div class="ellipse-8"></div>
-            <img class="img" src="img/mingcute-notification-off-line.svg" />
+          <div class="notification-switch">
+              <input type="checkbox" id="notification-toggle">
+              <label for="notification-toggle"></label>
+              <img src="{% static 'main/img/notificationoff.svg' %}" id="notificationImage"/>
           </div>
         </div>
       </div>
     </div>
+
+    <script src="{% static 'main/js/themeswitch.js' %}"></script>
+    <script src="{% static 'main/js/notificationswitch.js' %}"></script>
 {% endblock %}
