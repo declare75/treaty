@@ -22,7 +22,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'catalog2',
     'main',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -30,9 +29,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'chat',
+    'catalog2',
+    'channels',
 ]
 
-
+ASGI_APPLICATION = 'treatyProject'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

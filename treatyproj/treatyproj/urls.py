@@ -7,13 +7,14 @@ from catalog2 import views
 
 
 
+
 urlpatterns = [
     path('', include('main.urls')),
     path('catalog2/', include('catalog2.urls')),
     path('admin/', admin.site.urls),
     path('login/', views.login_view, name='login'),
-    path('register/', views.register_view, name='register'),
-    path('posts/', views.user_prepods, name='user_prepods'),
+    path('chats/', include('chat.urls')),
+
 ]
 
 if settings.DEBUG:
