@@ -1,0 +1,21 @@
+<h2>Ваши чаты</h2>
+<div class="chat-list">
+  {% for chat_user in existing_chats %}
+    <a href="{% url 'chat_view' chat_user.id %}">
+      <p>{{ chat_user.email }}</p>
+    </a>
+  {% empty %}
+    <p>Чатов нет.</p>
+  {% endfor %}
+</div>
+
+<h3>Найти пользователя по email</h3>
+<form method="post">
+  {% csrf_token %}
+  <input type="email" name="email" placeholder="Введите email">
+  <button type="submit">Начать чат</button>
+</form>
+
+{% if error %}
+  <p>{{ error }}</p>
+{% endif %}

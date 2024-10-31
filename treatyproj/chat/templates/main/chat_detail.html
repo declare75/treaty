@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Чат с {{ receiver.username }}</title>
+</head>
+<body>
+    <h2>Чат с {{ receiver.username }}</h2>
+
+    <div id="chat-box">
+        {% for message in messages %}
+            <div class="message {% if message.sender == user %}sent{% else %}received{% endif %}">
+                <p><strong>{{ message.sender.username }}</strong></p>
+                <p>{{ message.content }}</p>
+                {% if message.image %}
+                    <img src="{{ message.image.url }}" alt="image">
+                {% endif %}
+                {% if message.video %}
+                    <video src="{{ message.video.url }}" controls></video>
+                {% endif %}
+                <small>{{ message.timestamp }}</small>
+            </div>
+        {% empty %}
+            <p>Сообщений пока нет. Начните переписку!</p>
+        {% endfor %}
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <textarea name="content" placeholder="Введите сообщение..." required></textarea>
+        <input type="file" name="image" accept="image/*">
+        <input type="file" name="video" accept="video/*">
+        <button type="submit">Отправить</button>
+    </form>
+<script>
+    const chatSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/chat/{{ receiver.id }}/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const messageElement = document.createElement('div');
+        messageElement.innerHTML = `<strong>${data.sender}</strong>: ${data.content}`;
+        document.querySelector('#chat-messages').appendChild(messageElement);
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // Отправка по нажатию Enter
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'content': message,
+                'sender': '{{ user.email }}'  // Отправляем email пользователя
+            }));
+            messageInputDom.value = '';  // Очищаем поле ввода
+        }
+    };
+</script>
+</body>
+</html>
