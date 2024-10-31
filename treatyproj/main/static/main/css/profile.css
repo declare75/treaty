@@ -48,6 +48,8 @@
   position: absolute;
   letter-spacing: 0;
   line-height: normal;
+  -webkit-user-drag: none;
+  user-drag: none;
 }
 
 .profile .rectangle-group-2 {
@@ -64,6 +66,10 @@
   height: 127px;
   top: 0;
   left: 2px;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+  user-select: none;
 }
 
 .profile .ellipse {
@@ -135,6 +141,8 @@
 }
 
 .profile .edit {
+  display: inline-flex;
+  align-items: center;
   top: 0;
   left: 0;
   font-family: Manrope;
@@ -144,9 +152,15 @@
   position: absolute;
   letter-spacing: 0;
   line-height: normal;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-user-drag: none;
+  user-drag: none;
+  user-select: none;
 }
 
-.profile .iconamoon-edit-light {
+.profile .edit img {
   position: absolute;
   width: 15px;
   height: 15px;
@@ -164,6 +178,10 @@
   position: absolute;
   letter-spacing: 0;
   line-height: normal;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+  user-select: none;
 }
 
 .profile .settings {
@@ -176,6 +194,10 @@
   position: absolute;
   letter-spacing: 0;
   line-height: normal;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+  user-select: none;
 }
 
 .profile .email-title {
@@ -188,6 +210,10 @@
   font-size: 20px;
   letter-spacing: 0;
   line-height: normal;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+  user-select: none;
 }
 
 .profile .theme {
@@ -200,6 +226,10 @@
   position: absolute;
   letter-spacing: 0;
   line-height: normal;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+  user-select: none;
 }
 
 .profile .notification {
@@ -212,6 +242,10 @@
   position: absolute;
   letter-spacing: 0;
   line-height: normal;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+  user-select: none;
 }
 
 .profile .phone-title {
@@ -224,6 +258,10 @@
   position: absolute;
   letter-spacing: 0;
   line-height: normal;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+  user-select: none;
 }
 
 .profile .birthday-title {
@@ -236,6 +274,10 @@
   position: absolute;
   letter-spacing: 0;
   line-height: normal;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+  user-select: none;
 }
 
 .profile .contact-title {
@@ -248,6 +290,10 @@
   position: absolute;
   letter-spacing: 0;
   line-height: normal;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+  user-select: none;
 }
 
 .profile .email {
@@ -260,6 +306,8 @@
   font-size: 20px;
   letter-spacing: 0;
   line-height: normal;
+  -webkit-user-drag: none;
+  user-drag: none;
 }
 
 .profile .birthday {
@@ -272,6 +320,8 @@
   font-size: 20px;
   letter-spacing: 0;
   line-height: normal;
+  -webkit-user-drag: none;
+  user-drag: none;
 }
 
 .profile .phone {
@@ -284,6 +334,8 @@
   position: absolute;
   letter-spacing: 0;
   line-height: normal;
+  -webkit-user-drag: none;
+  user-drag: none;
 }
 
 .profile .contact {
@@ -296,6 +348,8 @@
   font-size: 20px;
   letter-spacing: 0;
   line-height: normal;
+  -webkit-user-drag: none;
+  user-drag: none;
 }
 
 .profile .theme-switch {
@@ -342,6 +396,10 @@
   height: 20px;
   object-fit: cover;
   transition: opacity 0.3s ease;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+  user-select: none;
 }
 
 .profile .theme-switch input:checked + label {
@@ -408,6 +466,10 @@
   height: 20px;
   object-fit: cover;
   transition: opacity 0.3s ease;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+  user-select: none;
 }
 
 .profile .notification-switch input:checked + label {
