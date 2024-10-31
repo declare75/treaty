@@ -8,7 +8,7 @@ from catalog2 import views
 
 
 urlpatterns = [
-    path('', include('main.urls')),  # Убедитесь, что здесь правильно указаны URL
+    path('', include('main.urls')),
     path('catalog2/', include('catalog2.urls')),
     path('admin/', admin.site.urls),
     path('login/', views.login_view, name='login'),
