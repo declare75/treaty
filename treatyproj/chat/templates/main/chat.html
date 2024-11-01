@@ -1,0 +1,29 @@
+<div class="chat-container">
+  {% for message in messages %}
+    {% if message.sender == request.user %}
+      <div class="message-outgoing">
+        <p class="user-label">Вы</p>
+        <p class="message-content">{{ message.content }}</p>
+        {% if message.image %}
+          <img src="{{ message.image.url }}" alt="Image">
+        {% endif %}
+        {% if message.video %}
+          <video controls src="{{ message.video.url }}"></video>
+        {% endif %}
+        <p class="timestamp">{{ message.timestamp|date:"H:i" }}</p>
+      </div>
+    {% else %}
+      <div class="message-incoming">
+        <p class="user-label">{{ message.sender.email }}</p>
+        <p class="message-content">{{ message.content }}</p>
+        {% if message.image %}
+          <img src="{{ message.image.url }}" alt="Image">
+        {% endif %}
+        {% if message.video %}
+          <video controls src="{{ message.video.url }}"></video>
+        {% endif %}
+        <p class="timestamp">{{ message.timestamp|date:"H:i" }}</p>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
