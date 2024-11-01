@@ -31,6 +31,10 @@
     line-height: normal;
 }
 
+body.dark-theme .welcome-text {
+    color: white;
+}
+
 .faq-section { /* Новый контейнер для вопросов */
     width: 100%; /* Увеличиваем ширину блока вопросов до 100% */
     max-width: 600px; /* Увеличиваем максимальную ширину блока вопросов */
@@ -53,6 +57,10 @@
     line-height: normal;
 }
 
+body.dark-theme .faq-item {
+    color: white;
+}
+
 .faq-question {
     width: 100%; /* Занимаем всю ширину блока вопросов */
     cursor: pointer;
@@ -68,6 +76,11 @@
     line-height: normal;
 }
 
+body.dark-theme .faq-question {
+    color: white;
+}
+
+
 .faq-answer {
     max-height: 0;
     overflow: hidden;
@@ -82,6 +95,11 @@
     font-weight: 400;
     line-height: normal;
 }
+
+body.dark-theme .faq-answer {
+    color: white;
+}
+
 
 .contact-button {
     width: 243px;
@@ -115,6 +133,11 @@
     pointer-events: none;
     user-select: none;
 }
+
+body.dark-theme .plus-icon {
+    color: white;
+}
+
 
 .faq-question.active .plus-icon {
     transform: rotate(45deg); /* Поворачиваем иконку при активном вопросе */

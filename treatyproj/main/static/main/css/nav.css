@@ -13,7 +13,13 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    transition: color 0.4s ease;
 }
+
+body.dark-theme .col-2 {
+    color: white;
+}
+
 
 .headlogo {
     position: relative; /* Позиционируем элемент для псевдоэлемента */
@@ -28,12 +34,19 @@
     width: 0; /* Начальная ширина линии */
     height: 2px; /* Высота линии */
     background-color: black; /* Цвет линии */
-    transition: width 0.3s ease, left 0.3s ease; /* Плавный переход для ширины и позиции */
+    transition: width 0.3s ease, left 0.3s ease, background-color 0.3s ease; /* Плавный переход для ширины и позиции */
 }
 
 .headlogo:hover::after {
     width: 100%; /* При наведении устанавливаем ширину до 100% */
     left: 0; /* Смещаем влево для корректного расположения */
+}
+body.dark-theme .headlogo::after {
+    background-color: white; /* Линия будет белой в темной теме */
+}
+
+body.dark-theme .headlogo:hover::after {
+    background-color: white; /* Линия будет черной при наведении в темной теме */
 }
 
 .headgroup {
@@ -118,6 +131,22 @@
     line-height: normal;
     width: 151.0px;
     height: 23.0px;
+    transition: color 0.4s ease;
+}
+
+body.dark-theme .phone-number {
+    font-family: 'Manrope', sans-serif;
+    position: absolute;
+    top: 8px;
+    left: 1410px;
+    font-weight: 500;
+    color: white;
+    font-size: 17px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    width: 151.0px;
+    height: 23.0px;
 }
 
 nav ul li img {
@@ -154,7 +183,43 @@ header nav ul {
     gap: 20px;
 }
 
+.logregbtn {
+    left: 1594px;
+    position: absolute;
+    flex-shrink: 0;
+    border-radius: 15px;
+    width: 69.0px;
+    height: 28.0px;
+    border-radius: 15px;
+    background: #242424;
+    top: 5px;
+    transition: transform 0.3s ease; /* Плавный переход */
+    transition: background-color 0.3s ease;
+}
+.logregbtntext {
+    position: absolute;
+    color: white;
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    top: 3px;
+    left: 17px;
+    transition: transform 0.3s ease; /* Плавный переход */
+    transition: color 0.3s ease;
+}
 
+body.dark-theme .logregbtntext {
+    color: #242424;
+}
+body.dark-theme .logregbtn {
+    background-color: white;
+}
+
+.logregbtn:hover {
+    transform: scale(1.05); /* Увеличиваем кнопку примерно на 2 пикселя */
+}
 
 header a i:hover {
     color: #466ee5;
@@ -167,6 +232,10 @@ header a i:hover {
     justify-content: center;
     width: 100%;
 }
+
+
+
+
 
 
 

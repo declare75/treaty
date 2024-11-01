@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
+body {
+    background-color: #ffffff !important; /* Добавьте !important для приоритета */
+    overflow-x: hidden; /* Убирает горизонтальный скроллбар */
+}
 
+body.dark-theme {
+    background-color: #212121 !important;
+}
 .container{
     background-color: #fff;
     display: none;
@@ -17,7 +24,9 @@
     transition: opacity 0.5s ease, transform 0.5s ease;
     z-index: 52;
 }
-
+body.dark-theme .container {
+    background-color: #212121;
+}
 
 
 .container p{
@@ -48,6 +57,9 @@
     text-decoration: none;
     margin: 15px 0 10px;
 }
+body.dark-theme .container a {
+    background-color: white;
+}
 
 .container button{
     background-color: #466ee5;
@@ -77,6 +89,10 @@
     padding: 0 40px;
     height: 100%;
 }
+body.dark-theme .container form {
+    background-color: #212121;
+}
+
 
 .container input{
     background-color: #eee;
@@ -88,6 +104,10 @@
     width: 100%;
     outline: none;
 }
+body.dark-theme .container input {
+    background-color: #212121;
+    border: 1px solid white;
+}
 
 .form-container{
     position: absolute;
@@ -96,6 +116,17 @@
     transition: all 0.6s ease-in-out;
 }
 
+body.dark-theme .form-container.sign-in h1 {
+    color: white; /* Устанавливает белый цвет текста */
+}
+body.dark-theme .form-container.sign-in button {
+    background: none;
+    background-color: transparent;
+}
+body.dark-theme .form-container.sign-up button {
+    background: none;
+    background-color: transparent;
+}
 .sign-in{
     left: 0;
     width: 50%;
@@ -175,6 +206,9 @@
     transform: translateX(0);
     transition: all 0.6s ease-in-out;
 }
+body.dark-theme .toggle {
+    background-color: #212121;
+}
 
 .container.active .toggle{
     transform: translateX(50%);
@@ -214,5 +248,5 @@
 
 .declare {
     background-color; #466ee5;
-
+    border: none;
 }

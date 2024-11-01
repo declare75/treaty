@@ -40,13 +40,13 @@
                 </div>
                 <div class="col-4">
                     <span class="phone-number">7 (999) 999-99-99</span>
-                    <img src="{% static 'main/img/logreg.svg' %}" id="logregOpenBtn" class="logreg"
-                         style="cursor: pointer;">
+                    <div id="logregOpenBtn" class="logregbtn" style="cursor: pointer;">
+                        <div class="logregbtntext">Вход</div>
+                    </div>
                     <div id="overlay2" class="overlay2"></div>
                     <div class="container" id="container">
                         <span class="close">&times;</span>
                         <div class="form-container sign-up">
-
                             <form id="registerForm">
                                 <h1>Регистрация</h1>
                                 <div class="social-icons">
@@ -77,7 +77,7 @@
                                        required>
                                 <input type="password" id="password" name="password" class="input-password"
                                        placeholder="Пароль" required>
-                                <a href="#">Забыли пароль?</a>
+                                <a1 href="#">Забыли пароль?</a1>
                                 <button type="submit">Вход</button>
                             </form>
                         </div>
@@ -107,7 +107,11 @@
     {% endblock %}
 </main>
 <script src="{% static 'main/js/logreg.js' %}"></script>
+<script src="{% static 'main/js/themeswitch.js' %}"></script>
 {% block scripts %}
 {% endblock %}
+<script>
+
+</script>
 </body>
 </html>

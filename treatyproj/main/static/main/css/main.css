@@ -1,8 +1,5 @@
 body {
-    background: #fff;
-    margin: 0;
-    overflow-x: hidden;
-    margin-bottom: 500px;
+    overflow-x: hidden; /* Убирает горизонтальный скроллбар */
 }
 
 aside {
@@ -60,7 +57,6 @@ main .features {
     width: 75%;
 }
 
-main .features h1 {font-size: 50px;}
 main .features p {max-width: 400px; margin: 20px auto}
 
 /* Шапка сайта */
@@ -75,9 +71,6 @@ main .features {
     margin-right: auto;
 }
 
-main .features h1 {
-    font-size: 38px;
-    margin-right: 380px;
 }
 main .features h2 {
     font-size: 38px;
