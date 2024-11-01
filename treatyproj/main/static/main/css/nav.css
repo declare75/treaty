@@ -210,6 +210,7 @@ header nav ul {
     transition: color 0.3s ease;
 }
 
+
 body.dark-theme .logregbtntext {
     color: #242424;
 }
