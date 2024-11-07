@@ -12,10 +12,6 @@
     <div class="div">
         <div class="rectangle">
             <div class="rectangle-2">
-                <div class="name">
-                    <span id="first_name">{{ user_form.first_name.value }}</span>
-                    <span id="last_name">{{ user_form.last_name.value }}</span>
-                </div>
                 <div class="rectangle-group-2">
                     <img class="photo" src="{% static 'main/img/57889-3.png' %}"/>
                 </div>
@@ -27,6 +23,17 @@
                         <img class="edit" src="{% static 'main/img/editprofile.svg' %}" id="editprofileImage"/>
                     </button>
                     <button type="submit" class="edit save-button" style="display: none;">Сохранить</button>
+                </div>
+
+                <div class="name">
+                    <!-- Отображаем имя в режиме просмотра и редактирования -->
+                    <div class="display-only">{{ profile_form.full_name.value }}</div>
+                    <div class="edit-mode" style="display: none;">
+                        <input type="text" name="full_name" value="{{ profile_form.full_name.value }}" required/>
+                        {% if profile_form.full_name.errors %}
+                        <div class="error" id="fullNameError">{{ profile_form.full_name.errors }}</div>
+                        {% endif %}
+                    </div>
                 </div>
 
                 <!-- Additional Profile Information Fields -->
@@ -129,17 +136,18 @@
                 if (errorDiv && errorDiv.classList.contains('error')) {
                     errorDiv.style.display = 'block'; // Показываем ошибку
                 }
-                hasError = true; // Если хотя бы одно поле пустое, ставим ошибку
+                hasError = true;
             } else {
                 const errorDiv = field.nextElementSibling;
                 if (errorDiv && errorDiv.classList.contains('error')) {
-                    errorDiv.style.display = 'none'; // Скрываем ошибку, если поле не пустое
+                    errorDiv.style.display = 'none'; // Скрываем ошибку
                 }
             }
         });
 
-        toggleNavbarLinks(hasError); // Блокируем/разблокируем кнопки в зависимости от наличия ошибок
+        toggleNavbarLinks(hasError);
     }
+
 
     // Функция для блокировки или разблокировки кнопок навигации
     function toggleNavbarLinks(hasError) {
@@ -158,17 +166,19 @@
 
     // Функция для включения режима редактирования
     function enableEdit() {
+        // Переключаем поля для редактирования
         document.querySelectorAll('.display-only').forEach(el => el.style.display = 'none');
         document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'block');
+
+        // Показываем кнопку "Сохранить" и скрываем кнопку "Редактировать"
         document.querySelector('.save-button').style.display = 'inline-block';
         document.querySelector('.edit').style.display = 'none';
 
-        clearErrors(); // Очищаем ошибки
-    }
-
-    // Функция для очистки ошибок
-    function clearErrors() {
-        document.querySelectorAll('.error').forEach(error => error.style.display = 'none');
+        // Фокусируемся на поле full_name для удобства редактирования
+        const fullNameField = document.querySelector('.edit-mode input[name="full_name"]');
+        if (fullNameField) {
+            fullNameField.focus();
+        }
     }
 
     // При загрузке страницы проверяем поля формы
