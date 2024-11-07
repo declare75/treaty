@@ -234,7 +234,11 @@ header a i:hover {
     width: 100%;
 }
 
-
+#logoutBtn {
+    color: white !important; /* Принудительно устанавливаем белый цвет текста */
+}
+#logoutBtn {
+}
 
 
 

@@ -83,39 +83,54 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    const registerForm = document.getElementById('registerForm');
-    if (registerForm) {
-        registerForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const regName = document.getElementById('regName').value;
-            const regEmail = document.getElementById('regEmail').value;
-            const regPassword = document.getElementById('regPassword').value;
+    registerForm.addEventListener('submit', function(event) {
+    event.preventDefault();
 
-            fetch('/register/', {
+    const regEmail = document.getElementById('regEmail').value;
+    const regPassword = document.getElementById('regPassword').value;
+
+    fetch('/register/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: JSON.stringify({
+            email: regEmail,
+            password: regPassword
+        })
+    }).then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Регистрация выполнена успешно');
+
+            // После успешной регистрации сразу авторизуем пользователя
+            fetch('/login/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCookie('csrftoken'),
                 },
                 body: JSON.stringify({
-                    name: regName,
                     email: regEmail,
                     password: regPassword
                 })
-            }).then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Регистрация выполнена успешно');
+            }).then(loginResponse => loginResponse.json())
+            .then(loginData => {
+                if (loginData.success) {
                     window.location.href = '/profile/';  // Переход к профилю
                 } else {
-                    alert('Ошибка регистрации: ' + data.message);
+                    alert('Ошибка входа: ' + loginData.message);
                 }
-            }).catch(error => {
-                console.error('Ошибка:', error);
-                alert('Произошла ошибка при отправке данных.');
             });
-        });
-    }
+        } else {
+            alert('Ошибка регистрации: ' + data.message);
+        }
+    }).catch(error => {
+        console.error('Ошибка:', error);
+        alert('Произошла ошибка при отправке данных.');
+    });
+});
 
     // Получение CSRF-токена для защиты запросов
     function getCookie(name) {
