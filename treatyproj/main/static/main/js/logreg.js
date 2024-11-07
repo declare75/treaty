@@ -83,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Обработка формы регистрации
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         registerForm.addEventListener('submit', function(event) {
@@ -107,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success) {
                     alert('Регистрация выполнена успешно');
-                    window.location.href = '/';
+                    window.location.href = '/profile/';  // Переход к профилю
                 } else {
                     alert('Ошибка регистрации: ' + data.message);
                 }

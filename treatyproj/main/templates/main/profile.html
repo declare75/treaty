@@ -5,12 +5,16 @@
 {% block style %}
 <link rel="stylesheet" href="{% static 'main/css/profile.css' %}">
 {% endblock %}
+
 {% block content %}
 <div class="profile">
     <div class="div">
         <div class="rectangle">
             <div class="rectangle-2">
-                <div class="name">Манякин Даниил<br/>Никитович</div>
+                <div class="name">
+                    <span id="first_name">{{ user_form.first_name.value }}</span>
+                    <span id="last_name">{{ user_form.last_name.value }}</span>
+                </div>
                 <div class="rectangle-group-2">
                     <img class="photo" src="{% static 'main/img/57889-3.png' %}"/>
                     <div class="ellipse"></div>
@@ -21,38 +25,68 @@
                     <div class="ellipse-6"></div>
                 </div>
             </div>
-            <div class="rectangle-group">
-                <button class="edit">Редактировать
-                    <img class="edit" src="{% static 'main/img/editprofile.svg' %}" id="editprofileImage"/>
-                </button>
-            </div>
-            <div class="texttheme">
-                <div class="title">Профиль</div>
-                <div class="settings">Настройки</div>
-                <div class="email-title">Email</div>
-                <div class="theme">Тема</div>
-                <div class="notification">Уведомления</div>
-                <div class="phone-title">Телефон</div>
-                <div class="birthday-title">Дата рождения</div>
-                <div class="contact-title">Связь</div>
-            </div>
-            <div class="email">ikonikdd@gmail.com</div>
-            <div class="birthday">09.03.2003</div>
-            <div class="phone">7 (999) 999-99-99</div>
-            <div class="contact">t.me/declare7</div>
-            <div class="theme-switch">
-                <input type="checkbox" id="theme-toggle">
-                <label for="theme-toggle"></label>
-                <img src="{% static 'main/img/themelight.svg' %}" id="themeImage"/>
-            </div>
-            <div class="notification-switch">
-                <input type="checkbox" id="notification-toggle">
-                <label for="notification-toggle"></label>
-                <img src="{% static 'main/img/notificationoff.svg' %}" id="notificationImage"/>
-            </div>
+            <form method="post" action=".">
+                {% csrf_token %}
+                <div class="rectangle-group">
+                    <button type="button" class="edit" onclick="enableEdit()">Редактировать
+                        <img class="edit" src="{% static 'main/img/editprofile.svg' %}" id="editprofileImage"/>
+                    </button>
+                    <button type="submit" class="edit save-button" style="display: none;">Сохранить</button>
+                </div>
+
+                <div class="texttheme">
+                    <div class="title">Профиль</div>
+                    <div class="settings">Настройки</div>
+                    <div class="email-title">Email</div>
+                    <div class="theme">Тема</div>
+                    <div class="notification">Уведомления</div>
+                    <div class="phone-title">Телефон</div>
+                    <div class="birthday-title">Дата рождения</div>
+                    <div class="contact-title">Связь</div>
+                </div>
+
+                <!-- Поля формы для редактирования -->
+                <div class="email">
+                    <div class="display-only">{{ user_form.email }}</div>
+                    <div class="edit-mode" style="display: none;">{{ user_form.email }}</div>
+                </div>
+                <div class="birthday">
+                    <div class="display-only">{{ profile_form.birthday }}</div>
+                    <div class="edit-mode" style="display: none;">{{ profile_form.birthday }}</div>
+                </div>
+                <div class="phone">
+                    <div class="display-only">{{ profile_form.phone }}</div>
+                    <div class="edit-mode" style="display: none;">{{ profile_form.phone }}</div>
+                </div>
+                <div class="contact">
+                    <div class="display-only">{{ profile_form.contact }}</div>
+                    <div class="edit-mode" style="display: none;">{{ profile_form.contact }}</div>
+                </div>
+
+                <!-- Тумблеры темы и уведомлений -->
+                <div class="theme-switch">
+                    <input type="checkbox" id="theme-toggle" disabled>
+                    <label for="theme-toggle"></label>
+                    <img src="{% static 'main/img/themelight.svg' %}" id="themeImage"/>
+                </div>
+                <div class="notification-switch">
+                    <input type="checkbox" id="notification-toggle" disabled>
+                    <label for="notification-toggle"></label>
+                    <img src="{% static 'main/img/notificationoff.svg' %}" id="notificationImage"/>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 <script src="{% static 'main/js/themeswitch.js' %}"></script>
 <script src="{% static 'main/js/notificationswitch.js' %}"></script>
+<script>
+    function enableEdit() {
+        document.querySelectorAll('.display-only').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'block');
+        document.querySelector('.save-button').style.display = 'inline-block';
+        document.querySelector('.edit').style.display = 'none';
+    }
+</script>
 {% endblock %}

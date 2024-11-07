@@ -4,6 +4,7 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 from django.contrib import admin
 from catalog2 import views
+from main import views as main_views
 
 
 
@@ -14,6 +15,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.login_view, name='login'),
     path('chats/', include('chat.urls')),
+    path('register/', views.register_view, name='register'),
+    path('profile/', main_views.profile_view, name='profile'),
 
 ]
 

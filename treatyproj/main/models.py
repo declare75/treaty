@@ -1,48 +1,24 @@
+# models.py
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-class CustomUserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, middle_name, password=None, **extra_fields):
-        if not email:
-            raise ValueError('Email is required')
-        if not first_name:
-            raise ValueError('First name is required')
-        if not last_name:
-            raise ValueError('Last name is required')
-        if not middle_name:
-            raise ValueError('Middle name is required')
-
-        email = self.normalize_email(email)
-        user = self.model(email=email, first_name=first_name, last_name=last_name, middle_name=middle_name, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, first_name, last_name, middle_name, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
-        return self.create_user(email, first_name, last_name, middle_name, password, **extra_fields)
-
-
-class CustomUser(AbstractBaseUser):
-    email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    middle_name = models.CharField(max_length=30)
-
-    birth_date = models.DateField(null=True, blank=True)
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
-    connection = models.TextField(blank=True, null=True)
-
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-
-    objects = CustomUserManager()
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'middle_name']
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    birthday = models.DateField(null=True, blank=True)
+    phone = models.CharField(max_length=15, blank=True)
+    contact = models.CharField(max_length=50, blank=True)
+    full_name = models.CharField(max_length=150, blank=False)
 
     def __str__(self):
-        return self.email
+        return self.user.username
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
