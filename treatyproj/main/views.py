@@ -1,6 +1,4 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .forms import UserForm, ProfileForm
+
 from django.contrib.auth.models import User
 from .models import Profile
 from django.http import JsonResponse
@@ -10,14 +8,22 @@ import json
 def index(request):
     return render(request, 'main/index.html')
 
+
 def catalog(request):
     return render(request, 'main/catalog.html')
+
 
 def profile(request):
     return render(request, 'main/profile.html')
 
+
 def help(request):
     return render(request, 'main/help.html')
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .forms import UserForm, ProfileForm
 
 
 @login_required
@@ -27,6 +33,7 @@ def profile_view(request):
         profile_form = ProfileForm(request.POST, instance=request.user.profile)
 
         if user_form.is_valid() and profile_form.is_valid():
+            # Сохраняем изменения пользователя и профиля
             user_form.save()
             profile_form.save()
             return redirect('profile')
@@ -34,10 +41,10 @@ def profile_view(request):
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
 
-    return render(request, 'main/profile.html', {
-        'user_form': user_form,
-        'profile_form': profile_form
-    })
+    return render(request, 'main/profile.html', {'user_form': user_form, 'profile_form': profile_form})
+
+
+
 
 def register_view(request):
     if request.method == 'POST':
