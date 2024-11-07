@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block title %}Профиль{% endblock %}
+
 {% block style %}
 <link rel="stylesheet" href="{% static 'main/css/profile.css' %}">
 {% endblock %}
@@ -17,15 +18,9 @@
                 </div>
                 <div class="rectangle-group-2">
                     <img class="photo" src="{% static 'main/img/57889-3.png' %}"/>
-                    <div class="ellipse"></div>
-                    <div class="ellipse-2"></div>
-                    <div class="ellipse-3"></div>
-                    <div class="ellipse-4"></div>
-                    <div class="ellipse-5"></div>
-                    <div class="ellipse-6"></div>
                 </div>
             </div>
-            <form method="post" action=".">
+            <form method="post" action="." id="profileForm" onsubmit="return checkForErrors()">
                 {% csrf_token %}
                 <div class="rectangle-group">
                     <button type="button" class="edit" onclick="enableEdit()">Редактировать
@@ -34,6 +29,7 @@
                     <button type="submit" class="edit save-button" style="display: none;">Сохранить</button>
                 </div>
 
+                <!-- Additional Profile Information Fields -->
                 <div class="texttheme">
                     <div class="title">Профиль</div>
                     <div class="settings">Настройки</div>
@@ -45,32 +41,61 @@
                     <div class="contact-title">Связь</div>
                 </div>
 
-                <!-- Поля формы для редактирования -->
                 <div class="email">
-                    <div class="display-only">{{ user_form.email }}</div>
-                    <div class="edit-mode" style="display: none;">{{ user_form.email }}</div>
-                </div>
-                <div class="birthday">
-                    <div class="display-only">{{ profile_form.birthday }}</div>
-                    <div class="edit-mode" style="display: none;">{{ profile_form.birthday }}</div>
-                </div>
-                <div class="phone">
-                    <div class="display-only">{{ profile_form.phone }}</div>
-                    <div class="edit-mode" style="display: none;">{{ profile_form.phone }}</div>
-                </div>
-                <div class="contact">
-                    <div class="display-only">{{ profile_form.contact }}</div>
-                    <div class="edit-mode" style="display: none;">{{ profile_form.contact }}</div>
+                    <div class="display-only">{{ user_form.email.value }}</div>
+                    <div class="edit-mode" style="display: none;">
+                        <input type="email" name="email" value="{{ user_form.email.value }}"/>
+                        {% if user_form.email.errors %}
+                        <div class="error" id="emailError">{{ user_form.email.errors }}</div>
+                        {% endif %}
+                    </div>
                 </div>
 
-                <!-- Тумблеры темы и уведомлений -->
+                <div class="birthday">
+                    <div class="display-only">
+                        {% if profile_form.birthday.value %}
+                        {{ profile_form.birthday.value|date:"d.m.Y" }}
+                        {% else %}
+                        {{ profile_form.birthday.initial|date:"d.m.Y" }}
+                        {% endif %}
+                    </div>
+                    <div class="edit-mode" style="display: none;">
+                        <input type="date" name="birthday"
+                               value="{% if profile_form.birthday.value %}{{ profile_form.birthday.value|date:'Y-m-d' }}{% else %}{{ profile_form.birthday.initial|date:'Y-m-d' }}{% endif %}"/>
+                        {% if profile_form.birthday.errors %}
+                        <div class="error" id="birthdayError">{{ profile_form.birthday.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="phone">
+                    <div class="display-only">{{ profile_form.phone.value }}</div>
+                    <div class="edit-mode" style="display: none;">
+                        <input type="tel" name="phone" value="{{ profile_form.phone.value }}"/>
+                        {% if profile_form.phone.errors %}
+                        <div class="error" id="phoneError">{{ profile_form.phone.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="contact">
+                    <div class="display-only">{{ profile_form.contact.value }}</div>
+                    <div class="edit-mode" style="display: none;">
+                        <input type="text" name="contact" value="{{ profile_form.contact.value }}"/>
+                        {% if profile_form.contact.errors %}
+                        <div class="error" id="contactError">{{ profile_form.contact.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
                 <div class="theme-switch">
-                    <input type="checkbox" id="theme-toggle" disabled>
+                    <input type="checkbox" id="theme-toggle" disabled/>
                     <label for="theme-toggle"></label>
                     <img src="{% static 'main/img/themelight.svg' %}" id="themeImage"/>
                 </div>
+
                 <div class="notification-switch">
-                    <input type="checkbox" id="notification-toggle" disabled>
+                    <input type="checkbox" id="notification-toggle" disabled/>
                     <label for="notification-toggle"></label>
                     <img src="{% static 'main/img/notificationoff.svg' %}" id="notificationImage"/>
                 </div>
@@ -79,14 +104,82 @@
     </div>
 </div>
 
+{% block messages %}
+{% if request.path == '/profile/' %}
+<div id="messages">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
+
 <script src="{% static 'main/js/themeswitch.js' %}"></script>
 <script src="{% static 'main/js/notificationswitch.js' %}"></script>
+
 <script>
+    // Функция для проверки пустых полей и блокировки/разблокировки кнопок
+    function checkFormFields() {
+        const requiredFields = document.querySelectorAll('.edit-mode input');
+        let hasError = false;
+
+        requiredFields.forEach(field => {
+            if (field.value.trim() === '') {
+                const errorDiv = field.nextElementSibling;
+                if (errorDiv && errorDiv.classList.contains('error')) {
+                    errorDiv.style.display = 'block'; // Показываем ошибку
+                }
+                hasError = true; // Если хотя бы одно поле пустое, ставим ошибку
+            } else {
+                const errorDiv = field.nextElementSibling;
+                if (errorDiv && errorDiv.classList.contains('error')) {
+                    errorDiv.style.display = 'none'; // Скрываем ошибку, если поле не пустое
+                }
+            }
+        });
+
+        toggleNavbarLinks(hasError); // Блокируем/разблокируем кнопки в зависимости от наличия ошибок
+    }
+
+    // Функция для блокировки или разблокировки кнопок навигации
+    function toggleNavbarLinks(hasError) {
+        const navbarButtons = document.querySelectorAll('.textprepod, .texthelp, .textfaq');
+
+        navbarButtons.forEach(button => {
+            if (hasError) {
+                button.style.pointerEvents = 'none'; // Отключаем клик
+                button.style.opacity = '0.5'; // Визуально показываем, что кнопка отключена
+            } else {
+                button.style.pointerEvents = 'auto'; // Включаем клик
+                button.style.opacity = '1'; // Восстанавливаем видимость кнопки
+            }
+        });
+    }
+
+    // Функция для включения режима редактирования
     function enableEdit() {
         document.querySelectorAll('.display-only').forEach(el => el.style.display = 'none');
         document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'block');
         document.querySelector('.save-button').style.display = 'inline-block';
         document.querySelector('.edit').style.display = 'none';
+
+        clearErrors(); // Очищаем ошибки
     }
+
+    // Функция для очистки ошибок
+    function clearErrors() {
+        document.querySelectorAll('.error').forEach(error => error.style.display = 'none');
+    }
+
+    // При загрузке страницы проверяем поля формы
+    document.addEventListener('DOMContentLoaded', () => {
+        checkFormFields(); // Выполняем проверку сразу после загрузки страницы
+    });
+
+    // Проверка на изменения в полях
+    document.querySelectorAll('.edit-mode input').forEach(input => {
+        input.addEventListener('input', checkFormFields); // Проверка при каждом изменении поля
+    });
 </script>
+
 {% endblock %}
