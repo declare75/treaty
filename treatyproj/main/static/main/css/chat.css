@@ -1,0 +1,365 @@
+.rectangle {
+  position: absolute;
+  width: 950px;
+  height: 560px;
+  top: 180px;
+  left: 485px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0px -4px 22px #00000040;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+body.dark-theme .rectangle {
+    background-color: #212121;
+    box-shadow: 0px -4px 22px #00000040;
+}
+
+.yourchatstext {
+    width: 147.0px;
+    height: 41.0px;
+    color: #242424;
+    font-family: Manrope;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: absolute;
+    top: 212px;
+    left: 887px;
+    z-index: 15;
+}
+.yourchatstext2 {
+    width: 147.0px;
+    height: 41.0px;
+    color: #242424;
+    font-family: Manrope;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: absolute;
+    top: 201px;
+    left: 934px;
+    z-index: 15;
+}
+
+.krujok {
+    width: 9.0px;
+    height: 9.0px;
+    flex-shrink: 0;
+    background-color: #7396FC;
+    border-radius: 100px;
+    position: absolute;
+    top: 218px;
+    left: 1034px;
+}
+.krujok2 {
+    width: 9.0px;
+    height: 9.0px;
+    flex-shrink: 0;
+    background-color: #7396FC;
+    border-radius: 100px;
+    position: absolute;
+    top: 207px;
+    left: 989px;
+    z-index: 5;
+}
+
+.nochats {
+    width: 211.0px;
+    height: 41.0px;
+    color: #242424;
+    font-family: Manrope;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: absolute;
+    top: 345px;
+    left: 855px;
+}
+
+.nochatsunder {
+    width: 560.0px;
+    height: 27.0px;
+    color: #B5B5B5;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: absolute;
+    top: 402px;
+    left: 700px;
+}
+
+.searchuser {
+    width: 276.0px;
+    height: 27.0px;
+    color: #B5B5B5;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: absolute;
+    top: 601px;
+    left: 822px;
+    z-index: 5;
+}
+
+.searchrec {
+    width: 574.0px;
+    height: 73.0px;
+    border-radius: 15px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #7396FC;
+    position: absolute;
+    top: 638px;
+    left: 673px;
+    z-index: 5;
+}
+
+.searchrec2 {
+    width: 515px;
+    height: 43px;
+    border-radius: 15px;
+    background: #FFF;
+    position: absolute;
+    top: 653px;
+    left: 703px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: absolute;
+    z-index: 5;
+}
+
+.searchrec2 input {
+    width: 100%;
+    height: 100%;
+    border: 0px solid transparent; /* Начальная прозрачная рамка */
+    padding: 0 10px;
+    font-size: 16px;
+    outline: none;
+    position: absolute;
+    z-index: 1;
+    background-color: transparent;
+    transition: box-shadow 0.3s ease; /* Плавное изменение только тени */
+    z-index: 5;
+}
+
+/* При фокусе на инпуте добавляем внутреннюю тень */
+.searchrec2 input:focus {
+    -webkit-box-shadow: 0px 0px 18px 12px rgba(115, 150, 252, 0.2) inset;
+    -moz-box-shadow: 0px 0px 18px 12px rgba(115, 150, 252, 0.2) inset;
+    box-shadow: 0px 0px 18px 12px rgba(115, 150, 252, 0.2) inset;
+}
+
+.startchat {
+    width: 111.0px;
+    height: 23.0px;
+    border-radius: 15px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #7396FC;
+    position: absolute;
+    top: 663px;
+    left: 1090px;
+    color: #FFF;
+    font-family: Manrope;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 6;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.sinichel2 {
+    position: absolute;
+    top: 0px;
+    left: 1136px;
+    z-index: -100;
+}
+
+a {
+    text-decoration: none;  /* Убирает подчеркивание */
+    color: inherit;         /* Убирает синий цвет и наследует цвет родительского элемента */
+}
+
+a:hover {
+    text-decoration: none;  /* Убирает подчеркивание при наведении */
+    color: inherit;         /* Оставляет тот же цвет при наведении */
+}
+
+
+.chat-item a {
+    text-decoration: none;      /* Убираем подчеркивание */
+    color: inherit;             /* Сохраняем цвет текста, как у родителя */
+}
+
+.chat-item a:hover {
+    text-decoration: none;      /* Убираем подчеркивание при наведении */
+    color: inherit;             /* Сохраняем цвет текста при наведении */
+}
+
+.FIOtext {
+    color: #242424;
+    font-family: Manrope;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-left: 100px;
+}
+.last-message {
+    color: #B5B5B5;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-left: 140px;
+    margin-top: -10px;
+}
+.chat-list {
+    width: 617px;               /* Ширина контейнера для всех чатов */
+    display: flex;              /* Flexbox для вертикального выравнивания */
+    flex-direction: column;     /* Элементы располагаются вертикально */
+    padding: 10px;              /* Внутренние отступы */
+    max-height: 325px;           /* Ограничение по высоте */
+    overflow-y: auto;           /* Прокрутка при необходимости */
+    margin-left: 652px;
+    margin-top: 263px;
+    z-index: 3;
+}
+
+.chat-item {
+    width: 100%;
+    height: 91px;
+    border-radius: 15px;
+    border: 1px solid transparent;
+    padding: 10px;
+    background-color: #fff;
+    z-index: 3;
+    transition: background-color 0.3s ease;
+}
+
+.chat-item:hover {
+    background-color: #EFF3FF;
+    border-color: transparent;
+}
+
+.chat-divider {
+    width: 200px;                  /* Ширина линии */
+    min-height: 2px;               /* Минимальная высота линии, чтобы она всегда отображалась */
+    background-color: #7396FC;     /* Цвет линии */
+    align-self: center;            /* Центрирование линии */
+    margin: 7.5px 0;               /* Отступы сверху и снизу */
+    z-index: 4;
+}
+
+.tree2 {
+    position: absolute;
+    top: 327px;
+    left: 1167px;
+    z-index: 4;
+}
+
+.username {
+    position: absolute;
+    top: 50%; /* Опционально для центрирования по вертикали */
+    left: 50%;
+    transform: translate(-50%, -1250%); /* Центрирование по горизонтали и вертикали */
+    color: #B5B5B5;
+    font-family: Manrope;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    z-index: 5;
+}
+
+#chat-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    border-radius: 15px;
+    max-height: 50vh;
+    overflow-y: auto; /* Включаем вертикальную прокрутку */
+    z-index: 5;
+    margin-top: 270px;
+}
+
+/* Стили для полосы прокрутки в WebKit-браузерах (Chrome, Safari) */
+#chat-box::-webkit-scrollbar {
+    width: 10px; /* Задаем ширину полосы прокрутки */
+}
+
+#chat-box::-webkit-scrollbar-thumb {
+    background-color: #7396FC; /* Цвет ползунка */
+    border-radius: 5px;        /* Скругление углов */
+}
+
+#chat-box::-webkit-scrollbar-track {
+    background-color: #e0e0e0; /* Цвет фона полосы */
+    border-radius: 5px;
+}
+
+.message {
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 60%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 5;
+}
+
+/* Сообщения текущего пользователя — справа */
+.message.sent {
+    background-color: #d1e7ff;
+    align-self: flex-end;
+    text-align: right;
+    z-index: 5;
+    max-width: 60%; /* Устанавливаем максимальную ширину сообщения */
+    word-wrap: break-word; /* Разбиение слов на следующую строку, если не помещаются */
+}
+
+/* Сообщения собеседника — слева */
+.message.received {
+    background-color: #ffffff;
+    align-self: flex-start;
+    text-align: left;
+    z-index: 5;
+}
+
+.message p {
+    margin: 5px 0;
+    z-index: 5;
+}
+
+.message small {
+    display: block;
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+    z-index: 5;
+}
+
+.message img, .message video {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 5px;
+    z-index: 5;
+}
+

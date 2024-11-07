@@ -1,37 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Чат с {{ receiver.username }}</title>
-</head>
-<body>
-    <h2>Чат с {{ receiver.username }}</h2>
+{% extends 'main/layout.html' %}
+{% load static %}
 
-    <div id="chat-box">
-        {% for message in messages %}
-            <div class="message {% if message.sender == user %}sent{% else %}received{% endif %}">
-                <p><strong>{{ message.sender.username }}</strong></p>
-                <p>{{ message.content }}</p>
-                {% if message.image %}
-                    <img src="{{ message.image.url }}" alt="image">
-                {% endif %}
-                {% if message.video %}
-                    <video src="{{ message.video.url }}" controls></video>
-                {% endif %}
-                <small>{{ message.timestamp }}</small>
-            </div>
-        {% empty %}
-            <p>Сообщений пока нет. Начните переписку!</p>
-        {% endfor %}
+{% block title %}Мессенджер{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'main/css/chat.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="yourchatstext2">чат</div>
+<div class="krujok2"></div>
+<h2 class="username">{{ receiver.username }}</h2>
+<img src="{% static 'main/img/tree.svg' %}" class="tree2">
+<div class="rectangle"></div>
+<div id="chat-box">
+    {% for message in messages %}
+    <div class="message {% if message.sender == user %}sent{% else %}received{% endif %}">
+        <p><strong>{{ message.sender.username }}</strong></p>
+        <p>{{ message.content }}</p>
+        {% if message.image %}
+        <img src="{{ message.image.url }}" alt="image">
+        {% endif %}
+        {% if message.video %}
+        <video src="{{ message.video.url }}" controls></video>
+        {% endif %}
+        <small>{{ message.timestamp }}</small>
     </div>
+    {% empty %}
+    <p>Сообщений пока нет. Начните переписку!</p>
+    {% endfor %}
+</div>
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <textarea name="content" placeholder="Введите сообщение..." required></textarea>
-        <input type="file" name="image" accept="image/*">
-        <input type="file" name="video" accept="video/*">
-        <button type="submit">Отправить</button>
-    </form>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <textarea name="content" placeholder="Введите сообщение..." required></textarea>
+    <input type="file" name="image" accept="image/*">
+    <input type="file" name="video" accept="video/*">
+    <button type="submit">Отправить</button>
+</form>
 
 <script>
     const chatSocket = new WebSocket(
@@ -62,5 +67,4 @@
         }
     };
 </script>
-</body>
-</html>
+{% endblock %}

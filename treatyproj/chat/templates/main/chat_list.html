@@ -1,21 +1,44 @@
-<h2>Ваши чаты</h2>
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block title %}Мессенджер{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'main/css/chat.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="rectangle"></div>
+<div class="yourchatstext">ваши чаты</div>
+<div class="krujok"></div>
+<img src="{% static 'main/img/tree.svg' %}" class="tree2">
 <div class="chat-list">
-  {% for chat_user in existing_chats %}
-    <a href="{% url 'chat_view' chat_user.id %}">
-      <p>{{ chat_user.email }}</p>
+    {% for chat in chat_data %}
+    <a href="{% url 'chat_view' chat.chat_user.id %}" class="chat-item">
+        <p class="FIOtext">{{ chat.chat_user.email }}</p>
+        {% if chat.last_message %}
+        <p class="last-message">{{ chat.last_message.content|truncatechars:30 }}</p>
+        {% else %}
+        <p class="last-message">Нет сообщений</p>
+        {% endif %}
     </a>
-  {% empty %}
-    <p>Чатов нет.</p>
-  {% endfor %}
+    {% if not forloop.last %}
+    <div class="chat-divider"></div>
+    {% endif %}
+    {% empty %}
+    <div class="nochats">чатов пока нет</div>
+    <div class="nochatsunder">Вы можете написать собеседнику, используя его Email</div>
+    {% endfor %}
 </div>
 
-<h3>Найти пользователя по email</h3>
+<div class="searchuser">Найти пользователя по Email</div>
+<div class="searchrec"></div>
 <form method="post">
-  {% csrf_token %}
-  <input type="email" name="email" placeholder="Введите email">
-  <button type="submit">Начать чат</button>
+    {% csrf_token %}
+    <button type="submit" class="startchat">Начать чат</button>
+    <div class="searchrec2"><input type="email" name="email"></div>
 </form>
 
 {% if error %}
-  <p>{{ error }}</p>
+<p>{{ error }}</p>
 {% endif %}
+{% endblock %}
