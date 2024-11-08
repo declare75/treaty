@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Q
 from django.db.models import Max
+from django.http import JsonResponse
+from django.urls import reverse
 
 
 @login_required
@@ -32,10 +34,13 @@ def chat_list_view(request):
         email = request.POST.get("email")
         try:
             receiver = User.objects.get(email=email)
-            return redirect("chat_view", receiver_id=receiver.id)
+            return JsonResponse({"redirect_url": reverse("chat_view", args=[receiver.id])})
         except User.DoesNotExist:
-            return render(request, "main/chat_list.html",
-                          {"error": "Пользователь не найден", "existing_chats": existing_chats})
+            # Проверка, является ли запрос AJAX-запросом
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({"error": "Пользователь с таким email не найден."})
+            else:
+                return render(request, "main/chat_list.html", {"existing_chats": existing_chats})
 
     return render(request, "main/chat_list.html", {"chat_data": chat_data})
 

@@ -7,23 +7,29 @@
 {% endblock %}
 
 {% block content %}
+<div><input type="text" id="searchInput" placeholder="Поиск сообщений..." class="searchM2"
+            onkeyup="filterSearch()"></div>
 <div class="yourchatstext2">чат</div>
 <div class="krujok2"></div>
 <h2 class="username">{{ receiver.username }}</h2>
-<img src="{% static 'main/img/tree.svg' %}" class="tree2">
-<div class="rectangle"></div>
+<div class="rectangle6"></div>
+<a href="/chats/" class="close-chat-icon">
+    <i class="fa fa-times" style="color: #7396FC; font-size: 20px;"></i> <!-- Иконка крестика -->
+</a>
 <div id="chat-box">
     {% for message in messages %}
     <div class="message {% if message.sender == user %}sent{% else %}received{% endif %}">
-        <p><strong>{{ message.sender.username }}</strong></p>
-        <p>{{ message.content }}</p>
+        <p>
+            <strong class="username2">{{ message.sender.username }}</strong> <!-- Имя пользователя -->
+            <small>{{ message.timestamp|date:"j F H:i" }}</small>
+        </p>
+        <p class="message-content">{{ message.content }}</p> <!-- Контент сообщения -->
         {% if message.image %}
-        <img src="{{ message.image.url }}" alt="image">
+        <img class="message-image" src="{{ message.image.url }}" alt="image">
         {% endif %}
         {% if message.video %}
-        <video src="{{ message.video.url }}" controls></video>
+        <video class="message-video" src="{{ message.video.url }}" controls></video>
         {% endif %}
-        <small>{{ message.timestamp }}</small>
     </div>
     {% empty %}
     <p>Сообщений пока нет. Начните переписку!</p>
@@ -32,39 +38,85 @@
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <textarea name="content" placeholder="Введите сообщение..." required></textarea>
-    <input type="file" name="image" accept="image/*">
-    <input type="file" name="video" accept="video/*">
-    <button type="submit">Отправить</button>
+    <div class="recundertextarea"></div>
+    <button type="submit" class="startchat2">Отправить</button>
+    <div class="message-textarea"><input name="content" required></div>
+    <div>
+        <!-- Для изображения -->
+        <label for="image-input" style="cursor: pointer; position: absolute; top: 821px; left: 538px;">
+            <i class="fa fa-image" style="color: #7396FC; font-size: 35px;"></i> <!-- Иконка изображения -->
+        </label>
+        <input id="image-input" class="message-image-input" type="file" name="image" accept="image/*"
+               style="display: none;">
+
+        <!-- Для видео -->
+        <label for="video-input" style="cursor: pointer; position: absolute; top: 821px; left: 602px;">
+            <i class="fa fa-film" style="color: #7396FC; font-size: 35px;"></i> <!-- Иконка пленки для видео -->
+        </label>
+        <input id="video-input" class="message-video-input" type="file" name="video" accept="video/*"
+               style="display: none;">
+    </div>
 </form>
 
 <script>
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
     const chatSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/chat/{{ receiver.id }}/'
+       `${protocol}://${window.location.host}/ws/chat/{{ receiver.id }}/`
     );
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
+
+        // Создаем новый блок для сообщения
         const messageElement = document.createElement('div');
-        messageElement.innerHTML = `<strong>${data.sender}</strong>: ${data.content}`;
-        document.querySelector('#chat-messages').appendChild(messageElement);
+        messageElement.classList.add('message');
+        messageElement.classList.add(data.sender === '{{ user.email }}' ? 'sent' : 'received');
+
+        // Вставляем имя отправителя и сообщение
+        messageElement.innerHTML = `
+            <p>
+                <strong class="username2">${data.sender}</strong>
+                <small>${data.timestamp}</small>
+            </p>
+            <p class="message-content">${data.content}</p>
+        `;
+
+        // Если есть изображение или видео, добавляем их
+        if (data.image) {
+            const imageElement = document.createElement('img');
+            imageElement.classList.add('message-image');
+            imageElement.src = data.image;
+            messageElement.appendChild(imageElement);
+        }
+
+        if (data.video) {
+            const videoElement = document.createElement('video');
+            videoElement.classList.add('message-video');
+            videoElement.src = data.video;
+            videoElement.controls = true;
+            messageElement.appendChild(videoElement);
+        }
+
+        // Добавляем новое сообщение в чат
+        const chatBox = document.getElementById('chat-box');
+        chatBox.appendChild(messageElement);
+
+        // Прокручиваем чат в самый низ
+        chatBox.scrollTop = chatBox.scrollHeight;
     };
 
     chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
     };
-
-    document.querySelector('#chat-message-input').focus();
-    document.querySelector('#chat-message-input').onkeyup = function(e) {
-        if (e.keyCode === 13) {  // Отправка по нажатию Enter
-            const messageInputDom = document.querySelector('#chat-message-input');
-            const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'content': message,
-                'sender': '{{ user.email }}'  // Отправляем email пользователя
-            }));
-            messageInputDom.value = '';  // Очищаем поле ввода
-        }
+    chatSocket.onerror = function(e) {
+        console.error('WebSocket error observed:', e);
     };
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const chatBox = document.getElementById("chat-box");
+        chatBox.scrollTop = chatBox.scrollHeight;  // Устанавливаем прокрутку в самый низ
+    });
+</script>
+<script src="{% static 'main/js/searchmsg.js' %}"></script>
 {% endblock %}

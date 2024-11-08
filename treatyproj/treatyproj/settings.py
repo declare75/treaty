@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-k#x-^mup09-a)^3silvus5$cfv_f+p$22ob3=&y#eao*z(^bip'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -34,7 +34,18 @@ INSTALLED_APPS = [
     'channels',
 ]
 
-ASGI_APPLICATION = 'treatyProject'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [("127.0.0.1", 6379)],
+            "password": "my_password",
+        },
+    },
+}
+
+ASGI_APPLICATION = 'treatyproj.asgi.application'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -72,11 +83,14 @@ WSGI_APPLICATION = 'treatyproj.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'USER': BASE_DIR / 'db.sqlite3',
+        'PASSWORD': '09032003Dd',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -115,8 +129,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    BASE_DIR / "main" / "static",  # Здесь вы указываете путь к вашей папке static
 ]
+
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent

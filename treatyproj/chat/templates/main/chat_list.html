@@ -32,13 +32,47 @@
 
 <div class="searchuser">Найти пользователя по Email</div>
 <div class="searchrec"></div>
-<form method="post">
+<div id="notification" class="notification hidden"></div> <!-- Контейнер для уведомления -->
+
+<form method="post" id="chatForm">
     {% csrf_token %}
     <button type="submit" class="startchat">Начать чат</button>
-    <div class="searchrec2"><input type="email" name="email"></div>
+    <div class="searchrec2"><input type="email" name="email" required></div>
 </form>
+<script>
+document.getElementById("chatForm").addEventListener("submit", function(event) {
+    event.preventDefault();  // Отменяем стандартное отправление формы
 
-{% if error %}
-<p>{{ error }}</p>
-{% endif %}
+    const form = event.target;
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: {
+            "X-Requested-With": "XMLHttpRequest"
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            showNotification(data.error);  // Показываем уведомление с ошибкой
+        } else {
+            window.location.href = data.redirect_url;  // Перенаправляем на чат
+        }
+    })
+    .catch(error => console.error("Ошибка:", error));
+});
+
+function showNotification(message) {
+    const notification = document.getElementById("notification");
+    notification.textContent = message;
+    notification.classList.remove("hidden");
+
+    // Убираем уведомление через 3 секунды после появления
+    setTimeout(() => {
+        notification.classList.add("hidden");
+    }, 3000);
+}
+</script>
 {% endblock %}
