@@ -214,6 +214,25 @@ header nav ul {
 body.dark-theme .logregbtntext {
     color: #242424;
 }
+
+.logregbtntext2 {
+    position: absolute;
+    color: white;
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    top: 2px;
+    left: 10px;
+    transition: transform 0.3s ease; /* Плавный переход */
+    transition: color 0.3s ease;
+}
+
+
+body.dark-theme .logregbtntext2 {
+    color: black;
+}
 body.dark-theme .logregbtn {
     background-color: white;
 }
@@ -232,12 +251,6 @@ header a i:hover {
     flex-direction: row;
     justify-content: center;
     width: 100%;
-}
-
-#logoutBtn {
-    color: white !important; /* Принудительно устанавливаем белый цвет текста */
-}
-#logoutBtn {
 }
 
 
