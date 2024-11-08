@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-k#x-^mup09-a)^3silvus5$cfv_f+p$22ob3=&y#eao*z(^bip
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['mytreaty.ru']
 
 
 # Application definition
@@ -82,10 +82,15 @@ WSGI_APPLICATION = 'treatyproj.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'cc17313_db',
+        'USER': 'cc17313_db',
+        'PASSWORD': '09032003Dd',
+        'HOST': '127.0.0.1',
+        'PORT': 3306,
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
