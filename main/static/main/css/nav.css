@@ -77,7 +77,8 @@ body.dark-theme .headlogo:hover::after {
 
 .textprepod,
 .textfaq,
-.texthelp {
+.texthelp,
+.textchats {
     width: 130.0px;
     height: 23.0px;
     text-align: center;
@@ -92,6 +93,7 @@ body.dark-theme .headlogo:hover::after {
 }
 
 .textprepod:hover,
+.textchats:hover,
 .textfaq:hover,
 .texthelp:hover {
     color: #466ee5; /* Изменяем цвет текста при наведении */
@@ -101,6 +103,11 @@ body.dark-theme .headlogo:hover::after {
 .textprepod {
     top: 15px;
     left: 154px;
+}
+
+.textchats {
+    top: 15px;
+    left: 454px;
 }
 
 .textfaq {

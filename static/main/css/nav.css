@@ -91,7 +91,22 @@ body.dark-theme .headlogo:hover::after {
     font-weight: normal; /* Устанавливаем нормальный вес текста */
 }
 
+.textchats {
+    width: 130.0px;
+    height: 23.0px;
+    text-align: center;
+    font-family: 'Manrope', sans-serif;
+    color: #b4b4b4;
+    font-size: 17px;
+    position: absolute;
+    letter-spacing: 0;
+    line-height: normal;
+    transition: color 0.3s ease, font-weight 0.1s ease; /* Добавляем плавный переход для font-weight */
+    font-weight: normal; /* Устанавливаем нормальный вес текста */
+}
+
 .textprepod:hover,
+.textchats:hover,
 .textfaq:hover,
 .texthelp:hover {
     color: #466ee5; /* Изменяем цвет текста при наведении */
@@ -101,6 +116,10 @@ body.dark-theme .headlogo:hover::after {
 .textprepod {
     top: 15px;
     left: 154px;
+}
+.textchats {
+    top: 15px;
+    left: 454px;
 }
 
 .textfaq {
@@ -239,9 +258,3 @@ header a i:hover {
 }
 #logoutBtn {
 }
-
-
-
-
-
-

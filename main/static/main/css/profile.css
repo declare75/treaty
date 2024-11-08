@@ -69,10 +69,9 @@ body.dark-theme .profile .rectangle {
 
 .profile .name input {
     width: 163.0px;
-    height: 54.0px;
-
+    height: 30.0px;
     top: 265px;
-    left: 71px;
+    left: 81px;
     font-family: Manrope;
     font-weight: 500;
     font-size: 15px;
@@ -81,7 +80,30 @@ body.dark-theme .profile .rectangle {
     line-height: normal;
     -webkit-user-drag: none;
     user-drag: none;
+    background-color: #799BFF;
+    border-style: none;
+    border-radius: 15px
+}
 
+.profile .phone input,
+.profile .birthday input,
+.profile .email input,
+.profile .contact input {
+    width: 163.0px;
+    height: 30.0px;
+    top: 265px;
+    left: 81px;
+    font-family: Manrope;
+    font-weight: 500;
+    font-size: 15px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    -webkit-user-drag: none;
+    user-drag: none;
+    background-color: #FFF;
+    border-style: none;
+    border-radius: 7px
 }
 .avatar {
     width: 127.0px;
@@ -89,7 +111,7 @@ body.dark-theme .profile .rectangle {
     flex-shrink: 0;
     position: absolute;
     top: 80px;
-    left: -25px;
+    left: -30px;
     overflow: hidden;
 }
 
@@ -571,4 +593,54 @@ body.dark-theme .profile .rectangle {
 }
 .avatar:hover {
     border: none; /* Убираем полоску при наведении */
+}
+
+.warningbox {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #7396FC; /* Цвет по умолчанию для уведомлений */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: opacity 0.5s ease, visibility 0s 0.5s; /* Задержка для visibility */
+}
+
+.warningbox.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.warningbox:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Цвет фона для success */
+.warningbox-success {
+    background-color: #7396FC; /* Зеленый для успеха */
+}
+
+/* Цвет фона для warning */
+.warningbox-warning {
+    background-color: #7396FC; /* Оранжевый для предупреждения */
+}
+
+.sinichel2 {
+    position: absolute;
+    top: 307px;
+    left: 0px;
+    width: 253.0px;
+    height: 253.0px;
+    border-radius: 0px 0px 0px 15px;
+}
+
+.shariki {
+    position: absolute;
+    top: 310px;
+    left: 573px;
+    z-index: 10;
 }

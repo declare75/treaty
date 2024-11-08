@@ -9,11 +9,12 @@
 
 {% block content %}
 
-
+<img class="shariki" src="{% static 'main/img/shariki.svg' %}"/>
 <div class="profile">
     <div class="div">
         <div class="rectangle">
             <div class="rectangle-2">
+                <img class="sinichel2" src="{% static 'main/img/sinichel2.png' %}"/>
                 <div class="avatar" id="avatarContainer" title="Для загрузки аватара нажмите на аватар"
                      style="cursor: default;">
                     {% if user.profile.avatar %}
@@ -125,7 +126,9 @@
 {% if request.path == '/profile/' %}
 <div id="messages">
     {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    <div class="warningbox warningbox-{{ message.tags }} {% if not message.tags %}hidden{% endif %}">
+        {{ message }}
+    </div>
     {% endfor %}
 </div>
 {% endif %}
@@ -159,7 +162,7 @@
 
     // Функция для блокировки или разблокировки кнопок навигации
     function toggleNavbarLinks(hasError) {
-        const navbarButtons = document.querySelectorAll('.textprepod, .texthelp, .textfaq');
+        const navbarButtons = document.querySelectorAll('.textprepod, .texthelp, .textfaq, .headlogo, .col-2, .textchats');
 
         navbarButtons.forEach(button => {
             if (hasError) {
@@ -227,5 +230,16 @@
         input.addEventListener('input', checkFormFields);
     });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const warningboxes = document.querySelectorAll('.warningbox');
 
+    warningboxes.forEach(function(warningbox) {
+        // Убираем класс hidden через 5 секунд
+        setTimeout(function() {
+            warningbox.classList.add('hidden');
+        }, 5000); // Уведомление будет скрываться через 5 секунд
+    });
+});
+</script>
 {% endblock %}
