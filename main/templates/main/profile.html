@@ -8,15 +8,24 @@
 {% endblock %}
 
 {% block content %}
+
+
 <div class="profile">
     <div class="div">
         <div class="rectangle">
             <div class="rectangle-2">
-                <div class="rectangle-group-2">
-                    <img class="photo" src="{% static 'main/img/57889-3.png' %}"/>
+                <div class="avatar" id="avatarContainer" title="Для загрузки аватара нажмите на аватар"
+                     style="cursor: default;">
+                    {% if user.profile.avatar %}
+                    <img src="{{ user.profile.avatar.url }}" alt="Аватар" class="avatar-img">
+                    {% else %}
+                    <p>Аватар не установлен.</p>
+                    {% endif %}
                 </div>
+
             </div>
-            <form method="post" action="." id="profileForm" onsubmit="return checkForErrors()">
+            <form method="post" action="." id="profileForm" enctype="multipart/form-data"
+                  onsubmit="return checkForErrors()">
                 {% csrf_token %}
                 <div class="rectangle-group">
                     <button type="button" class="edit" onclick="enableEdit()">Редактировать
@@ -24,9 +33,10 @@
                     </button>
                     <button type="submit" class="edit save-button" style="display: none;">Сохранить</button>
                 </div>
-
+                <div class="avatar-upload">
+                    <input type="file" name="avatar" id="avatarInput" style="display: none;">
+                </div>
                 <div class="name">
-                    <!-- Отображаем имя в режиме просмотра и редактирования -->
                     <div class="display-only">{{ profile_form.full_name.value }}</div>
                     <div class="edit-mode" style="display: none;">
                         <input type="text" name="full_name" value="{{ profile_form.full_name.value }}" required/>
@@ -36,7 +46,6 @@
                     </div>
                 </div>
 
-                <!-- Additional Profile Information Fields -->
                 <div class="texttheme">
                     <div class="title">Профиль</div>
                     <div class="settings">Настройки</div>
@@ -126,7 +135,6 @@
 <script src="{% static 'main/js/notificationswitch.js' %}"></script>
 
 <script>
-    // Функция для проверки пустых полей и блокировки/разблокировки кнопок
     function checkFormFields() {
         const requiredFields = document.querySelectorAll('.edit-mode input');
         let hasError = false;
@@ -135,13 +143,13 @@
             if (field.value.trim() === '') {
                 const errorDiv = field.nextElementSibling;
                 if (errorDiv && errorDiv.classList.contains('error')) {
-                    errorDiv.style.display = 'block'; // Показываем ошибку
+                    errorDiv.style.display = 'block';
                 }
                 hasError = true;
             } else {
                 const errorDiv = field.nextElementSibling;
                 if (errorDiv && errorDiv.classList.contains('error')) {
-                    errorDiv.style.display = 'none'; // Скрываем ошибку
+                    errorDiv.style.display = 'none';
                 }
             }
         });
@@ -149,47 +157,74 @@
         toggleNavbarLinks(hasError);
     }
 
-
     // Функция для блокировки или разблокировки кнопок навигации
     function toggleNavbarLinks(hasError) {
         const navbarButtons = document.querySelectorAll('.textprepod, .texthelp, .textfaq');
 
         navbarButtons.forEach(button => {
             if (hasError) {
-                button.style.pointerEvents = 'none'; // Отключаем клик
-                button.style.opacity = '0.5'; // Визуально показываем, что кнопка отключена
+                button.style.pointerEvents = 'none';
+                button.style.opacity = '0.5';
             } else {
-                button.style.pointerEvents = 'auto'; // Включаем клик
-                button.style.opacity = '1'; // Восстанавливаем видимость кнопки
+                button.style.pointerEvents = 'auto';
+                button.style.opacity = '1';
             }
         });
     }
 
     // Функция для включения режима редактирования
     function enableEdit() {
-        // Переключаем поля для редактирования
         document.querySelectorAll('.display-only').forEach(el => el.style.display = 'none');
         document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'block');
 
-        // Показываем кнопку "Сохранить" и скрываем кнопку "Редактировать"
         document.querySelector('.save-button').style.display = 'inline-block';
         document.querySelector('.edit').style.display = 'none';
 
-        // Фокусируемся на поле full_name для удобства редактирования
-        const fullNameField = document.querySelector('.edit-mode input[name="full_name"]');
-        if (fullNameField) {
-            fullNameField.focus();
-        }
+        const avatarContainer = document.getElementById('avatarContainer');
+        avatarContainer.style.cursor = 'pointer'; // Курсор указывает на кликабельность
+        avatarContainer.onclick = () => document.getElementById('avatarInput').click();
     }
+
+    // Функция для скрытия кнопки загрузки аватара при сохранении
+    function disableEdit() {
+        const avatarContainer = document.getElementById('avatarContainer');
+        avatarContainer.style.cursor = 'default'; // Убираем указатель клика
+        avatarContainer.onclick = null; // Убираем обработчик клика
+    }
+
+    // Обработчик события для загрузки нового аватара
+    document.getElementById('avatarInput').addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const avatarImage = document.createElement('img');
+                avatarImage.src = e.target.result;
+                avatarImage.alt = "Аватар";
+                avatarImage.className = "avatar-img";
+                avatarImage.style.width = "100%";
+                avatarImage.style.height = "100%";
+                avatarImage.style.borderRadius = "50%";
+
+                const avatarContainer = document.getElementById('avatarContainer');
+                avatarContainer.innerHTML = ""; // Очищаем контейнер перед добавлением нового изображения
+                avatarContainer.appendChild(avatarImage);
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // При отправке формы отключаем режим редактирования и скрываем кнопку загрузки аватара
+    document.getElementById('profileForm').addEventListener('submit', disableEdit);
 
     // При загрузке страницы проверяем поля формы
     document.addEventListener('DOMContentLoaded', () => {
-        checkFormFields(); // Выполняем проверку сразу после загрузки страницы
+        checkFormFields();
     });
 
     // Проверка на изменения в полях
     document.querySelectorAll('.edit-mode input').forEach(input => {
-        input.addEventListener('input', checkFormFields); // Проверка при каждом изменении поля
+        input.addEventListener('input', checkFormFields);
     });
 </script>
 

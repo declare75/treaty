@@ -5,7 +5,9 @@ from django.http import JsonResponse
 import json
 from django.contrib.auth import logout as auth_logout
 from django.contrib import messages
-
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .forms import UserForm, ProfileForm
 
 
 def index(request):
@@ -24,9 +26,6 @@ def help(request):
     return render(request, 'main/help.html')
 
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .forms import UserForm, ProfileForm
 
 
 @login_required
@@ -45,12 +44,12 @@ def profile_view(request):
 
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            # Если поля были заполнены, можно отправить сообщение
+            # Если все обязательные поля заполнены, показать сообщение об успешном сохранении
             if not required_fields:
                 messages.success(request, 'Данные профиля успешно обновлены!')
             return redirect('profile')
@@ -62,8 +61,11 @@ def profile_view(request):
     if required_fields:
         messages.warning(request, f'Пожалуйста, заполните следующие поля: {", ".join(required_fields)}.')
 
-    return render(request, 'main/profile.html',
-                  {'user_form': user_form, 'profile_form': profile_form, 'required_fields': required_fields})
+    return render(request, 'main/profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'required_fields': required_fields
+    })
 
 
 
