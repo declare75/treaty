@@ -2,7 +2,7 @@ import os
 import sys
 
 activate_this = os.path.expanduser('~/treaty/public_html/myenv/bin/activate_this.py')
-exec(open(activate_this).read(), {'__file__': activate_this})
+exec(open(activate_this).read(), {'__file': activate_this})
 
 sys.path.insert(1, os.path.expanduser('~/treaty/public_html/'))
 
