@@ -34,6 +34,8 @@ def profile_view(request):
     required_fields = []
 
     # Проверка обязательных полей
+    if not request.user.profile.full_name:
+        required_fields.append('ФИО')
     if not request.user.profile.phone:
         required_fields.append('Телефон')
     if not request.user.profile.birthday:

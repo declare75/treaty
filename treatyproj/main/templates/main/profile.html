@@ -95,18 +95,19 @@
                     </div>
                 </div>
 
-                <div class="theme-switch">
-                    <input type="checkbox" id="theme-toggle" disabled/>
-                    <label for="theme-toggle"></label>
-                    <img src="{% static 'main/img/themelight.svg' %}" id="themeImage"/>
-                </div>
 
-                <div class="notification-switch">
-                    <input type="checkbox" id="notification-toggle" disabled/>
-                    <label for="notification-toggle"></label>
-                    <img src="{% static 'main/img/notificationoff.svg' %}" id="notificationImage"/>
-                </div>
             </form>
+            <div class="theme-switch">
+                <input type="checkbox" id="theme-toggle"/>
+                <label for="theme-toggle"></label>
+                <img src="{% static 'main/img/themelight.svg' %}" id="themeImage"/>
+            </div>
+
+            <div class="notification-switch">
+                <input type="checkbox" id="notification-toggle"/>
+                <label for="notification-toggle"></label>
+                <img src="{% static 'main/img/notificationoff.svg' %}" id="notificationImage"/>
+            </div>
         </div>
     </div>
 </div>

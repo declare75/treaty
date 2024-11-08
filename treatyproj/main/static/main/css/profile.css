@@ -63,7 +63,39 @@ body.dark-theme .profile .rectangle {
   -webkit-user-drag: none;
   user-drag: none;
 }
+.profile .name {
+    width: 163.0px;
+    height: 54.0px;
+    top: 265px;
+    left: 71px;
+    font-family: Manrope;
+    font-weight: 500;
+    color: #ffffff;
+    font-size: 20px;
+    text-align: center;
+    position: absolute;
+    letter-spacing: 0;
+    line-height: normal;
+    -webkit-user-drag: none;
+    user-drag: none;
+ }
 
+.profile .name input {
+    width: 163.0px;
+    height: 54.0px;
+
+    top: 265px;
+    left: 71px;
+    font-family: Manrope;
+    font-weight: 500;
+    font-size: 15px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    -webkit-user-drag: none;
+    user-drag: none;
+
+}
 .profile .rectangle-group-2 {
   position: absolute;
   width: 134px;
