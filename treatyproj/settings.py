@@ -13,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-k#x-^mup09-a)^3silvus5$cfv_f+p$22ob3=&y#eao*z(^bip'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['cc17313-django-i13dv.tw1.ru']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -82,12 +82,8 @@ WSGI_APPLICATION = 'treatyproj.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cc17313_db',
-        'USER': 'cc17313_db',
-        'PASSWORD': '09032003Dd',
-        'HOST': '127.0.0.1',
-        'PORT': 3306,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
