@@ -82,8 +82,12 @@ WSGI_APPLICATION = 'treatyproj.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'cc17313_db',
+        'USER': 'cc17313_db',
+        'PASSWORD': '09032003Dd',
+        'HOST': '127.0.0.1',
+        'PORT': 3306,
     }
 }
 
