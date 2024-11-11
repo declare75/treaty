@@ -1,14 +1,8 @@
 # forms.py
 from django import forms
-from .models import Profile
-from django.contrib.auth.models import User
+from .models import CustomUser
 
-class UserForm(forms.ModelForm):
+class CustomUserForm(forms.ModelForm):
     class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'email']
-
-class ProfileForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-        fields = ['avatar', 'birthday', 'phone', 'contact', 'full_name']
+        model = CustomUser
+        fields = ['avatar', 'birthday', 'phone', 'contact', 'email', 'full_name']

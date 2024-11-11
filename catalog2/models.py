@@ -1,9 +1,8 @@
-from email.policy import default
-from django.contrib.auth.models import AbstractUser
-from django.db import models
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
+from django.db import models
 
+# Используем кастомную модель пользователя
+CustomUser = get_user_model()
 
 class Prepods(models.Model):
     title = models.CharField('ФИО', max_length=50)
@@ -16,9 +15,9 @@ class Prepods(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     contact_link = models.URLField('Ссылка для связи', blank=True, null=True)
     is_approved = models.BooleanField('Одобрено', default=False)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name='Пользователь',
-                             related_name='prepods')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+
+    # Здесь связываем модель с CustomUser
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь', related_name='prepods')
 
     def revoke(self):
         self.is_approved = False

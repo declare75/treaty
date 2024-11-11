@@ -88,6 +88,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const regEmail = document.getElementById('regEmail').value;
     const regPassword = document.getElementById('regPassword').value;
+    const regFullName = document.getElementById('regFullName').value;  // Имя
+
+    if (!regFullName || regFullName.split(' ').length < 2) {
+        alert('Введите корректное имя (например, "Иван Иванов")');
+        return;
+    }
 
     fetch('/register/', {
         method: 'POST',
@@ -97,32 +103,14 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         body: JSON.stringify({
             email: regEmail,
-            password: regPassword
+            password: regPassword,
+            name: regFullName
         })
     }).then(response => response.json())
     .then(data => {
         if (data.success) {
             alert('Регистрация выполнена успешно');
-
             // После успешной регистрации сразу авторизуем пользователя
-            fetch('/login/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken'),
-                },
-                body: JSON.stringify({
-                    email: regEmail,
-                    password: regPassword
-                })
-            }).then(loginResponse => loginResponse.json())
-            .then(loginData => {
-                if (loginData.success) {
-                    window.location.href = '/profile/';  // Переход к профилю
-                } else {
-                    alert('Ошибка входа: ' + loginData.message);
-                }
-            });
         } else {
             alert('Ошибка регистрации: ' + data.message);
         }
@@ -131,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Произошла ошибка при отправке данных.');
     });
 });
+
 
     // Получение CSRF-токена для защиты запросов
     function getCookie(name) {

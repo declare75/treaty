@@ -1,12 +1,16 @@
 from .models import Prepods
 from .forms import PrepodForm
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model  # Используем get_user_model()
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
+
 import json
+
+# Получаем кастомную модель пользователя
+CustomUser = get_user_model()
+
 
 def catalog2_home(request):
     if request.method == 'POST':
@@ -25,33 +29,9 @@ def catalog2_home(request):
 def success_page(request):
     return render(request, 'catalog2/success_page.html')
 
-@csrf_exempt
-def register_view(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        email = data.get('email')
-        password = data.get('password')
-        name = data.get('name')
 
-        if User.objects.filter(email=email).exists():
-            return JsonResponse({'success': False, 'message': 'Пользователь с таким email уже существует'})
 
-        user = User.objects.create_user(username=email, email=email, password=password)
-        return JsonResponse({'success': True})
 
-@csrf_exempt
-def login_view(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        email = data.get('email')
-        password = data.get('password')
-
-        user = authenticate(request, username=email, password=password)
-        if user is not None:
-            login(request, user)
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'success': False, 'message': 'Неверные учетные данные'})
 
 @login_required
 def add_prepod(request):
@@ -59,7 +39,7 @@ def add_prepod(request):
         form = PrepodForm(request.POST, request.FILES)
         if form.is_valid():
             prepod = form.save(commit=False)
-            prepod.user = request.user
+            prepod.user = request.user  # Здесь используем CustomUser, так как это текущий пользователь
             prepod.save()
             return JsonResponse({'message': 'Объявление добавлено успешно!'})
         else:
@@ -68,7 +48,7 @@ def add_prepod(request):
 
 @login_required
 def user_prepods(request):
-    user_prepods = Prepods.objects.filter(user=request.user)
+    user_prepods = Prepods.objects.filter(user=request.user)  # Здесь также работаем с CustomUser
     return render(request, 'catalog2/posts.html', {'prepods': user_prepods})
 
 @login_required
