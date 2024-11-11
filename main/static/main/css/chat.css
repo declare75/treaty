@@ -510,8 +510,6 @@ a:hover {
     border: 1px solid #ccc;
     padding: 5px;
     z-index: 7;
-}
-
 .submit-button {
     margin-top: 10px;
     padding: 10px 20px;
@@ -563,4 +561,6 @@ a:hover {
     left: 1383px;
     cursor: pointer;
     z-index: 1000;  /* Чтобы иконка была поверх всех других элементов */
+}
+
 }

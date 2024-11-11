@@ -1,14 +1,16 @@
-from django.contrib.auth import login
-from django.contrib.auth.models import User
-from .models import Profile
+from django.contrib.auth import get_user_model, login
+from .models import CustomUser
 from django.http import JsonResponse
 import json
 from django.contrib.auth import logout as auth_logout
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import UserForm, ProfileForm
+from .forms import CustomUserForm
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate, login
 
+CustomUser = get_user_model()
 
 def index(request):
     return render(request, 'main/index.html')
@@ -33,29 +35,26 @@ def profile_view(request):
     required_fields = []
 
     # Проверка обязательных полей
-    if not request.user.profile.full_name:
+    if not request.user.full_name:
         required_fields.append('ФИО')
-    if not request.user.profile.phone:
+    if not request.user.phone:
         required_fields.append('Телефон')
-    if not request.user.profile.birthday:
+    if not request.user.birthday:
         required_fields.append('Дата рождения')
-    if not request.user.profile.contact:
+    if not request.user.contact:
         required_fields.append('Связь')
 
     if request.method == 'POST':
-        user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        user_form = CustomUserForm(request.POST, request.FILES, instance=request.user)
 
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid():
             user_form.save()
-            profile_form.save()
             # Если все обязательные поля заполнены, показать сообщение об успешном сохранении
             if not required_fields:
                 messages.success(request, 'Данные профиля успешно обновлены!')
             return redirect('profile')
     else:
-        user_form = UserForm(instance=request.user)
-        profile_form = ProfileForm(instance=request.user.profile)
+        user_form = CustomUserForm(instance=request.user)
 
     # Передаем список незаполненных обязательных полей
     if required_fields:
@@ -63,7 +62,6 @@ def profile_view(request):
 
     return render(request, 'main/profile.html', {
         'user_form': user_form,
-        'profile_form': profile_form,
         'required_fields': required_fields
     })
 
@@ -72,24 +70,46 @@ def profile_view(request):
 
 def register_view(request):
     if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            print(data)  # Выводим полученные данные на сервер
+            full_name = data.get('name', '').split()
+            email = data.get('email')
+            password = data.get('password')
+
+            # Проверка на существующего пользователя
+            if CustomUser.objects.filter(email=email).exists():
+                return JsonResponse({'success': False, 'message': 'Пользователь с таким email уже существует.'})
+
+            if len(full_name) >= 2:
+                user = CustomUser.objects.create_user(
+                    email=email,
+                    password=password,
+                    full_name=full_name[0],
+                )
+                user.save()
+                login(request, user)
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'message': 'Некорректное имя.'})
+
+        except json.JSONDecodeError as e:
+            return JsonResponse({'success': False, 'message': 'Ошибка в формате запроса.'})
+
+    return JsonResponse({'success': False, 'message': 'Некорректный запрос.'})
+
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
         data = json.loads(request.body)
-        full_name = data.get('name', '').split()
         email = data.get('email')
         password = data.get('password')
 
-        if len(full_name) >= 2:
-            user = User.objects.create_user(
-                username=email,
-                email=email,
-                password=password,
-                first_name=full_name[0],
-                last_name=" ".join(full_name[1:])
-            )
-            Profile.objects.create(user=user)
-
-
+        # Используем кастомную модель для аутентификации
+        user = authenticate(request, username=email, password=password)
+        if user is not None:
             login(request, user)
-
             return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'message': 'Неверные учетные данные'})
 
-    return JsonResponse({'success': False, 'message': 'Некорректный запрос.'})

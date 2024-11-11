@@ -76,7 +76,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'treatyproj.wsgi.application'
 
-
+AUTH_USER_MODEL = 'main.CustomUser'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 

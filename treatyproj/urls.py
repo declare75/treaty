@@ -13,9 +13,9 @@ urlpatterns = [
     path('', include('main.urls')),
     path('catalog2/', include('catalog2.urls')),
     path('admin/', admin.site.urls),
-    path('login/', views.login_view, name='login'),
+    path('login/', main_views.login_view, name='login'),
     path('chats/', include('chat.urls')),
-    path('register/', views.register_view, name='register'),
+    path('register/', main_views.register_view, name='register'),
     path('profile/', main_views.profile_view, name='profile'),
 
 ]

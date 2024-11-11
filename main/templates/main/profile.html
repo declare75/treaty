@@ -14,18 +14,15 @@
     <div class="div">
         <div class="rectangle">
             <div class="rectangle-2">
-                <div class="avatar" id="avatarContainer" title="Для загрузки аватара нажмите на аватар"
-                     style="cursor: default;">
-                    {% if user.profile.avatar %}
-                    <img src="{{ user.profile.avatar.url }}" alt="Аватар" class="avatar-img">
+                <div class="avatar" id="avatarContainer" title="Для загрузки аватара нажмите на аватар" style="cursor: default;">
+                    {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" alt="Аватар" class="avatar-img">
                     {% else %}
                     <p>Аватар не установлен.</p>
                     {% endif %}
                 </div>
-
             </div>
-            <form method="post" action="." id="profileForm" enctype="multipart/form-data"
-                  onsubmit="return checkForErrors()">
+            <form method="post" action="." id="profileForm" enctype="multipart/form-data" onsubmit="return checkForErrors()">
                 {% csrf_token %}
                 <div class="rectangle-group">
                     <button type="button" class="edit" onclick="enableEdit()">Редактировать
@@ -37,11 +34,11 @@
                     <input type="file" name="avatar" id="avatarInput" style="display: none;">
                 </div>
                 <div class="name">
-                    <div class="display-only">{{ profile_form.full_name.value }}</div>
+                    <div class="display-only">{{ user.full_name }}</div>
                     <div class="edit-mode" style="display: none;">
-                        <input type="text" name="full_name" value="{{ profile_form.full_name.value }}" required/>
-                        {% if profile_form.full_name.errors %}
-                        <div class="error" id="fullNameError">{{ profile_form.full_name.errors }}</div>
+                        <input type="text" name="full_name" value="{{ user.full_name }}" required/>
+                        {% if form.full_name.errors %}
+                        <div class="error" id="fullNameError">{{ form.full_name.errors }}</div>
                         {% endif %}
                     </div>
                 </div>
@@ -58,48 +55,47 @@
                 </div>
 
                 <div class="email">
-                    <div class="display-only">{{ user_form.email.value }}</div>
+                    <div class="display-only">{{ user.email }}</div>
                     <div class="edit-mode" style="display: none;">
-                        <input type="email" name="email" value="{{ user_form.email.value }}"/>
-                        {% if user_form.email.errors %}
-                        <div class="error" id="emailError">{{ user_form.email.errors }}</div>
+                        <input type="email" name="email" value="{{ user.email }}"/>
+                        {% if form.email.errors %}
+                        <div class="error" id="emailError">{{ form.email.errors }}</div>
                         {% endif %}
                     </div>
                 </div>
 
                 <div class="birthday">
                     <div class="display-only">
-                        {% if profile_form.birthday.value %}
-                        {{ profile_form.birthday.value|date:"d.m.Y" }}
+                        {% if user.birthday %}
+                        {{ user.birthday|date:"d.m.Y" }}
                         {% else %}
-                        {{ profile_form.birthday.initial|date:"d.m.Y" }}
+                        "Дата рождения не указана"
                         {% endif %}
                     </div>
                     <div class="edit-mode" style="display: none;">
-                        <input type="date" name="birthday"
-                               value="{% if profile_form.birthday.value %}{{ profile_form.birthday.value|date:'Y-m-d' }}{% else %}{{ profile_form.birthday.initial|date:'Y-m-d' }}{% endif %}"/>
-                        {% if profile_form.birthday.errors %}
-                        <div class="error" id="birthdayError">{{ profile_form.birthday.errors }}</div>
+                        <input type="date" name="birthday" value="{{ user.birthday|date:'Y-m-d' }}"/>
+                        {% if form.birthday.errors %}
+                        <div class="error" id="birthdayError">{{ form.birthday.errors }}</div>
                         {% endif %}
                     </div>
                 </div>
 
                 <div class="phone">
-                    <div class="display-only">{{ profile_form.phone.value }}</div>
+                    <div class="display-only">{{ user.phone }}</div>
                     <div class="edit-mode" style="display: none;">
-                        <input type="tel" name="phone" value="{{ profile_form.phone.value }}"/>
-                        {% if profile_form.phone.errors %}
-                        <div class="error" id="phoneError">{{ profile_form.phone.errors }}</div>
+                        <input type="tel" name="phone" value="{{ user.phone }}"/>
+                        {% if form.phone.errors %}
+                        <div class="error" id="phoneError">{{ form.phone.errors }}</div>
                         {% endif %}
                     </div>
                 </div>
 
                 <div class="contact">
-                    <div class="display-only">{{ profile_form.contact.value }}</div>
+                    <div class="display-only">{{ user.contact }}</div>
                     <div class="edit-mode" style="display: none;">
-                        <input type="text" name="contact" value="{{ profile_form.contact.value }}"/>
-                        {% if profile_form.contact.errors %}
-                        <div class="error" id="contactError">{{ profile_form.contact.errors }}</div>
+                        <input type="text" name="contact" value="{{ user.contact }}"/>
+                        {% if form.contact.errors %}
+                        <div class="error" id="contactError">{{ form.contact.errors }}</div>
                         {% endif %}
                     </div>
                 </div>
@@ -159,7 +155,7 @@
 
     // Функция для блокировки или разблокировки кнопок навигации
     function toggleNavbarLinks(hasError) {
-        const navbarButtons = document.querySelectorAll('.textprepod, .texthelp, .textfaq');
+        const navbarButtons = document.querySelectorAll('.textprepod, .texthelp, .textfaq, .headlogo, .col-2, .textchats');
 
         navbarButtons.forEach(button => {
             if (hasError) {
