@@ -121,11 +121,25 @@
 {% if request.path == '/profile/' %}
 <div id="messages">
     {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    <div class="warningbox warningbox-{{ message.tags }} {% if not message.tags %}hidden{% endif %}">
+        {{ message }}
+    </div>
     {% endfor %}
 </div>
 {% endif %}
 {% endblock %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const warningboxes = document.querySelectorAll('.warningbox');
+
+    warningboxes.forEach(function(warningbox) {
+        // Убираем класс hidden через 5 секунд
+        setTimeout(function() {
+            warningbox.classList.add('hidden');
+        }, 5000); // Уведомление будет скрываться через 5 секунд
+    });
+});
+</script>
 
 <script src="{% static 'main/js/themeswitch.js' %}"></script>
 <script src="{% static 'main/js/notificationswitch.js' %}"></script>
