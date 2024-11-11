@@ -20,6 +20,17 @@
   box-shadow: 0px -4px 22px #00000040;
   transition: background-color 0.4s ease, box-shadow 0.4s ease;
 }
+body.dark-theme .rectangle6 {
+  position: absolute;
+  width: 950px;
+  height: 800px;
+  top: 86px;
+  left: 485px;
+  background-color: #212121;
+  border-radius: 15px;
+  box-shadow: 0px -4px 22px #00000040;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
 body.dark-theme .rectangle {
     background-color: #212121;
     box-shadow: 0px -4px 22px #00000040;
@@ -29,6 +40,20 @@ body.dark-theme .rectangle {
     width: 147.0px;
     height: 41.0px;
     color: #242424;
+    font-family: Manrope;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: absolute;
+    top: 212px;
+    left: 887px;
+    z-index: 15;
+}
+body.dark-theme .yourchatstext {
+    width: 147.0px;
+    height: 41.0px;
+    color: white;
     font-family: Manrope;
     font-size: 30px;
     font-style: normal;
@@ -52,6 +77,10 @@ body.dark-theme .rectangle {
     top: 99px;
     left: 934px;
     z-index: 15;
+}
+
+body.dark-theme .yourchatstext2 {
+    color: white
 }
 
 .krujok {
@@ -496,6 +525,25 @@ a:hover {
     word-wrap: break-word; /* Перенос слов по необходимости */
     overflow-wrap: break-word; /* Еще один вариант для переноса слов */
     overflow: hidden;
+}
+body.dark-theme .message-textarea input {
+    color: white;
+}
+body.dark-theme .message-textarea {
+    width: 515px;
+    height: 43px; /* Минимальная высота */
+    border-radius: 15px;
+    background: #212121;
+    position: absolute;
+    top: 821px;
+    left: 703px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    z-index: 5;
+    resize: none;
+    border: none;
+    outline: none;
 }
 
 /* При фокусе на инпуте добавляем внутреннюю тень */

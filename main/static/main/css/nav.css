@@ -76,7 +76,8 @@ body.dark-theme .headlogo:hover::after {
 
 .textprepod,
 .textfaq,
-.texthelp {
+.texthelp,
+.textchats {
     width: 130.0px;
     height: 23.0px;
     text-align: center;
@@ -91,6 +92,7 @@ body.dark-theme .headlogo:hover::after {
 }
 
 .textprepod:hover,
+.textchats:hover,
 .textfaq:hover,
 .texthelp:hover {
     color: #466ee5; /* Изменяем цвет текста при наведении */
@@ -100,6 +102,11 @@ body.dark-theme .headlogo:hover::after {
 .textprepod {
     top: 15px;
     left: 154px;
+}
+
+.textchats {
+    top: 15px;
+    left: 454px;
 }
 
 .textfaq {
@@ -213,6 +220,25 @@ header nav ul {
 body.dark-theme .logregbtntext {
     color: #242424;
 }
+
+.logregbtntext2 {
+    position: absolute;
+    color: white;
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    top: 2px;
+    left: 10px;
+    transition: transform 0.3s ease; /* Плавный переход */
+    transition: color 0.3s ease;
+}
+
+
+body.dark-theme .logregbtntext2 {
+    color: black;
+}
 body.dark-theme .logregbtn {
     background-color: white;
 }
@@ -231,12 +257,6 @@ header a i:hover {
     flex-direction: row;
     justify-content: center;
     width: 100%;
-}
-
-#logoutBtn {
-    color: white !important; /* Принудительно устанавливаем белый цвет текста */
-}
-#logoutBtn {
 }
 
 

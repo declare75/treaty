@@ -6,9 +6,6 @@ from django.contrib import admin
 from catalog2 import views
 from main import views as main_views
 
-
-
-
 urlpatterns = [
     path('', include('main.urls')),
     path('catalog2/', include('catalog2.urls')),
