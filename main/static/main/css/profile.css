@@ -1,4 +1,3 @@
-/* Фон для светлой темы (по умолчанию) */
 body {
     background-color: #ffffff !important; /* Добавьте !important для приоритета */
     color: #000000 !important;
@@ -643,4 +642,229 @@ body.dark-theme .profile .rectangle {
     top: 310px;
     left: 573px;
     z-index: 10;
+}
+
+@media (max-width: 768px) {
+    .profile .rectangle {
+        width: 90%;
+        left: 5%;
+        height: auto;
+        top: 100px;
+    }
+
+    .profile .rectangle-2 {
+        width: 70%;
+        height: auto;
+        left: 0;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .profile .name,
+    .profile .phone input,
+    .profile .birthday input,
+    .profile .email input,
+    .profile .contact input {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .profile .avatar {
+        width: 100px;
+        height: 100px;
+        left: 0;
+        top: 20px;
+    }
+
+    .profile .title,
+    .profile .settings,
+    .profile .email-title,
+    .profile .theme,
+    .profile .notification,
+    .profile .phone-title,
+    .profile .birthday-title,
+    .profile .contact-title {
+        font-size: 16px;
+        left: 5%;
+        width: 90%;
+        text-align: center;
+    }
+
+    .profile .theme-switch,
+    .profile .notification-switch {
+        width: 50px;
+        height: 25px;
+        top: 410px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .profile .theme-switch label,
+    .profile .notification-switch label {
+        background-color: #466ee5;
+        border-radius: 25px;
+        height: 100%;
+        transition: background-color 0.3s ease;
+    }
+
+    .profile .theme-switch label::after,
+    .profile .notification-switch label::after {
+        top: 4px;
+        left: 4px;
+        width: 16px;
+        height: 16px;
+        background-color: #fff;
+        transition: transform 0.3s ease;
+    }
+
+    .profile .theme-switch input:checked + label::after,
+    .profile .notification-switch input:checked + label::after {
+        transform: translateX(25px);
+        background-color: #242424;
+    }
+
+    #avatarContainer {
+        position: relative;
+        cursor: pointer;
+        width: 120px; /* Увеличиваем для мобильных */
+    }
+
+    #avatarContainer:hover::after {
+        font-size: 10px;
+        bottom: -20px;
+    }
+}
+
+/* Для самых маленьких экранов */
+@media (max-width: 480px) {
+    .profile .rectangle {
+        width: 100%;
+        top: 50px;
+        left: 0;
+    }
+
+    .profile .rectangle-2 {
+        width: 100%;
+        height: auto;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .profile .name {
+        font-size: 12px;
+        text-align: left;
+        margin: 10px 0;
+    }
+
+    .profile .phone input,
+    .profile .birthday input,
+    .profile .email input,
+    .profile .contact input {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    .profile .avatar {
+        width: 80px;
+        height: 80px;
+        left: 10px;
+        top: 10px;
+    }
+
+    .profile .title,
+    .profile .settings,
+    .profile .email-title,
+    .profile .theme,
+    .profile .notification,
+    .profile .phone-title,
+    .profile .birthday-title,
+    .profile .contact-title {
+        font-size: 14px;
+        text-align: left;
+        left: 10px;
+        width: auto;
+    }
+}
+
+/* Для планшетов (от 768px до 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .profile .rectangle {
+        width: 85%;
+        left: 7.5%;
+        height: auto;
+        top: 150px;
+    }
+
+    .profile .rectangle-2 {
+        width: 75%;
+        height: auto;
+        left: 0;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .profile .name,
+    .profile .phone input,
+    .profile .birthday input,
+    .profile .email input,
+    .profile .contact input {
+        width: 90%;
+        font-size: 16px;
+    }
+
+    .profile .avatar {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile .title,
+    .profile .settings,
+    .profile .email-title,
+    .profile .theme,
+    .profile .notification,
+    .profile .phone-title,
+    .profile .birthday-title,
+    .profile .contact-title {
+        font-size: 18px;
+        left: 10px;
+    }
+}
+
+/* Для десктопов (больше 1024px) */
+@media (min-width: 1024px) {
+    .profile .rectangle {
+        width: 950px;
+        left: 50%;
+        top: 180px;
+        transform: translateX(-50%);
+    }
+
+    .profile .rectangle-2 {
+        width: 305px;
+        height: 560px;
+        left: 0;
+        border-radius: 15px 100px 70px 15px;
+    }
+
+    .profile .name,
+    .profile .phone input,
+    .profile .birthday input,
+    .profile .email input,
+    .profile .contact input {
+        width: 163px;
+        font-size: 15px;
+    }
+
+    .profile .avatar {
+        width: 127px;
+        height: 127px;
+    }
+
+    .profile .title,
+    .profile .settings,
+    .profile .email-title,
+    .profile .theme,
+    .profile .notification,
+    .profile .phone-title,
+    .profile .birthday-title,
+    .profile .contact-title {
+        font-size: 20px;
+    }
 }

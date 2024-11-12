@@ -3,12 +3,17 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
+from datetime import date
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError("The Email field must be set")
         email = self.normalize_email(email)
+        # Убедитесь, что 'username' не передается в `self.model`
+        if 'username' in extra_fields:
+            del extra_fields['username']  # Удаляем 'username' если оно передано
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -20,7 +25,9 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+
 class CustomUser(AbstractUser):
+    username = None
     email = models.EmailField(unique=True)
     birthday = models.DateField(null=True, blank=True)
     phone = models.CharField(max_length=15, blank=True)
@@ -39,10 +46,29 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return f"{self.full_name} - {self.email}"
+        return f"{self.first_name} {self.last_name} {self.middle_name}"
 
     def get_display_name(self):
         return f"{self.first_name} {self.last_name[0]}.{self.middle_name[0]}."
+
+    def get_age(self):
+        if self.birthday:
+            today = date.today()
+            age = today.year - self.birthday.year
+            if today.month < self.birthday.month or (
+                    today.month == self.birthday.month and today.day < self.birthday.day):
+                age -= 1
+
+            # Склонение слова "год" в зависимости от возраста
+            if age % 10 == 1 and age % 100 != 11:
+                age_str = f"{age} год"
+            elif 2 <= age % 10 <= 4 and not (12 <= age % 100 <= 14):
+                age_str = f"{age} года"
+            else:
+                age_str = f"{age} лет"
+
+            return age_str
+        return None
 
     @receiver(post_save, sender=settings.AUTH_USER_MODEL)
     def save_custom_user(sender, instance, created, **kwargs):

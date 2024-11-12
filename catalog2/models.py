@@ -4,19 +4,21 @@ from django.db import models
 # Используем кастомную модель пользователя
 CustomUser = get_user_model()
 
-class Prepods(models.Model):
-    title = models.CharField('ФИО', max_length=50)
-    subject = models.CharField('Предмет', max_length=35)
-    description = models.CharField('Описание', max_length=250)
-    age = models.CharField('Возраст', max_length=8)
-    date = models.DateTimeField('Дата публикации')
-    rating = models.DecimalField('Рейтинг', max_digits=3, decimal_places=2)
-    avatar = models.ImageField(upload_to='img/', verbose_name='Аватар')
-    created_at = models.DateTimeField(auto_now=True)
-    contact_link = models.URLField('Ссылка для связи', blank=True, null=True)
-    is_approved = models.BooleanField('Одобрено', default=False)
+class Subject(models.Model):
+    name = models.CharField('Название предмета', max_length=100)
 
-    # Здесь связываем модель с CustomUser
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Предмет'
+        verbose_name_plural = 'Предметы'
+
+class Prepods(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, verbose_name='Предмет')
+    description = models.CharField('Описание', max_length=250)
+    created_at = models.DateTimeField(auto_now=True)
+    is_approved = models.BooleanField('Одобрено', default=False)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь', related_name='prepods')
 
     def revoke(self):
@@ -24,7 +26,7 @@ class Prepods(models.Model):
         self.save()
 
     def __str__(self):
-        return self.title
+        return f"{self.user.last_name} {self.user.first_name} {self.user.middle_name}"
 
     class Meta:
         verbose_name = 'объявление'

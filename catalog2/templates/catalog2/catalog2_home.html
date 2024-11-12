@@ -4,30 +4,29 @@
 {% block title %}Каталог{% endblock %}
 
 {% block style %}
-
+<!-- Добавьте сюда дополнительные стили, если нужно -->
 {% endblock %}
-{% block content %}
 
+{% block content %}
 <img src="{% static 'main/img/upload.svg' %}" id="openModalBtn" class="upload-image-btn" style="cursor: pointer;">
 <a href="/posts/"><img src="{% static 'main/img/addpost.svg' %}" class="addpostBtn" alt="post"></a>
 <div id="overlay" class="overlay"></div>
 <div id="modal" class="modal-content">
     <button class="close-btn" id="closeModalBtn">&times;</button>
     <h2>Добавить преподавателя</h2>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" action="{% url 'add_prepod' %}">
         {% csrf_token %}
-        <input type="text" name="title" placeholder="Поле для ФИО" required>
-        <input type="text" name="subject" placeholder="Предмет преподавателя" required>
+        {% if subjects %}
+        <select name="subject" id="subject" required>
+            <option value="" disabled selected>Выберите предмет</option>
+            {% for subject in subjects %}
+            <option value="{{ subject.id }}">{{ subject.name }}</option>
+            {% endfor %}
+        </select>
+        {% else %}
+        <p>Нет доступных предметов для выбора</p>
+        {% endif %}
         <textarea name="description" rows="4" placeholder="Описание" required></textarea>
-        <div style="display: flex; gap: 10px;">
-            <input type="text" name="age" placeholder="Возраст" required>
-            <input type="date" name="date" placeholder="Дата публикации" required>
-        </div>
-        <input type="number" name="rating" step="0.01" placeholder="Рейтинг" required>
-        <input type="file" name="avatar" required>
-
-
-        <input class="contactlink" type="url" name="contact_link" placeholder="Ссылка для связи" required>
         <button type="submit">Отправить на модерацию</button>
     </form>
 </div>
@@ -45,22 +44,23 @@
         <div class="containerPrepods">
             <div class="alert">
                 <div class="divider"></div>
-                <h3 class="FIO">{{ el.title }}</h3>
+                <h3 class="FIO">{{ el.user.last_name }} {{ el.user.first_name }} {{ el.user.middle_name }}</h3>
                 <p class="subject">{{ el.subject }}</p>
                 <p class="desc">{{ el.description }}</p>
-                <p class="age">{{ el.age }}</p>
+                <p class="age">{{ el.user.get_age }}</p>
                 <p class="rating">{{ el.rating }}</p>
                 <img src="{% static 'main/img/ratingEllipse.svg' %}" alt="rating" class="ratingEllipse">
                 <img src="{% static 'main/img/subjectRec.svg' %}" alt="subjectRec" class="subjectRec">
-                {% if el.contact_link %}
-                <a href="{{ el.contact_link }}" target="_blank">
+                {% if el.user.contact %}
+                <a href="{% url 'chat_view' receiver_id=el.user.id %}" target="_blank">
                     <img src="{% static 'main/img/button.svg' %}" alt="button" class="button">
                 </a>
                 {% else %}
                 <p>Ссылка не указана</p>
                 {% endif %}
-                {% if el.avatar %}
-                <img src="{{ el.avatar.url }}" alt="{{ el.title }}" style="max-width: 200px;" class="avatar">
+                {% if el.user.avatar %}
+                <img src="{{ el.user.avatar.url }}" alt="{{ el.user.get_display_name }}"
+                     style="width: 121px; height: 121px; border-radius: 50%; object-fit: cover;" class="avatar">
                 {% else %}
                 <p>Нет изображения</p>
                 {% endif %}
@@ -70,10 +70,10 @@
     </div>
 </div>
 <div class="space-bottom"></div>
+
 <script src="{% static 'main/js/search.js' %}"></script>
 <script src="{% static 'main/js/addprepod.js' %}"></script>
 <script src="{% static 'main/js/logreg.js' %}"></script>
 <script src="{% static 'main/js/reg.js' %}"></script>
 <script src="{% static 'main/js/upload.js' %}"></script>
-
 {% endblock %}

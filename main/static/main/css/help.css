@@ -1,32 +1,41 @@
+/* Общие стили для всех элементов */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Manrope, sans-serif;
+}
+
+/* Основной контейнер */
 .container6 {
-    display: flex; /* Используем Flexbox для компоновки колонок */
-    justify-content: right; /* Центрируем содержимое по горизонтали */
-    width: 90%; /* Увеличиваем ширину общего контейнера */
-    max-width: 1920px; /* Увеличиваем максимальную ширину контейнера */
-    margin: auto; /* Центрируем контейнер по горизонтали */
+    display: flex;
+    justify-content: flex-end;
+    width: 90%;
+    max-width: 1920px;
+    margin: auto;
     margin-left: 250px;
     margin-top: 150px;
 }
 
+/* Приветственный раздел */
 .welcome-section {
-    display: flex; /* Используем Flexbox для выравнивания содержимого */
-    flex-direction: column; /* Элементы будут расположены вертикально */
-    align-items: center; /* Центрируем по горизонтали */
-    margin-top: 10px; /* Уменьшаем отступ сверху для разделения с блоком вопросов */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
 }
 
+/* Приветственный текст */
 .welcome-text {
-    width: 50%; /* Увеличиваем ширину блока приветственного текста */
-    display: flex; /* Используем Flexbox для вертикального выравнивания */
-    flex-direction: column; /* Располагаем элементы вертикально */
-    justify-content: center; /* Выравниваем по центру */
-    align-items: center; /* Центрируем элементы по горизонтали */
-    margin-top: -30px; /* Увеличиваем отрицательный отступ для поднятия блока вверх */
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: -30px;
     color: #242424;
     text-align: center;
-    font-family: Manrope;
     font-size: 20px;
-    font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
@@ -35,23 +44,24 @@ body.dark-theme .welcome-text {
     color: white;
 }
 
-.faq-section { /* Новый контейнер для вопросов */
-    width: 100%; /* Увеличиваем ширину блока вопросов до 100% */
-    max-width: 600px; /* Увеличиваем максимальную ширину блока вопросов */
-    display: flex; /* Используем Flexbox для вертикального выравнивания */
-    flex-direction: column; /* Располагаем элементы вертикально */
-    justify-content: flex-start; /* Выравниваем элементы по верхнему краю */
-    align-items: stretch; /* Растягиваем элементы на всю ширину */
-    margin-top: 50px; /* Уменьшаем отступ сверху для вопросов */
-    margin-left: auto; /* Центрируем блок по горизонтали */
-    margin-right: auto; /* Центрируем блок по горизонтали */
+/* Раздел вопросов */
+.faq-section {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+/* Элемент вопроса */
 .faq-item {
     margin: 20px 0;
-    width: 100%; /* Занимаем всю ширину колонки */
+    width: 100%;
     color: #242424;
-    font-family: Manrope;
     font-size: 20px;
     font-weight: 600;
     line-height: normal;
@@ -61,17 +71,15 @@ body.dark-theme .faq-item {
     color: white;
 }
 
+/* Вопрос */
 .faq-question {
-    width: 100%; /* Занимаем всю ширину блока вопросов */
+    width: 100%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
     color: #242424;
-    text-align: center;
-    font-family: Manrope;
     font-size: 20px;
-    font-style: normal;
     font-weight: 600;
     line-height: normal;
 }
@@ -80,18 +88,16 @@ body.dark-theme .faq-question {
     color: white;
 }
 
-
+/* Ответ на вопрос */
 .faq-answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease; /* Плавный переход */
+    transition: max-height 0.3s ease;
     text-align: left;
     margin-top: 10px;
-    width: 100%; /* Занимаем всю ширину родительского элемента */
+    width: 100%;
     color: #242424;
-    font-family: Manrope;
     font-size: 20px;
-    font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
@@ -100,7 +106,7 @@ body.dark-theme .faq-answer {
     color: white;
 }
 
-
+/* Кнопка контакта */
 .contact-button {
     width: 243px;
     height: 32px;
@@ -108,28 +114,24 @@ body.dark-theme .faq-answer {
     border: 2px dashed #466EE5;
     background: rgba(70, 110, 229, 0.20);
     margin-top: 20px;
-    color: #466EE5; /* Цвет текста */
-    font-family: Manrope; /* Шрифт текста */
-    font-size: 26px; /* Размер шрифта */
-    font-style: normal; /* Стиль шрифта */
-    font-weight: 600; /* Насыщенность шрифта */
-    line-height: normal; /* Высота строки */
-    text-decoration: none; /* Убираем подчеркивание текста */
-    display: inline-flex; /* Чтобы кнопка работала как блок и содержимое было выровнено */
-    align-items: center; /* Вертикальное выравнивание содержимого */
-    justify-content: center; /* Горизонтальное выравнивание содержимого */
+    color: #466EE5;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: normal;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* Иконка плюса в вопросах */
 .faq-question .plus-icon {
     transition: transform 0.3s ease;
     width: 18px;
     height: 41px;
     color: #242424;
-    font-family: Manrope;
     font-size: 30px;
     font-weight: 300;
-    -webkit-user-drag: none;
-    user-drag: none;
     pointer-events: none;
     user-select: none;
 }
@@ -138,19 +140,149 @@ body.dark-theme .plus-icon {
     color: white;
 }
 
-
 .faq-question.active .plus-icon {
-    transform: rotate(45deg); /* Поворачиваем иконку при активном вопросе */
-    -webkit-user-drag: none;
-    user-drag: none;
+    transform: rotate(45deg);
     pointer-events: none;
     user-select: none;
 }
 
+/* Изображения в приветственном тексте */
 .welcome-text img {
     max-width: 100%;
-    -webkit-user-drag: none;
-    user-drag: none;
     pointer-events: none;
     user-select: none;
+}
+
+/* Темная тема */
+body.dark-theme {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-theme .container6 {
+    margin-left: 0;
+}
+
+body.dark-theme .welcome-text,
+body.dark-theme .faq-section,
+body.dark-theme .faq-item,
+body.dark-theme .faq-question,
+body.dark-theme .faq-answer,
+body.dark-theme .contact-button {
+    background-color: #333333;
+}
+
+body.dark-theme .contact-button {
+    border-color: #466EE5;
+    background: rgba(70, 110, 229, 0.20);
+    color: white;
+}
+
+/* Адаптивность для мобильных устройств */
+@media screen and (max-width: 768px) {
+    .container6 {
+        margin-left: 0;
+        margin-top: 50px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Приветственный текст */
+    .welcome-text {
+        width: 90%;
+        margin-top: 0; /* Убираем отступ сверху */
+        text-align: center;
+    }
+
+    /* Картинка внутри приветственного текста */
+    .welcome-text img {
+        max-width: 100%;
+        margin-top: 0; /* Убираем отступ для картинки */
+    }
+
+    /* Раздел вопросов */
+    .faq-section {
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    /* Кнопка контакта */
+    .contact-button {
+        margin-top: 40px; /* Сдвигаем кнопку вниз */
+    }
+}
+
+/* Для экранов с разрешением 1024px (iPad и аналогичные) */
+@media screen and (max-width: 1024px) {
+    .container6 {
+        margin-left: 0;
+        margin-top: 70px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .welcome-text {
+        width: 80%; /* Увеличиваем ширину текста */
+        margin-top: 0;
+    }
+
+    .welcome-text img {
+        max-width: 90%;
+        margin-top: 20px;
+    }
+
+    .contact-button {
+        margin-top: 30px;
+    }
+
+    /* Раздел вопросов */
+    .faq-section {
+        width: 90%;
+        margin-top: 30px;
+    }
+}
+
+/* Для экранов с разрешением 1366px (крупные планшеты и ноутбуки) */
+@media screen and (max-width: 1366px) {
+    .container6 {
+        margin-left: 0;
+        margin-top: 100px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .welcome-text {
+        width: 70%;
+        margin-top: 0;
+    }
+
+    .welcome-text img {
+        max-width: 80%;
+        margin-top: 20px;
+    }
+
+    .faq-section {
+        width: 90%;
+        margin-top: 30px;
+    }
+
+    .contact-button {
+        margin-top: 40px;
+    }
+}
+
+/* Для экранов до 480px */
+@media screen and (max-width: 480px) {
+    .welcome-text {
+        font-size: 16px; /* Уменьшаем размер шрифта для мобильных устройств */
+    }
+
+    .faq-item {
+        font-size: 18px; /* Уменьшаем размер шрифта для вопросов */
+    }
+
+    .contact-button {
+        width: 200px; /* Уменьшаем ширину кнопки */
+        font-size: 20px; /* Уменьшаем размер шрифта кнопки */
+    }
 }
