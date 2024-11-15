@@ -1,32 +1,59 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Открытие и закрытие модального окна
     const openModalBtn = document.getElementById('openModalBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const overlay = document.getElementById('overlay');
     const modal = document.getElementById('modal');
-    const form = modal.querySelector('form');
+    const form = document.getElementById('prepodForm');
+    const subjectSelect = document.querySelector('select[name="subject"]'); // Изменено: используем name
 
-    if (openModalBtn) {
-        openModalBtn.addEventListener('click', () => {
-            overlay.style.display = 'block';
-            modal.style.display = 'block';
+    // Проверяем, если элемент существует
+    if (subjectSelect) {
+        fetch('/catalog2/get-subjects/')
+            .then(response => response.json())
+            .then(data => {
+                // Очистить старые опции
+                subjectSelect.innerHTML = ''; // Сбросим опции перед добавлением новых
+                if (data.subjects && data.subjects.length > 0) {
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.disabled = true;
+                    defaultOption.selected = true;
+                    defaultOption.textContent = 'Выберите предмет';
+                    subjectSelect.appendChild(defaultOption);
 
-            setTimeout(() => {
-                overlay.classList.add('show');
-                modal.classList.add('show');
-            }, 10);
-        });
+                    data.subjects.forEach(subject => {
+                        const option = document.createElement('option');
+                        option.value = subject.id;
+                        option.textContent = subject.name; // Изменено: выводим name
+                        subjectSelect.appendChild(option);
+                    });
+                } else {
+                    const noSubjectsOption = document.createElement('option');
+                    noSubjectsOption.disabled = true;
+                    noSubjectsOption.textContent = 'Нет доступных предметов';
+                    subjectSelect.appendChild(noSubjectsOption);
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при загрузке предметов:', error);
+            });
+    } else {
+        console.error('Элемент с name="subject" не найден.');
     }
 
-    if (closeModalBtn) {
-        closeModalBtn.addEventListener('click', () => {
-            closeModal();
-        });
+    // Функция открытия модального окна
+    function openModal() {
+        overlay.style.display = 'block';
+        modal.style.display = 'block';
+
+        setTimeout(() => {
+            overlay.classList.add('show');
+            modal.classList.add('show');
+        }, 10);
     }
 
-    overlay.addEventListener('click', () => {
-        closeModal();
-    });
-
+    // Функция закрытия модального окна
     function closeModal() {
         overlay.classList.remove('show');
         modal.classList.remove('show');
@@ -37,10 +64,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     }
 
+    // Открытие модального окна при клике на кнопку
+    if (openModalBtn) {
+        openModalBtn.addEventListener('click', openModal);
+    }
 
+    // Закрытие модального окна при клике на кнопку или оверлей
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeModal);
+    }
+    overlay.addEventListener('click', closeModal);
+
+    // Отправка формы через AJAX
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-
         const formData = new FormData(form);
 
         fetch('/add-prepod/', {
@@ -51,30 +88,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 'X-CSRFToken': getCookie('csrftoken'),
             },
         })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error('Network response was not ok.');
-        })
+        .then(response => response.json())
         .then(data => {
-            closeModal(); //
-            alert(data.message);
-
+            if (data.message) {
+                alert(data.message);
+                closeModal();
+            }
         })
         .catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
+            console.error('Ошибка при отправке:', error);
         });
     });
 
-
+    // Функция для получения CSRF токена
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
             const cookies = document.cookie.split(';');
             for (let i = 0; i < cookies.length; i++) {
                 const cookie = cookies[i].trim();
-
                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                     break;

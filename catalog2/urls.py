@@ -11,6 +11,8 @@ urlpatterns = [
     path('user-prepods/', views.user_prepods, name='user_prepods'),
     path('edit-prepod/', edit_prepod, name='edit_prepod'),
     path('posts/', views.user_prepods, name='user_prepods'),
+    path('get-subjects/', views.get_subjects, name='get_subjects'),
+    path('get-subjects/', views.get_subjects, name='get_subjects'),
 ]
 
 if settings.DEBUG:
