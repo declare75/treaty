@@ -25,26 +25,28 @@
 </head>
 <body>
 <header>
-    <div class="navbar">
-        <div class="navbar-brand">
-            <a href="{% url 'home' %}" class="brand-logo">treaty</a>
+    <div class="navbarg">
+        <div class="navbar-brandg">
+            <a href="{% url 'home' %}" class="brand-logog">treaty</a>
         </div>
+        <div class="hamburger">☰</div>
 
-        <div class="hamburger" onclick="toggleMenu()">☰</div>
-
-        <nav class="navbar-menu" id="navbarMenu">
-            <a href="{% url 'catalog2_home' %}" class="nav-link">Преподаватели</a>
-            <a href="{% url 'help' %}" class="nav-link">Помощь</a>
-            <a href="{% url 'profile' %}" class="nav-link">Профиль</a>
-            <a href="{% url 'chats' %}" class="nav-link">Чат</a>
+        <nav class="navbar-menug" id="navbarMenu">
+            <div class="headline">
+                <img src="{% static 'main/img/headline.svg' %}" alt="ЛинияШапки">
+            </div>
+            <a href="{% url 'catalog2_home' %}" class="nav-linkg">Преподаватели</a>
+            <a href="{% url 'help' %}" class="nav-linkg">Помощь</a>
+            <a href="{% url 'profile' %}" class="nav-linkg">Профиль</a>
+            <a href="{% url 'chats' %}" class="nav-linkg">Чат</a>
         </nav>
-
-        <div class="col-4">
-            <span class="phone-number">7 (999) 999-99-99</span>
+        <div class="menu-overlay"></div>
+        <div class="col-4g">
+            <span class="phone-numberg">7 (999) 999-99-99</span>
             {% if user.is_authenticated %}
-            <button id="logoutBtn" class="logregbtn" onclick="logout()">Выход</button>
+            <button id="logoutBtn" class="logregbtng" onclick="logout()">Выход</button>
             {% else %}
-            <button id="logregOpenBtn" class="logregbtn" onclick="toggleAuthModal()">Вход</button>
+            <button id="logregOpenBtn" class="logregbtng" onclick="toggleAuthModal()">Вход</button>
             {% endif %}
         </div>
     </div>
@@ -111,15 +113,21 @@
 <script src="{% static 'main/js/logreg.js' %}"></script>
 <script src="{% static 'main/js/themeswitch.js' %}"></script>
 <script>
-    function toggleMenu() {
-        const menu = document.getElementById("navbarMenu");
-        menu.classList.toggle("active");
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+        const hamburger = document.querySelector('.hamburger');
+        const navbarMenu = document.querySelector('.navbar-menug');
+        const menuOverlay = document.querySelector('.menu-overlay');
 
-    function toggleAuthModal() {
-        const modal = document.getElementById("authModal");
-        modal.classList.toggle("active");
-    }
+        hamburger.addEventListener('click', () => {
+            navbarMenu.classList.toggle('active');  // Показать/скрыть меню
+            menuOverlay.classList.toggle('active'); // Показать/скрыть затемнение фона
+        });
+
+        menuOverlay.addEventListener('click', () => {
+            navbarMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+        });
+    });
 </script>
 <script>
     // Функция выхода с редиректом на главную страницу

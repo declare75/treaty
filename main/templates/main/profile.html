@@ -14,7 +14,8 @@
     <div class="div">
         <div class="rectangle">
             <div class="rectangle-2">
-                <div class="avatar" id="avatarContainer" title="Для загрузки аватара нажмите на аватар" style="cursor: default;">
+                <div class="avatar" id="avatarContainer" title="Для загрузки аватара нажмите на аватар"
+                     style="cursor: default;">
                     {% if user.avatar %}
                     <img src="{{ user.avatar.url }}" alt="Аватар" class="avatar-img">
                     {% else %}
@@ -22,7 +23,8 @@
                     {% endif %}
                 </div>
             </div>
-            <form method="post" action="." id="profileForm" enctype="multipart/form-data" onsubmit="return checkForErrors()">
+            <form method="post" action="." id="profileForm" enctype="multipart/form-data"
+                  onsubmit="return checkForErrors()">
                 {% csrf_token %}
                 <div class="rectangle-group">
                     <button type="button" class="edit" onclick="enableEdit()">Редактировать
@@ -121,7 +123,9 @@
 {% if request.path == '/profile/' %}
 <div id="messages">
     {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    <div class="warningbox warningbox-{{ message.tags }} {% if not message.tags %}hidden{% endif %}">
+        {{ message }}
+    </div>
     {% endfor %}
 </div>
 {% endif %}
@@ -129,7 +133,18 @@
 
 <script src="{% static 'main/js/themeswitch.js' %}"></script>
 <script src="{% static 'main/js/notificationswitch.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const warningboxes = document.querySelectorAll('.warningbox');
 
+    warningboxes.forEach(function(warningbox) {
+        // Убираем класс hidden через 5 секунд
+        setTimeout(function() {
+            warningbox.classList.add('hidden');
+        }, 5000); // Уведомление будет скрываться через 5 секунд
+    });
+});
+</script>
 <script>
     function checkFormFields() {
         const requiredFields = document.querySelectorAll('.edit-mode input');

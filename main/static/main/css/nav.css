@@ -1,89 +1,220 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+
 /* Основные стили навигации */
-.navbar {
+.navbarg {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
+    justify-content: space-between; /* Элементы будут выравниваться по краям */
+    padding: 30px 140px;
     background-color: transparent;
-
+    width: 100%; /* Убедитесь, что navbar занимает всю ширину */
 }
 
-.navbar-brand {
+.navbar-brandg {
     display: flex;
     align-items: center;
 }
 
-.brand-logo {
-    font-size: 24px;
-    font-weight: bold;
+/* Основные стили для логотипа */
+.brand-logog {
+    margin-top: -5px;
+    color: #242424;
+    text-align: center;
+    font-family: Raleway;
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    transition: color 0.4s ease;
     text-decoration: none;
-    color: #333;
+    position: relative; /* Для корректного отображения псевдоэлемента */
 }
+
+/* Псевдоэлемент линии */
+.brand-logog::after {
+    content: ""; /* Необходимо для отображения псевдоэлемента */
+    position: absolute; /* Абсолютное позиционирование */
+    left: 50%; /* Центрируем линию по горизонтали относительно логотипа */
+    bottom: -13px; /* Располагаем линию ниже текста */
+    width: 0; /* Начальная ширина линии */
+    height: 3px; /* Высота линии */
+    background-color: black; /* Цвет линии */
+    transition: width 0.3s ease, left 0.3s ease, background-color 0.3s ease; /* Плавный переход */
+    transform: translateX(-50%); /* Для точной центровки линии */
+}
+
+/* При наведении на логотип - линия расширяется */
+.brand-logog:hover::after {
+    width: 95%; /* Линия будет расширяться на 60% от ширины логотипа */
+    left: 50%; /* Центрируем линию относительно логотипа */
+    transform: translateX(-50%); /* Центрируем линию, чтобы она не уходила влево или вправо */
+}
+
+/* Темная тема */
+body.dark-theme .brand-logog::after {
+    background-color: white; /* Линия будет белой в темной теме */
+}
+
+body.dark-theme .brand-logog:hover::after {
+    background-color: white; /* Линия будет белой при наведении в темной теме */
+}
+
+body.dark-theme .brand-logog {
+    color: white; /* Цвет логотипа в темной теме */
+}
+
 
 .hamburger {
-    display: none; /* скроем гамбургер на больших экранах */
+    display: none; /* скрыть гамбургер на больших экранах */
     font-size: 24px;
     cursor: pointer;
 }
 
-.navbar-menu {
+.navbar-menug {
     display: flex;
     gap: 20px;
+    margin-top: 0px;
+    margin-left: 20px; /* Этот отступ можно уменьшить или убрать */
 }
 
-.nav-link {
+.nav-linkg {
     text-decoration: none;
-    color: #333;
-    font-size: 16px;
+    height: 23px; /* Устанавливаем фиксированную высоту */
+    text-align: center;
+    font-family: 'Manrope', sans-serif;
+    color: #b4b4b4;
+    font-size: 17px;
+    letter-spacing: 0;
+    line-height: 23px; /* Сохраняем одинаковую высоту строки */
+    transition: color 0.3s ease, transform 0.1s ease; /* Добавляем плавный переход для font-weight */
+    font-weight: normal; /* Нормальный вес текста */
 }
 
-.col-4 {
+.nav-linkg:hover {
+    color: #466ee5; /* Изменяем цвет текста при наведении */
+    transform: scale(1.03); /* Увеличиваем текст на 10% при наведении */
+}
+
+/* Используем flex для правой части navbar, чтобы элементы выравнивались справа */
+.col-4g {
+    margin-top: -5px;
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 10px; /* Уменьшаем gap между элементами */
+    margin-left: auto; /* Это выравнивает элемент вправо */
+    padding: 0; /* Убираем лишние отступы */
 }
 
-
-
-.auth-btn {
-    background: #007bff;
-    color: #fff;
-    border: none;
-    padding: 5px 15px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.phone-number {
+.phone-numberg {
     color: #333;
     font-size: 14px;
 }
 
+body.dark-theme .phone-numberg {
+    color: white;
+}
+
+/* Стили для кнопки Вход/Выход */
+.logregbtng {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 15px;
+    width: 69px;
+    height: 28px;
+    color: white;
+    background-color: #242424; /* изменено */
+    border: none; /* убираем границу */
+    box-shadow: none; /* убираем тень */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: normal;
+    cursor: pointer;
+}
+
+.logregbtng:hover {
+    transform: scale(1.05); /* Увеличиваем кнопку примерно на 2 пикселя */
+    outline: none;
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
-    .navbar-menu {
-        display: none; /* скрываем меню на мобильных */
+    .navbar-menug {
+        border-radius: 15px 15px 0 0;
+        overflow: hidden;
         flex-direction: column;
-        position: absolute;
-        top: 60px;
-        left: 0;
+        visibility: hidden;
+        opacity: 0;
+        position: fixed;
+        bottom: 0;
         width: 100%;
-        background-color: #f8f9fa;
-        z-index: 1;
-        padding: 10px 0;
-        margin-right: 200px;
+        left: 0;
+        margin-left: 0px;
+        background-color: white;
+        z-index: 1001;
+        padding: 30px 50px;
+        opacity: 0; /* Скрываем меню по умолчанию */
+        transform: translateY(100%); /* Начальная позиция меню */
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
+        align-items: flex-start;
+        pointer-events: none;
+        gap: 30px;
     }
 
-    .navbar-menu.active {
-        display: flex; /* показываем меню при активном состоянии */
+    body.dark-theme .navbar-menug {
+        background-color: #212121;
     }
 
+    body.dark-theme .hamburger {
+        color: white;
+    }
+
+    .navbar-menug.active {
+        opacity: 1; /* Полностью видимо */
+        visibility: visible; /* Делаем видимым */
+        transform: translateY(0); /* Плавное появление снизу */
+        pointer-events: auto; /* Включаем взаимодействие */
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s; /* Убираем задержку для плавного открытия */
+    }
+
+    .headline {
+        display: none;
+    }
     .hamburger {
         display: block; /* показываем гамбургер на мобильных */
+        font-size: 30px;
     }
 
-    .col-4 {
-        display: none; /* можно спрятать номер телефона и другие элементы */
+    .nav-linkg {
+        font-weight: 600;
+    }
+
+    .col-4g {
+        display: none; /* прячем номер телефона и кнопку на мобильных устройствах */
+    }
+    .navbarg {
+        padding: 10px 20px;
+    }
+    .menu-overlay {
+        display: none; /* По умолчанию скрыт */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Затемненный фон */
+        z-index: 1000; /* За меню */
+        opacity: 0; /* Изначально прозрачный */
+        transition: opacity 0.3s ease;
+    }
+
+    .menu-overlay.active {
+        display: block;
+        opacity: 1;
     }
 }
 
@@ -104,53 +235,17 @@
     display: flex;
 }
 
-
-.logregbtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    border-radius: 15px;
-    width: 69px;
-    height: 28px;
-    color: white;
-    background-color: #242424; /* изменено */
-    border: none; /* убираем границу */
-    box-shadow: none; /* убираем тень */
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    font-family: 'Manrope', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    line-height: normal;
-    cursor: pointer;
-}
-
-
-.logregbtntext, .logregbtntext2 {
-    font-family: 'Manrope', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    line-height: normal;
-    transition: color 0.3s ease;
-}
-
-
-
-body.dark-theme .logregbtntext {
-    color: #242424;
-    border: none;
-}
-
-
-body.dark-theme .logregbtntext2 {
-    color: black;
-}
-body.dark-theme .logregbtn {
+/* Дополнительные улучшения */
+body.dark-theme .logregbtng {
     background-color: white;
     color: #212121;
 }
 
-.logregbtn:hover {
-    transform: scale(1.05); /* Увеличиваем кнопку примерно на 2 пикселя */
-    outline: none;
+body.dark-theme .logregbtntextg {
+    color: #242424;
+    border: none;
+}
+
+body.dark-theme .logregbtntext2 {
+    color: black;
 }
