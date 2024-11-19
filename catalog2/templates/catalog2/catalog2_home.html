@@ -4,11 +4,13 @@
 {% block title %}Каталог{% endblock %}
 
 {% block style %}
-<!-- Добавьте сюда дополнительные стили, если нужно -->
+<link rel="stylesheet" href="{% static 'main/css/catalog2.css' %}">
 {% endblock %}
 
 {% block content %}
-<img src="{% static 'main/img/upload.svg' %}" id="openModalBtn" class="upload-image-btn" style="cursor: pointer;">
+
+<button class="upload-image-btn" id="openModalBtn" style="cursor: pointer;">Разместить объявление</button>
+
 <a href="/posts/"><img src="{% static 'main/img/addpost.svg' %}" class="addpostBtn" alt="post"></a>
 <div id="overlay" class="overlay"></div>
 <div id="modal" class="modal-content">
@@ -31,13 +33,43 @@
     </form>
 </div>
 
-<div class="image-container"></div>
+<div>
+    <div class="firsttextheaderimg">Ваша подготовка в наших руках</div>
+    <div class="secondtextheaderimg">Изучайте ваш любимый
+        предмет с профессионалами
+    </div>
+    <img class="headimg" src="{% static 'main/img/headimg.svg' %}" alt="imgboy">
+</div>
 <div class="container4">
     <p>Преподаватели /</p>
 </div>
+<div class="searchbtnm">Найти</div>
+<div id="filterButtonContainer"></div>
 <div><input type="text" id="searchInput" placeholder="Введите имя преподавателя" class="searchM"
             onkeyup="filterSearch()"></div>
-
+<div class="filterobject">
+    <button type="button" onclick="filterBySubject('Русский язык')">Русский язык</button>
+    <button type="button" onclick="filterBySubject('Профильная математика')">Профильная математика</button>
+    <button type="button" onclick="filterBySubject('Английский язык')">Английский язык</button>
+    <button type="button" onclick="filterBySubject('Python')">Python</button>
+    <button type="button" onclick="filterBySubject('Информатика')">Информатика</button>
+    <button type="button" onclick="filterBySubject('JavaScript')">JavaScript</button>
+    <button type="button" onclick="filterBySubject('Химия')">Химия</button>
+    <button type="button" onclick="filterBySubject('Биология')">Биология</button>
+    <button type="button" onclick="filterBySubject('Физика')">Физика</button>
+    <button type="button" onclick="filterBySubject('История')">История</button>
+    <button type="button" onclick="filterBySubject('Обществознание')">Обществознание</button>
+    <button type="button" onclick="filterBySubject('Литература')">Литература</button>
+    <button type="button" onclick="filterBySubject('UX/UI Дизайн')">UX/UI Дизайн</button>
+    <button type="button" onclick="filterBySubject('Немецкий язык')">Немецкий язык</button>
+    <button type="button" onclick="filterBySubject('География')">География</button>
+    <button type="button" onclick="filterBySubject('Астрономия')">Астрономия</button>
+    <button type="button" onclick="filterBySubject('Робототехника')">Робототехника</button>
+    <button type="button" onclick="filterBySubject('Социология')">Социология</button>
+    <button type="button" onclick="filterBySubject('HTML/CSS')">HTML/CSS</button>
+    <button type="button" onclick="filterBySubject('Экономика')">Экономика</button>
+    <button type="button" onclick="filterBySubject('Базы данных')">Базы данных</button>
+</div>
 <div>
     <div id="resultsContainer">
         {% for el in catalog2 %}
@@ -45,19 +77,17 @@
             <div class="alert">
                 <div class="divider"></div>
                 <h3 class="FIO">{{ el.user.last_name }} {{ el.user.first_name }} {{ el.user.middle_name }}</h3>
-                <p class="subject">{{ el.subject }}</p>
+                <div class="subject-wrapper">
+                    <p class="subject">{{ el.subject }}</p>
+                </div>
                 <p class="desc">{{ el.description }}</p>
                 <p class="age">{{ el.user.get_age }}</p>
                 <p class="rating">{{ el.rating }}</p>
                 <img src="{% static 'main/img/ratingEllipse.svg' %}" alt="rating" class="ratingEllipse">
-                <img src="{% static 'main/img/subjectRec.svg' %}" alt="subjectRec" class="subjectRec">
-                {% if el.user.contact %}
+
                 <a href="{% url 'chat_view' receiver_id=el.user.id %}" target="_blank">
                     <img src="{% static 'main/img/button.svg' %}" alt="button" class="button">
                 </a>
-                {% else %}
-                <p>Ссылка не указана</p>
-                {% endif %}
                 {% if el.user.avatar %}
                 <img src="{{ el.user.avatar.url }}" alt="{{ el.user.get_display_name }}"
                      style="width: 121px; height: 121px; border-radius: 50%; object-fit: cover;" class="avatar">
@@ -68,8 +98,29 @@
         </div>
         {% endfor %}
     </div>
+    <div id="loadingIndicator">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
 </div>
 <div class="space-bottom"></div>
+
+<script>
+    // Функция для получения значения параметра из URL
+function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const filterValue = getQueryParam('filter'); // Получаем значение параметра filter
+    if (filterValue) {
+        filterBySubject(filterValue); // Автоматически вызываем фильтрацию
+    }
+});
+
+</script>
 
 <script src="{% static 'main/js/search.js' %}"></script>
 <script src="{% static 'main/js/addprepod.js' %}"></script>

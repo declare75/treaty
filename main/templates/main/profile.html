@@ -14,12 +14,12 @@
     <div class="div">
         <div class="rectangle">
             <div class="rectangle-2">
-                <div class="avatar" id="avatarContainer" title="Для загрузки аватара нажмите на аватар"
+                <div class="avatar" id="avatarContainer" title="Для загрузки аватара нажмите на него"
                      style="cursor: default;">
                     {% if user.avatar %}
                     <img src="{{ user.avatar.url }}" alt="Аватар" class="avatar-img">
                     {% else %}
-                    <p>Аватар не установлен.</p>
+                    <img src="{% static 'main/img/noimageavatar.svg' %}" alt="Аватар" class="avatar-img">
                     {% endif %}
                 </div>
             </div>
@@ -81,7 +81,7 @@
                         {% if user.birthday %}
                         {{ user.birthday|date:"d.m.Y" }}
                         {% else %}
-                        "Дата рождения не указана"
+                        
                         {% endif %}
                     </div>
                     <div class="edit-mode" style="display: none;">

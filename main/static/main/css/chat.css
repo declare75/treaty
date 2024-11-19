@@ -301,7 +301,7 @@ a:hover {
     max-height: 325px;           /* Ограничение по высоте */
     overflow-y: auto;           /* Прокрутка при необходимости */
     margin-left: 652px;
-    margin-top: 263px;
+    margin-top: 163px;
     z-index: 3;
 }
 
@@ -361,7 +361,7 @@ a:hover {
     border-radius: 15px;
     max-height: 70vh;      /* Фиксированная высота для области прокрутки */
     overflow-y: auto;  /* Включаем вертикальную прокрутку */
-    margin-top: 170px;
+    margin-top: 70px;
     position: relative; /* Для абсолютного позиционирования псевдоэлемента */
 }
 
@@ -558,6 +558,8 @@ body.dark-theme .message-textarea {
     border: 1px solid #ccc;
     padding: 5px;
     z-index: 7;
+}
+
 .submit-button {
     margin-top: 10px;
     padding: 10px 20px;
@@ -609,6 +611,4 @@ body.dark-theme .message-textarea {
     left: 1383px;
     cursor: pointer;
     z-index: 1000;  /* Чтобы иконка была поверх всех других элементов */
-}
-
 }
