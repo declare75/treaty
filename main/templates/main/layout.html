@@ -25,29 +25,32 @@
 </head>
 <body>
 <header>
-    <div class="navbar">
-        <div class="navbar-brand">
-            <a href="{% url 'home' %}" class="brand-logo">treaty</a>
+    <div class="navbarg">
+        <div class="navbar-brandg">
+            <a href="{% url 'home' %}" class="brand-logog">treaty</a>
         </div>
+        <div class="hamburger">☰</div>
 
-        <div class="hamburger" onclick="toggleMenu()">☰</div>
-
-        <nav class="navbar-menu" id="navbarMenu">
-            <a href="{% url 'catalog2_home' %}" class="nav-link">Преподаватели</a>
-            <a href="{% url 'help' %}" class="nav-link">Помощь</a>
-            <a href="{% url 'profile' %}" class="nav-link">Профиль</a>
-            <a href="{% url 'chats' %}" class="nav-link">Чат</a>
+        <nav class="navbar-menug" id="navbarMenu">
+            <div class="headline">
+                <img src="{% static 'main/img/headline.svg' %}" alt="ЛинияШапки">
+            </div>
+            <a href="{% url 'catalog2_home' %}" class="nav-linkg">Преподаватели</a>
+            <a href="{% url 'help' %}" class="nav-linkg">Помощь</a>
+            <a href="{% url 'profile' %}" class="nav-linkg">Профиль</a>
+            <a href="{% url 'chats' %}" class="nav-linkg">Чат</a>
         </nav>
-
-        <div class="col-4">
-            <span class="phone-number">7 (999) 999-99-99</span>
+        <div class="menu-overlay"></div>
+        <div class="col-4g">
+            <span class="phone-numberg">7 (999) 999-99-99</span>
             {% if user.is_authenticated %}
-            <button id="logoutBtn" class="logregbtn" onclick="logout()">Выход</button>
+            <button id="logoutBtn" class="logregbtng" onclick="logout()">Выход</button>
             {% else %}
-            <button id="logregOpenBtn" class="logregbtn" onclick="toggleAuthModal()">Вход</button>
+            <button id="logregOpenBtn" class="logregbtng" onclick="toggleAuthModal()">Вход</button>
             {% endif %}
         </div>
     </div>
+
     <div id="overlay2" class="overlay2"></div>
     <div class="container" id="container">
         <span class="close">&times;</span>

@@ -59,7 +59,6 @@ class CustomUser(AbstractUser):
                     today.month == self.birthday.month and today.day < self.birthday.day):
                 age -= 1
 
-            # Склонение слова "год" в зависимости от возраста
             if age % 10 == 1 and age % 100 != 11:
                 age_str = f"{age} год"
             elif 2 <= age % 10 <= 4 and not (12 <= age % 100 <= 14):

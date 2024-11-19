@@ -66,7 +66,6 @@ def register_view(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            print(data)  # Выводим полученные данные на сервер
 
             # Получаем данные с клиента
             last_name = data.get('last_name')
