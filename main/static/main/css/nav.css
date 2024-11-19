@@ -249,3 +249,18 @@ body.dark-theme .logregbtntextg {
 body.dark-theme .logregbtntext2 {
     color: black;
 }
+
+.navbarg.scrolled {
+    background-color: rgba(255, 255, 255, 0.99); /* Полупрозрачный белый фон (стеклянный эффект) */
+    height: 60px; /* Уменьшаем высоту */
+    padding: 10px 30px; /* Добавляем отступы сверху и по бокам */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень снизу */
+    position: fixed; /* Закрепление вверху */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Поверх остальных элементов */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+    border-radius: 0 0 15px 15px; /* Закругленные нижние углы */
+}
+

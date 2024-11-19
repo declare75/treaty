@@ -37,6 +37,14 @@
         <div class="skrepka" id="skrepka">
             <img src="{% static 'main/img/skrepka.svg' %}">
         </div>
+        <div class="people">
+            <img src="{% static 'main/img/people.svg' %}" alt="people">
+        </div>
+        <div class="peopleline">
+            <img src="{% static 'main/img/peopleline.png' %}" alt="peopleline">
+        </div>
+    </div>
+    <div>
         <div class="helptext">Помощь по любым предметам</div>
         <div class="linesunderhelptext">
             <img src="{% static 'main/img/linesunderhelptext.svg' %}">
@@ -44,21 +52,12 @@
         <div class="rectangleupperhelptext"></div>
         <div class="rectangleupperhelptext2"></div>
     </div>
-    <div>
-
-    </div>
-    <div class="people">
-        <img src="{% static 'main/img/people.svg' %}">
-    </div>
-    <div class="peopleline">
-        <img src="{% static 'main/img/peopleline.png' %}" alt="peopleline">
-    </div>
     <div class="leftimg"></div>
     <div class="rightimg"></div>
     <div class="imgblock">
         <div class="engimg"><img src="{% static 'main/img/eng.svg' %}"></div>
         <div class="ruimg"><img src="{% static 'main/img/ru.svg' %}"></div>
-        <div class="progimg"><img src="{% static 'main/img/prog.svg' %}"></div>
+        <div class="informimg"><img src="{% static 'main/img/inform.svg' %}"></div>
         <div class="bioimg"><img src="{% static 'main/img/bio.svg' %}"></div>
         <div class="historyimg"><img src="{% static 'main/img/history.svg' %}"></div>
     </div>
@@ -189,6 +188,31 @@
         skrepka.style.animation = 'float 6s ease-in-out infinite'; // Возвращаем анимацию
         skrepka.style.transform = 'scale(1)'; // Возвращаем оригинальный размер
     });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Сопоставляем div-классы с фильтрами
+    const filters = {
+        engimg: 'Английский язык',
+        ruimg: 'Русский язык',
+        informimg: 'Информатика',
+        bioimg: 'Биология',
+        historyimg: 'История'
+    };
+
+    // Добавляем клик-обработчики для каждой картинки
+    Object.keys(filters).forEach(className => {
+        const element = document.querySelector(`.${className}`);
+        if (element) {
+            element.addEventListener('click', () => {
+                const filter = filters[className];
+                if (filter) {
+                    window.location.href = `/catalog2?filter=${encodeURIComponent(filter)}`;
+                }
+            });
+        }
+    });
+});
 </script>
 
 {% endblock %}

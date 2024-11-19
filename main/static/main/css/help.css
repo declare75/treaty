@@ -10,11 +10,11 @@
 .container6 {
     display: flex;
     justify-content: flex-end;
-    width: 90%;
+    width: 100%;
     max-width: 1920px;
     margin: auto;
-    margin-left: 250px;
-    margin-top: 150px;
+    margin-left: 150px;
+    margin-top: 0px;
 }
 
 /* Приветственный раздел */

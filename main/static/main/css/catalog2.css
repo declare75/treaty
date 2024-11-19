@@ -1,0 +1,113 @@
+body {
+    height: 2000px;
+}
+
+body.dark-theme .container4,
+body.dark-theme .age,
+body.dark-theme .FIO {
+    color: white;
+}
+
+body.dark-theme .filterobject button {
+    background-color: #212121;
+    color: white;
+    border: 2px solid white;
+}
+
+body.dark-theme .filterobject button:hover {
+    background-color: #466EE5; /* Немного другой цвет фона при наведении */
+    color: white;
+    border-color: #466EE5;
+}
+
+.filter-button {
+    padding: 4px 8px;
+    font-size: 14px;
+    border: 1px solid black;
+    border-radius: 200px;
+    background-color: #466ee5;
+    cursor: pointer;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    border-color: #466ee5;
+    color: white;
+    position: absolute;
+    top: 440px;
+    left: 449px;
+
+    opacity: 0; /* Начальное состояние */
+    transform: scale(0.9); /* Легкий уменьшенный масштаб */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Переход для появления/исчезновения */
+}
+
+/* Состояние, когда кнопка видима */
+.filter-button.show {
+    opacity: 1;
+    transform: scale(1); /* Возвращаемся к нормальному размеру */
+}
+
+/* Для плавного удаления кнопки */
+.filter-button.hide {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+/* Стили для крестика на кнопке */
+.close-button {
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Обертка для фона */
+/* Обертка для фона */
+.subject-wrapper {
+    display: inline-block; /* Адаптивный размер под содержимое */
+    background-color: #466ee5; /* Фон */
+    border-radius: 20px; /* Закругленные края */
+    padding: 4px 8px; /* Внутренние отступы вокруг текста */
+    position: absolute; /* Для позиционирования */
+    margin-left: 283px; /* Смещение по горизонтали */
+    margin-top: 18px; /* Смещение по вертикали */
+    z-index: 1; /* Фон должен быть под текстом */
+    line-height: normal; /* Убираем возможное влияние line-height */
+}
+
+/* Текст предмета */
+.subject {
+    color: white;
+    font-size: 14px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    z-index: 2; /* Текст выше фона */
+    position: relative; /* Для правильного наложения на фон */
+    margin: 0; /* Убираем лишние отступы, которые могут растягивать обертку */
+    line-height: 1; /* Контролируем высоту строки, чтобы избежать растяжения */
+}
+
+.upload-image-btn {
+    width: 196.0px;
+    height: 35.0px;
+    border-radius: 15px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #466EE5;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    position: absolute;
+    top: 1025px;
+    left: 1443px;
+    border: none;
+    color: white;
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+.upload-image-btn:hover {
+    background-color: #466EE5; /* Немного другой цвет фона при наведении */
+    color: white;
+    transform: scale(1.02);
+}
+
+
+
+

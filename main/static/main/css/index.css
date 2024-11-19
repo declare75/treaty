@@ -294,7 +294,7 @@ body.dark-theme .helptext {
     top: 1230px;
     left: 455px;
 }
-.progimg {
+.informimg {
     position: absolute;
     top: 1140px;
     left: 810px;
@@ -319,6 +319,7 @@ body.dark-theme .helptext {
 
 .imgblock div img {
     transition: transform 1s ease, filter 1s ease; /* Плавная анимация для смещения и фильтра */
+    cursor: pointer;
 }
 
 

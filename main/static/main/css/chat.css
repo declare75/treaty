@@ -301,7 +301,7 @@ a:hover {
     max-height: 325px;           /* Ограничение по высоте */
     overflow-y: auto;           /* Прокрутка при необходимости */
     margin-left: 652px;
-    margin-top: 183px;
+    margin-top: 163px;
     z-index: 3;
 }
 

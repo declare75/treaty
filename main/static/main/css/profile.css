@@ -80,8 +80,11 @@ body.dark-theme .profile .rectangle {
     -webkit-user-drag: none;
     user-drag: none;
     background-color: #799BFF;
-    border-style: none;
-    border-radius: 15px
+    border: none;
+    border-radius: 15px;
+    color: white;
+    margin-top: 5px;
+    outline: none;
 }
 
 .profile .phone input,
@@ -112,12 +115,19 @@ body.dark-theme .profile .rectangle {
     top: 80px;
     left: -30px;
     overflow: hidden;
+    transition: box-shadow 0.3s ease; /* Плавный переход для тени */
+    border-radius: 50%;
 }
 
-.avatar img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
+.avatar-img {
+    display: block; /* Убедимся, что изображение отображается корректно */
+    width: 100%; /* Задаем ширину (по необходимости) */
+    height: auto; /* Автоматическая высота */
+    border-radius: 50%; /* Округляем края, если аватарка круглая */
+}
+
+.avatar:hover {
+    box-shadow: 0 0px 15px white; /* Добавляем тень при наведении */
 }
 
 .profile .photo {
@@ -575,19 +585,6 @@ body.dark-theme .profile .rectangle {
 }
 
 #avatarContainer:hover::after {
-    content: "Для загрузки аватара нажмите на аватар";
-    position: absolute;
-    bottom: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 12px;
-    white-space: nowrap;
-    opacity: 1;
-    border: none;
 
 }
 .avatar:hover {
@@ -843,7 +840,6 @@ body.dark-theme .profile .rectangle {
         border-radius: 15px 100px 70px 15px;
     }
 
-    .profile .name,
     .profile .phone input,
     .profile .birthday input,
     .profile .email input,
