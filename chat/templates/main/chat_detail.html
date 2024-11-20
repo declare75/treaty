@@ -33,23 +33,36 @@
         {% if message.video %}
         <video class="message-video" src="{{ message.video.url }}" controls></video>
         {% endif %}
-
-        <!-- Кнопки подтверждения и отказа от занятия -->
-        {% if message.lesson %}
-        {% if message.lesson.status == 'pending' %}
-        <form method="get" action="?confirm_lesson={{ message.lesson.id }}">
-            <button type="submit" class="btn btn-success">Подтвердить</button>
-        </form>
-        <form method="get" action="?decline_lesson={{ message.lesson.id }}">
-            <button type="submit" class="btn btn-danger">Отказаться</button>
-        </form>
-        {% endif %}
-        {% endif %}
     </div>
     {% empty %}
     <p>Сообщений пока нет. Начните переписку!</p>
     {% endfor %}
+</div>
 
+<!-- Выводим список занятий, кроме тех, что в статусе 'pending' -->
+<div class="lessons-list">
+    <h3>Запланированные занятия:</h3>
+    {% for lesson in lessons %}
+    {% if lesson.status != 'pending' %}
+    <div class="lesson-item">
+        <p><strong>{{ lesson.topic }}</strong> - {{ lesson.date_time|date:"j F, H:i" }}</p>
+
+        <!-- Если занятие можно начать -->
+        {% if lesson.status == 'scheduled' %}
+        <a href="{% url 'chat_view' receiver.id %}?start_lesson={{ lesson.id }}">
+            <button type="button">Начать занятие</button>
+        </a>
+        {% endif %}
+
+        <!-- Если занятие можно завершить -->
+        {% if lesson.status == 'in_progress' %}
+        <a href="{% url 'chat_view' receiver.id %}?end_lesson={{ lesson.id }}">
+            <button type="button" class="btn btn-warning">Завершить занятие</button>
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+    {% endfor %}
 </div>
 
 <form method="post" enctype="multipart/form-data">
@@ -76,7 +89,6 @@
     </div>
 </form>
 
-<!-- Форма для запланированного занятия -->
 {% if not lesson %}
 <form method="post" action="{% url 'chat_view' receiver.id %}">
     {% csrf_token %}

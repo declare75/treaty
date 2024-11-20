@@ -12,6 +12,7 @@ from datetime import timedelta
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
 
+
 @login_required
 def chat_list_view(request):
     user = request.user
@@ -56,10 +57,27 @@ def chat_view(request, receiver_id):
     except CustomUser.DoesNotExist:
         return redirect("chat_list_view")
 
+    # Фильтруем сообщения между текущим пользователем и получателем
     messages = Message.objects.filter(
         (Q(sender=request.user) & Q(receiver=receiver)) |
         (Q(sender=receiver) & Q(receiver=request.user))
     ).order_by("timestamp")
+
+    # Получаем все занятия для текущего пользователя и его чата с выбранным получателем
+    lessons = Lesson.objects.filter(
+        Q(teacher=request.user, student=receiver) |
+        Q(teacher=receiver, student=request.user)
+    ).order_by("date_time")
+
+    # Кнопки для начала/завершения занятия
+    start_lesson_button = None
+    end_lesson_button = None
+
+    for lesson in lessons:
+        if lesson.status == 'scheduled' and lesson.teacher == request.user:
+            start_lesson_button = lesson  # Преподаватель может начать занятие
+        elif lesson.status == 'in_progress' and lesson.teacher == request.user:
+            end_lesson_button = lesson  # Преподаватель может завершить занятие
 
     if request.method == "POST":
         # Проверка на создание занятия
@@ -99,6 +117,7 @@ def chat_view(request, receiver_id):
                     topic=topic,
                     teacher=request.user,
                     student=student,
+                    status="pending",  # Статус "ожидает подтверждения"
                 )
 
                 # Отправляем сообщение в чат для подтверждения занятия
@@ -132,7 +151,7 @@ def chat_view(request, receiver_id):
         )
         return redirect("chat_view", receiver_id=receiver.id)
 
-    # Обработка подтверждения или отказа от занятия
+    # Подтверждение или отклонение занятия
     confirm_lesson_id = request.GET.get("confirm_lesson")
     decline_lesson_id = request.GET.get("decline_lesson")
 
@@ -140,13 +159,13 @@ def chat_view(request, receiver_id):
         try:
             lesson = Lesson.objects.get(id=confirm_lesson_id)
             if lesson.student == request.user:
-                lesson.status = 'scheduled'
+                lesson.status = 'scheduled'  # Изменяем статус на 'scheduled'
                 lesson.save()
                 # Отправляем сообщение, что занятие подтверждено
                 Message.objects.create(
                     sender=request.user,
                     receiver=lesson.teacher,
-                    content=f"Занятие на тему '{lesson.topic}' подтверждено.",
+                    content=f"Занятие на тему '{lesson.topic}' подтверждено и запланировано.",
                     timestamp=timezone.now(),
                 )
         except Lesson.DoesNotExist:
@@ -156,16 +175,65 @@ def chat_view(request, receiver_id):
         try:
             lesson = Lesson.objects.get(id=decline_lesson_id)
             if lesson.student == request.user:
-                lesson.status = 'pending'
+                lesson.status = 'declined'  # Если отклонить, то меняем статус на 'declined'
                 lesson.save()
-                # Отправляем сообщение, что занятие отменено
+                # Отправляем сообщение, что занятие отклонено
                 Message.objects.create(
                     sender=request.user,
                     receiver=lesson.teacher,
-                    content=f"Занятие на тему '{lesson.topic}' отменено.",
+                    content=f"Занятие на тему '{lesson.topic}' отклонено.",
                     timestamp=timezone.now(),
                 )
         except Lesson.DoesNotExist:
             pass
 
-    return render(request, "main/chat_detail.html", {"messages": messages, "receiver": receiver})
+    if request.method == "GET" and "start_lesson" in request.GET:
+        lesson_id = request.GET.get("start_lesson")
+        try:
+            lesson = Lesson.objects.get(id=lesson_id)
+            if lesson.teacher == request.user and lesson.status == 'scheduled':
+                lesson.status = 'in_progress'
+                lesson.save()
+
+                # Получаем тему занятия, если она пустая, используем дефолтное значение
+                topic = lesson.topic if lesson.topic else "Без темы"
+                content = f"Занятие на тему '{topic}' началось."
+
+                # Создаем сообщение с заданным content
+                Message.objects.create(
+                    sender=request.user,
+                    receiver=lesson.student,
+                    content=content,  # Убедитесь, что content всегда передается
+                    timestamp=timezone.now(),
+                )
+        except Lesson.DoesNotExist:
+            pass
+
+    # Обработка нажатия кнопки "Завершить занятие"
+    if request.method == "GET" and "end_lesson" in request.GET:
+        lesson_id = request.GET.get("end_lesson")
+        try:
+            lesson = Lesson.objects.get(id=lesson_id)
+            if lesson.teacher == request.user and lesson.status == 'in_progress':
+                lesson.status = 'completed'
+                lesson.save()
+
+                # Используем тему занятия или дефолтное значение
+                content = f"Занятие на тему '{lesson.topic or 'Без темы'}' завершено."
+
+                Message.objects.create(
+                    sender=request.user,
+                    receiver=lesson.student,
+                    content=content,  # Убедитесь, что content всегда передается
+                    timestamp=timezone.now(),
+                )
+        except Lesson.DoesNotExist:
+            pass
+
+    return render(request, "main/chat_detail.html", {
+        "messages": messages,
+        "receiver": receiver,
+        "lessons": lessons,  # Передаем список всех занятий
+        "start_lesson_button": start_lesson_button,
+        "end_lesson_button": end_lesson_button
+    })
