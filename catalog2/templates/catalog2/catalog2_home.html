@@ -11,7 +11,7 @@
 
 <button class="upload-image-btn" id="openModalBtn" style="cursor: pointer;">Разместить объявление</button>
 
-<a href="/posts/"><img src="{% static 'main/img/addpost.svg' %}" class="addpostBtn" alt="post"></a>
+
 <div id="overlay" class="overlay"></div>
 <div id="modal" class="modal-content">
     <button class="close-btn" id="closeModalBtn">&times;</button>
@@ -84,28 +84,55 @@
                 <p class="age">{{ el.user.get_age }}</p>
                 <p class="rating">{{ el.rating }}</p>
                 <img src="{% static 'main/img/ratingEllipse.svg' %}" alt="rating" class="ratingEllipse">
-
-                <a href="{% url 'chat_view' receiver_id=el.user.id %}" target="_blank">
-                    <img src="{% static 'main/img/button.svg' %}" alt="button" class="button">
-                </a>
                 {% if el.user.avatar %}
                 <img src="{{ el.user.avatar.url }}" alt="{{ el.user.get_display_name }}"
                      style="width: 121px; height: 121px; border-radius: 50%; object-fit: cover;" class="avatar">
                 {% else %}
                 <p>Нет изображения</p>
                 {% endif %}
+                <div class="morebtn" style="cursor: pointer;">Подробнее</div>
+                <div class="extra-info">
+                    <p>Подробная информация здесь...</p>
+                    <a href="{% url 'chat_view' receiver_id=el.user.id %}" target="_blank">
+                        <img src="{% static 'main/img/button.svg' %}" alt="button" class="button">
+                    </a>
+                    <div class="review">
+                        <div class="FIOreview">{{ el.user.last_name }} {{ el.user.first_name }} {{ el.user.middle_name }}</div>
+                        <div class="reviewdesc">{{ el.description }}</div>
+                        <img src="{{ el.user.avatar.url }}" alt="{{ el.user.get_display_name }}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" class="avatarreview">
+                    </div>
+                </div>
             </div>
         </div>
         {% endfor %}
     </div>
-    <div id="loadingIndicator">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
 </div>
 <div class="space-bottom"></div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const moreButtons = document.querySelectorAll(".morebtn");
 
+        moreButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const card = this.closest(".alert");
+                const extraInfo = card.querySelector(".extra-info");
+
+                if (card.classList.contains("expanded")) {
+                    // Закрытие
+                    extraInfo.style.maxHeight = "0"; // Устанавливаем высоту в 0
+                    extraInfo.style.padding = "0 100px"; // Убираем отступы
+                    card.classList.remove("expanded");
+                } else {
+                    // Открытие
+                    extraInfo.style.maxHeight = "350px"; // Устанавливаем фиксированную высоту
+                    extraInfo.style.padding = "200px 100px"; // Добавляем отступы
+                    card.classList.add("expanded");
+                }
+            });
+        });
+    });
+
+</script>
 <script>
     // Функция для получения значения параметра из URL
 function getQueryParam(param) {
@@ -121,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+
 
 <script src="{% static 'main/js/search.js' %}"></script>
 <script src="{% static 'main/js/addprepod.js' %}"></script>

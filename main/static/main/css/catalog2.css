@@ -108,6 +108,66 @@ body.dark-theme .filterobject button:hover {
     transform: scale(1.02);
 }
 
+.extra-info {
+    max-height: 0; /* Изначальная скрытая высота */
+    overflow: hidden; /* Скрытие содержимого */
+    width: 950px; /* Ширина как у divider */
+    margin: 0 auto;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    box-sizing: border-box;
+    padding: 0 100px; /* Убираем отступы для скрытого блока */
+    margin-left: 100px;
+    margin-top: 50px;
+    visibility: hidden; /* Полное скрытие содержимого */
+}
+
+/* Раскрытая карточка */
+.alert.expanded .extra-info {
+    max-height: 350px; /* Достаточно места для отображения содержимого */
+    padding: 20px 100px; /* Добавляем отступы при раскрытии */
+    visibility: visible; /* Снова показываем содержимое */
+}
+
+
+/* Кнопка */
+.morebtn {
+    width: 103.0px;
+    height: 35.0px;
+    border-radius: 15px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #466EE5;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    position: absolute;
+    margin-top: -140px;
+    margin-left: 950px;
+    border: none;
+    color: white;
+    z-index: 2;
+    transition: transform 0.3s ease;
+    padding: 5px 8px;
+}
+.morebtn:hover {
+    background-color: #466EE5; /* Немного другой цвет фона при наведении */
+    color: white;
+    transform: scale(1.02);
+}
+
+.FIOreview {
+    position: absolute;
+    margin-top: -200px;
+    margin-left: 280px;
+    color: black;
+    font-size: 34px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+}
+
+.avatarreview {
+    position: absolute;
+    margin-left: 300px;
+}
+
 
 
 
