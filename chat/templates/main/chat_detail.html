@@ -20,20 +20,36 @@
     {% for message in messages %}
     <div class="message {% if message.sender == user %}sent{% else %}received{% endif %}">
         <p>
-            <strong class="username2">{{ message.sender.get_display_name }}</strong> <!-- Имя пользователя -->
+            <strong class="username2">{{ message.sender.get_display_name }}</strong>
             <small>{{ message.timestamp|date:"j F H:i" }}</small>
         </p>
-        <p class="message-content">{{ message.content }}</p> <!-- Контент сообщения -->
+        <p class="message-content">
+            <!-- Выводим контент сообщения с поддержкой HTML, если есть -->
+            {{ message.content|safe }}
+        </p> <!-- Контент сообщения -->
         {% if message.image %}
         <img class="message-image" src="{{ message.image.url }}" alt="image">
         {% endif %}
         {% if message.video %}
         <video class="message-video" src="{{ message.video.url }}" controls></video>
         {% endif %}
+
+        <!-- Кнопки подтверждения и отказа от занятия -->
+        {% if message.lesson %}
+        {% if message.lesson.status == 'pending' %}
+        <form method="get" action="?confirm_lesson={{ message.lesson.id }}">
+            <button type="submit" class="btn btn-success">Подтвердить</button>
+        </form>
+        <form method="get" action="?decline_lesson={{ message.lesson.id }}">
+            <button type="submit" class="btn btn-danger">Отказаться</button>
+        </form>
+        {% endif %}
+        {% endif %}
     </div>
     {% empty %}
     <p>Сообщений пока нет. Начните переписку!</p>
     {% endfor %}
+
 </div>
 
 <form method="post" enctype="multipart/form-data">
@@ -77,17 +93,6 @@
 </form>
 {% endif %}
 
-<!-- Кнопки для подтверждения и отказа -->
-{% if lesson %}
-{% if lesson.status == 'pending' %}
-<form method="get" action="?confirm_lesson={{ lesson.id }}">
-    <button type="submit" class="btn btn-success" style="cursor: pointer;">Подтвердить</button>
-</form>
-<form method="get" action="?decline_lesson={{ lesson.id }}">
-    <button type="submit" class="btn btn-danger" style="cursor: pointer;">Отказаться</button>
-</form>
-{% endif %}
-{% endif %}
 
 <script>
     // WebSocket для получения сообщений
