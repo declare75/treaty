@@ -1,15 +1,16 @@
-from django.shortcuts import render, redirect
-from .models import Message
-from django.contrib.auth import get_user_model  # Импортируем get_user_model()
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Message, Lesson
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Q
 from django.http import JsonResponse
 from django.urls import reverse
+from django.utils.dateparse import parse_duration
+from datetime import timedelta
 
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
-
 
 @login_required
 def chat_list_view(request):
@@ -53,7 +54,7 @@ def chat_view(request, receiver_id):
     try:
         receiver = CustomUser.objects.get(id=receiver_id)
     except CustomUser.DoesNotExist:
-        return redirect("chat_list_view")  # Если пользователь не найден, перенаправляем на список чатов
+        return redirect("chat_list_view")
 
     messages = Message.objects.filter(
         (Q(sender=request.user) & Q(receiver=receiver)) |
@@ -61,11 +62,110 @@ def chat_view(request, receiver_id):
     ).order_by("timestamp")
 
     if request.method == "POST":
+        # Проверка на создание занятия
+        if "schedule_lesson" in request.POST:
+            if not request.user.is_staff:  # Проверяем, преподаватель ли пользователь
+                return render(request, "main/chat_detail.html", {
+                    "messages": messages,
+                    "receiver": receiver,
+                    "error": "Только преподаватели могут создавать занятия."
+                })
+
+            date_time = request.POST.get("date_time")
+            duration = request.POST.get("duration")
+            topic = request.POST.get("topic")
+
+            try:
+                # Преобразование строки в timedelta
+                duration_obj = parse_duration(duration)
+                if not duration_obj:  # Если parse_duration не справился
+                    hours, minutes = map(int, duration.split(":"))
+                    duration_obj = timedelta(hours=hours, minutes=minutes)
+
+                # Находим второго участника чата (ученик)
+                student = receiver if request.user != receiver else None
+
+                if student is None:
+                    return render(request, "main/chat_detail.html", {
+                        "messages": messages,
+                        "receiver": receiver,
+                        "error": "Не удалось определить ученика."
+                    })
+
+                # Создаем занятие
+                lesson = Lesson.objects.create(
+                    date_time=date_time,
+                    duration=duration_obj,
+                    topic=topic,
+                    teacher=request.user,
+                    student=student,
+                )
+
+                # Отправляем сообщение в чат для подтверждения занятия
+                Message.objects.create(
+                    sender=request.user,
+                    receiver=student,
+                    content=f"Новое занятие: {lesson.topic} на {lesson.date_time} длительностью {lesson.duration}. Подтвердите участие. <a href='{request.path}?confirm_lesson={lesson.id}'>Подтвердить</a> или <a href='{request.path}?decline_lesson={lesson.id}'>Отказаться</a>",
+                    timestamp=timezone.now(),
+                )
+
+            except (ValueError, AttributeError):
+                return render(request, "main/chat_detail.html", {
+                    "messages": messages,
+                    "receiver": receiver,
+                    "error": "Некорректная длительность."
+                })
+
+            return redirect("chat_view", receiver_id=receiver.id)
+
+        # Обработка отправки сообщений
         content = request.POST.get("content")
         image = request.FILES.get("image")
         video = request.FILES.get("video")
-        Message.objects.create(sender=request.user, receiver=receiver, content=content, image=image, video=video,
-                               timestamp=timezone.now())
+        Message.objects.create(
+            sender=request.user,
+            receiver=receiver,
+            content=content,
+            image=image,
+            video=video,
+            timestamp=timezone.now(),
+        )
         return redirect("chat_view", receiver_id=receiver.id)
+
+    # Обработка подтверждения или отказа от занятия
+    confirm_lesson_id = request.GET.get("confirm_lesson")
+    decline_lesson_id = request.GET.get("decline_lesson")
+
+    if confirm_lesson_id:
+        try:
+            lesson = Lesson.objects.get(id=confirm_lesson_id)
+            if lesson.student == request.user:
+                lesson.status = 'scheduled'
+                lesson.save()
+                # Отправляем сообщение, что занятие подтверждено
+                Message.objects.create(
+                    sender=request.user,
+                    receiver=lesson.teacher,
+                    content=f"Занятие на тему '{lesson.topic}' подтверждено.",
+                    timestamp=timezone.now(),
+                )
+        except Lesson.DoesNotExist:
+            pass
+
+    if decline_lesson_id:
+        try:
+            lesson = Lesson.objects.get(id=decline_lesson_id)
+            if lesson.student == request.user:
+                lesson.status = 'pending'
+                lesson.save()
+                # Отправляем сообщение, что занятие отменено
+                Message.objects.create(
+                    sender=request.user,
+                    receiver=lesson.teacher,
+                    content=f"Занятие на тему '{lesson.topic}' отменено.",
+                    timestamp=timezone.now(),
+                )
+        except Lesson.DoesNotExist:
+            pass
 
     return render(request, "main/chat_detail.html", {"messages": messages, "receiver": receiver})

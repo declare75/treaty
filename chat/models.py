@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 CustomUser = get_user_model()
 
+
 class Message(models.Model):
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="sent_messages")
     receiver = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="received_messages")
@@ -13,3 +14,17 @@ class Message(models.Model):
 
     def __str__(self):
         return f"Message from {self.sender} to {self.receiver} at {self.timestamp}"
+
+
+class Lesson(models.Model):
+    date_time = models.DateTimeField()
+    duration = models.DurationField()
+    topic = models.CharField(max_length=255)
+    student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="lessons_as_student")
+    teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="lessons_as_teacher")
+    status = models.CharField(max_length=20,
+                              choices=[('pending', 'Ожидает подтверждения'), ('scheduled', 'Запланировано'),
+                                       ('in_progress', 'В процессе'), ('completed', 'Завершено')], default='pending')
+
+    def __str__(self):
+        return f"Lesson on {self.topic} at {self.date_time.strftime('%Y-%m-%d %H:%M')}"

@@ -7,8 +7,8 @@
 {% endblock %}
 
 {% block content %}
-<div><input type="text" id="searchInput" placeholder="Поиск сообщений..." class="searchM2"
-            onkeyup="filterSearch()"></div>
+<div><input type="text" id="searchInput" placeholder="Поиск сообщений..." class="searchM2" onkeyup="filterSearch()">
+</div>
 <div class="yourchatstext2">чат</div>
 <div class="krujok2"></div>
 <h2 class="username">{{ receiver.email }}</h2>
@@ -40,7 +40,9 @@
     {% csrf_token %}
     <div class="recundertextarea"></div>
     <button type="submit" class="startchat2">Отправить</button>
-    <div class="message-textarea"><input name="content" required></div>
+    <div class="message-textarea">
+        <input name="content" required>
+    </div>
     <div>
         <!-- Для изображения -->
         <label for="image-input" style="cursor: pointer; position: absolute; top: 821px; left: 538px;">
@@ -58,11 +60,39 @@
     </div>
 </form>
 
+<!-- Форма для запланированного занятия -->
+{% if not lesson %}
+<form method="post" action="{% url 'chat_view' receiver.id %}">
+    {% csrf_token %}
+    <label for="date_time">Дата и время:</label>
+    <input type="datetime-local" name="date_time" required><br>
+
+    <label for="duration">Длительность (часы:минуты):</label>
+    <input type="time" name="duration" required><br>
+
+    <label for="topic">Тема:</label>
+    <input type="text" name="topic" required><br>
+
+    <button type="submit" name="schedule_lesson">Запланировать</button>
+</form>
+{% endif %}
+
+<!-- Кнопки для подтверждения и отказа -->
+{% if lesson %}
+{% if lesson.status == 'pending' %}
+<form method="get" action="?confirm_lesson={{ lesson.id }}">
+    <button type="submit" class="btn btn-success" style="cursor: pointer;">Подтвердить</button>
+</form>
+<form method="get" action="?decline_lesson={{ lesson.id }}">
+    <button type="submit" class="btn btn-danger" style="cursor: pointer;">Отказаться</button>
+</form>
+{% endif %}
+{% endif %}
+
 <script>
+    // WebSocket для получения сообщений
     const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const chatSocket = new WebSocket(
-       `${protocol}://${window.location.host}/ws/chat/{{ receiver.id }}/`
-    );
+    const chatSocket = new WebSocket(`${protocol}://${window.location.host}/ws/chat/{{ receiver.id }}/`);
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
@@ -108,15 +138,18 @@
     chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
     };
+
     chatSocket.onerror = function(e) {
         console.error('WebSocket error observed:', e);
     };
-</script>
-<script>
+
+    // Прокрутка чата до последнего сообщения
     document.addEventListener("DOMContentLoaded", function() {
         const chatBox = document.getElementById("chat-box");
         chatBox.scrollTop = chatBox.scrollHeight;  // Устанавливаем прокрутку в самый низ
     });
 </script>
+
 <script src="{% static 'main/js/searchmsg.js' %}"></script>
+
 {% endblock %}
