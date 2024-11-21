@@ -64,11 +64,11 @@ body.dark-theme .filterobject button:hover {
 .subject-wrapper {
     display: inline-block; /* Адаптивный размер под содержимое */
     background-color: #466ee5; /* Фон */
-    border-radius: 20px; /* Закругленные края */
-    padding: 4px 8px; /* Внутренние отступы вокруг текста */
+    border-radius: 15px 0px 15px 0px;
+    padding: 4px 10px; /* Внутренние отступы вокруг текста */
     position: absolute; /* Для позиционирования */
-    margin-left: 283px; /* Смещение по горизонтали */
-    margin-top: 18px; /* Смещение по вертикали */
+    margin-left: 100px; /* Смещение по горизонтали */
+    margin-top: 0px; /* Смещение по вертикали */
     z-index: 1; /* Фон должен быть под текстом */
     line-height: normal; /* Убираем возможное влияние line-height */
 }
@@ -94,8 +94,8 @@ body.dark-theme .filterobject button:hover {
     background: #466EE5;
     box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 1025px;
-    left: 1443px;
+    top: 1100px;
+    left: 1483px;
     border: none;
     color: white;
     z-index: 2;
@@ -111,7 +111,7 @@ body.dark-theme .filterobject button:hover {
 .extra-info {
     max-height: 0; /* Изначальная скрытая высота */
     overflow: hidden; /* Скрытие содержимого */
-    width: 950px; /* Ширина как у divider */
+    width: 970px; /* Ширина как у divider */
     margin: 0 auto;
     transition: max-height 0.3s ease, padding 0.3s ease;
     box-sizing: border-box;
@@ -119,13 +119,18 @@ body.dark-theme .filterobject button:hover {
     margin-left: 100px;
     margin-top: 50px;
     visibility: hidden; /* Полное скрытие содержимого */
+    border-radius: 15px;
+    box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.05);
+    z-index: 1;
+    position: relative; /* Добавляем позиционирование */
 }
 
 /* Раскрытая карточка */
 .alert.expanded .extra-info {
     max-height: 350px; /* Достаточно места для отображения содержимого */
-    padding: 20px 100px; /* Добавляем отступы при раскрытии */
+    padding: 200px 100px; /* Добавляем отступы при раскрытии */
     visibility: visible; /* Снова показываем содержимое */
+    z-index: 1;
 }
 
 
@@ -133,14 +138,12 @@ body.dark-theme .filterobject button:hover {
 .morebtn {
     width: 103.0px;
     height: 35.0px;
-    border-radius: 15px;
     flex-shrink: 0;
-    border-radius: 15px;
+    border-radius: 15px 0px 15px 0px;
     background: #466EE5;
-    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
     position: absolute;
-    margin-top: -140px;
-    margin-left: 950px;
+    margin-top: 5px;
+    margin-left: 966px;
     border: none;
     color: white;
     z-index: 2;
@@ -168,6 +171,132 @@ body.dark-theme .filterobject button:hover {
     margin-left: 300px;
 }
 
+/* Общие стили для всех текстовых элементов */
+.oplatatext {
+    color: #000;
+    text-align: center;
+    font-family: Manrope;
+    font-style: normal;
+    line-height: normal;
+    position: absolute;
+    left: 1520px;
+}
 
+/* Специфические стили для разных уровней текста */
+.oplatatext:nth-child(1) { /* Первый текст: Стоимость */
+    font-size: 22px;
+    font-weight: 500;
+    top: 706px;
+    left: 1483px;
+}
+.oplatatext:nth-child(2) { /* Второй текст: 300-500₽ */
+    font-size: 17px;
+    font-weight: 300;
+    top: 742px;
+}
+.oplatatext:nth-child(3) { /* Третий текст: 500-1000₽ */
+    font-size: 17px;
+    font-weight: 300;
+    top: 776px;
+}
+.oplatatext:nth-child(4) { /* Четвертый текст: 1000-2000₽ */
+    font-size: 17px;
+    font-weight: 300;
+    top: 810px;
+}
+.oplatatext:nth-child(5) { /* Пятый текст: от 5000₽ */
+    font-size: 17px;
+    font-weight: 300;
+    top: 843px;
+}
 
+/* Общие стили для всех переключателей */
+.toggle2 {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border: 2px solid #D4D4D4;
+    position: absolute;
+    left: 1484px;
+}
 
+/* Специфические стили для переключателей */
+.toggle2:nth-child(6) { top: 744px; }
+.toggle2:nth-child(7) { top: 778px; }
+.toggle2:nth-child(8) { top: 812px; }
+.toggle2:nth-child(9) { top: 846px; }
+
+/* Общие стили для всех текстовых элементов в agefilter */
+.age1 {
+    color: #000;
+    text-align: center;
+    font-family: Manrope;
+    font-style: normal;
+    line-height: normal;
+    position: absolute;
+    left: 1520px;
+}
+
+/* Специфические стили для разных уровней текста */
+.age1:nth-child(1) { /* Первый текст: Возраст преподавателя */
+    font-size: 22px;
+    font-weight: 500;
+    top: 894px; /* Начинается ниже последнего элемента блока oplata */
+    left: 1483px;
+}
+.age1:nth-child(2) { /* Второй текст: 18-21 */
+    font-size: 17px;
+    font-weight: 300;
+    top: 928px;
+}
+.age1:nth-child(3) { /* Третий текст: 21-27 */
+    font-size: 17px;
+    font-weight: 300;
+    top: 962px;
+}
+.age1:nth-child(4) { /* Четвертый текст: 27-35 */
+    font-size: 17px;
+    font-weight: 300;
+    top: 996px;
+}
+.age1:nth-child(5) { /* Пятый текст: 35-99 */
+    font-size: 17px;
+    font-weight: 300;
+    top: 1029px;
+}
+
+/* Общие стили для всех переключателей */
+.agetoggle1 {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border: 2px solid #D4D4D4;
+    position: absolute;
+    left: 1484px;
+    z-index: 10;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Специфические стили для переключателей */
+.agetoggle1:nth-child(6) { top: 930px; }
+.agetoggle1:nth-child(7) { top: 964px; }
+.agetoggle1:nth-child(8) { top: 998px; }
+.agetoggle1:nth-child(9) { top: 1031px; }
+
+.agetoggle1.active {
+    background-color: #466ee5; /* Цвет фона при активном состоянии */
+    border-color: #D4D4D4; /* Цвет границы при активном состоянии */
+}
+
+.divider2 {
+    width: 970px;
+    height: 200px;
+    border: blue;
+    margin-bottom: 10px;
+    margin-left: 100px;
+    margin-top: -5px;
+    position: absolute;
+    z-index: -10000;
+    border-radius: 15px;
+    background-color: #466ee5;
+}
