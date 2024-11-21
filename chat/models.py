@@ -24,7 +24,7 @@ class Lesson(models.Model):
     teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="lessons_as_teacher")
     status = models.CharField(max_length=20,
                               choices=[('pending', 'Ожидает подтверждения'), ('scheduled', 'Запланировано'),
-                                       ('in_progress', 'В процессе'), ('completed', 'Завершено')], default='pending')
+                                       ('in_progress', 'В процессе'), ('completed', 'Завершено'), ('declined', 'Отклонено')], default='pending')
 
     def __str__(self):
         return f"Lesson on {self.topic} at {self.date_time.strftime('%Y-%m-%d %H:%M')}"
