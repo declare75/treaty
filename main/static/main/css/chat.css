@@ -258,10 +258,7 @@ a {
     color: inherit;         /* Убирает синий цвет и наследует цвет родительского элемента */
 }
 
-a:hover {
-    text-decoration: none;  /* Убирает подчеркивание при наведении */
-    color: inherit;         /* Оставляет тот же цвет при наведении */
-}
+
 
 
 .chat-item a {
@@ -612,3 +609,97 @@ body.dark-theme .message-textarea {
     cursor: pointer;
     z-index: 1000;  /* Чтобы иконка была поверх всех других элементов */
 }
+
+.newlessontext {
+    color: #242424;
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 5px 5px;
+}
+
+.approvepart {
+    color: #242424;
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 5px 20px;
+    text-align: center;
+}
+
+.approvelesson {
+    background-color: #466ee5;
+    color: white;
+    border: none;
+    padding: 5px 5px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.declinelesson {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 5px 5px;
+    border-radius: 5px;
+}
+.contentzone .declinelesson, .approvelesson {
+    display: flex;  /* Используем Flexbox */
+    justify-content: center;  /* Центрируем кнопки по горизонтали */
+    gap: 10px;  /* Расстояние между кнопками */
+}
+.approvelesson, .declinelesson {
+    padding: 5px 10px;  /* Паддинги для кнопок */
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.approvelesson {
+    background-color: #466ee5;
+    color: white;
+}
+
+.declinelesson {
+    background-color: black;
+    color: white;
+}
+
+.warningbox {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #7396FC; /* Цвет по умолчанию для уведомлений */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: opacity 0.5s ease, visibility 0s 0.5s; /* Задержка для visibility */
+}
+
+.warningbox.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.warningbox:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Цвет фона для success */
+.warningbox-success {
+    background-color: #28a745; /* Зеленый для успеха */
+}
+
+/* Цвет фона для warning */
+.warningbox-warning {
+    background-color: #ff9800; /* Оранжевый для предупреждения */
+}
+

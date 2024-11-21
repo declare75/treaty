@@ -59,7 +59,7 @@ def chat_view(request, receiver_id):
 
     # Фильтруем сообщения между текущим пользователем и получателем
     messages = Message.objects.filter(
-        (Q(sender=request.user) & Q(receiver=receiver)) |
+        (Q(sender=request.user) & Q(receiver=receiver) & ~Q(content__icontains="Для Вас назначено новое занятие!")) |
         (Q(sender=receiver) & Q(receiver=request.user))
     ).order_by("timestamp")
 
@@ -120,13 +120,26 @@ def chat_view(request, receiver_id):
                     status="pending",  # Статус "ожидает подтверждения"
                 )
 
+
                 # Отправляем сообщение в чат для подтверждения занятия
                 Message.objects.create(
                     sender=request.user,
                     receiver=student,
-                    content=f"Новое занятие: {lesson.topic} на {lesson.date_time} длительностью {lesson.duration}. Подтвердите участие. <a href='{request.path}?confirm_lesson={lesson.id}'>Подтвердить</a> или <a href='{request.path}?decline_lesson={lesson.id}'>Отказаться</a>",
+                    content=(
+                        f"<div class='contentzone'>"
+                        f"<div class='newlessontext'>Для Вас назначено новое занятие!</div>"
+                        f"<div class='newlessontext'>Тема: {lesson.topic}</div>"
+                        f"<div class='newlessontext'>Дата: {lesson.date_time.replace('T', ' ').replace('-', '.')}</div>"
+                        f"<div class='newlessontext'>Длительность: {lesson.duration}</div>"
+                        f"<div class='approvepart'>Подтвердите участие:</div>"
+                        f"<a href='{request.path}?confirm_lesson={lesson.id}' class='approvelesson'>Подтвердить </a>"
+                        f"<a href='{request.path}?decline_lesson={lesson.id}' class='declinelesson'>Отказаться</a>"
+                        f"</div>"
+                    ),
                     timestamp=timezone.now(),
                 )
+
+
 
             except (ValueError, AttributeError):
                 return render(request, "main/chat_detail.html", {
@@ -165,7 +178,7 @@ def chat_view(request, receiver_id):
                 Message.objects.create(
                     sender=request.user,
                     receiver=lesson.teacher,
-                    content=f"Занятие на тему '{lesson.topic}' подтверждено и запланировано.",
+                    content=f"<div class='newlessontext'>Занятие на тему {lesson.topic} подтверждено и запланировано</div>",
                     timestamp=timezone.now(),
                 )
         except Lesson.DoesNotExist:

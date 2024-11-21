@@ -64,7 +64,6 @@
     {% endif %}
     {% endfor %}
 </div>
-
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="recundertextarea"></div>
@@ -104,7 +103,9 @@
     <button type="submit" name="schedule_lesson">Запланировать</button>
 </form>
 {% endif %}
-
+<div id="notification" class="warningbox hidden">
+    <span id="notification-text"></span>
+</div>
 
 <script>
     // WebSocket для получения сообщений
