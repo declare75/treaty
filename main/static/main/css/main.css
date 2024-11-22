@@ -735,3 +735,10 @@ body.dark-theme .input-email, .input-password, #regEmail, #regLastName, #regFirs
     align-items: center;
     justify-content: center;
 }
+
+.putup {
+    position: absolute;
+    left: 1800px;
+    bottom: 60px;
+    z-index: 100;
+}
