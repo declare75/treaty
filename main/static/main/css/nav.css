@@ -264,3 +264,7 @@ body.dark-theme .logregbtntext2 {
     border-radius: 0 0 15px 15px; /* Закругленные нижние углы */
 }
 
+body.dark-theme .navbarg.scrolled {
+    background-color: #212121;
+}
+

@@ -8,9 +8,34 @@
 {% endblock %}
 
 {% block content %}
-
-<button class="upload-image-btn" id="openModalBtn" style="cursor: pointer;">Разместить объявление</button>
-
+<img src="{% static 'main/img/footer.svg' %}" alt="Футер" class="footer">
+<a href="https://t.me/TreatySupportBot" class="contact-button2" target="_blank">Связаться с нами</a>
+<button class="upload-image-btn" id="openModalBtn" style="cursor: pointer; z-index: 10;">Разместить объявление</button>
+<div class="rightfilter">
+    <div class="oplata">
+        <div class="oplatatext">Стоимость</div>
+        <div class="oplatatext">300-500₽</div>
+        <div class="oplatatext">500-1000₽</div>
+        <div class="oplatatext">1000-2000₽</div>
+        <div class="oplatatext">от 5000₽</div>
+        <div class="toggle2"></div>
+        <div class="toggle2"></div>
+        <div class="toggle2"></div>
+        <div class="toggle2"></div>
+    </div>
+    <div class="agefilter">
+        <div class="age1">Возраст преподавателя</div>
+        <div class="age1">18-21</div>
+        <div class="age1">22-27</div>
+        <div class="age1">28-35</div>
+        <div class="age1">36-70</div>
+        <!-- Эти элементы теперь имеют атрибут data-age-range -->
+        <div class="agetoggle1" data-age-range="18-21"></div>
+        <div class="agetoggle1" data-age-range="21-27"></div>
+        <div class="agetoggle1" data-age-range="27-35"></div>
+        <div class="agetoggle1" data-age-range="35-99"></div>
+    </div>
+</div>
 
 <div id="overlay" class="overlay"></div>
 <div id="modal" class="modal-content">
@@ -76,6 +101,7 @@
         <div class="containerPrepods">
             <div class="alert">
                 <div class="divider"></div>
+                <div class="divider2"></div>
                 <h3 class="FIO">{{ el.user.last_name }} {{ el.user.first_name }} {{ el.user.middle_name }}</h3>
                 <div class="subject-wrapper">
                     <p class="subject">{{ el.subject }}</p>
@@ -99,7 +125,9 @@
                     <div class="review">
                         <div class="FIOreview">{{ el.user.last_name }} {{ el.user.first_name }} {{ el.user.middle_name }}</div>
                         <div class="reviewdesc">{{ el.description }}</div>
-                        <img src="{{ el.user.avatar.url }}" alt="{{ el.user.get_display_name }}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" class="avatarreview">
+                        <img src="{{ el.user.avatar.url }}" alt="{{ el.user.get_display_name }}"
+                             style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"
+                             class="avatarreview">
                     </div>
                 </div>
             </div>
@@ -122,16 +150,17 @@
                     extraInfo.style.maxHeight = "0"; // Устанавливаем высоту в 0
                     extraInfo.style.padding = "0 100px"; // Убираем отступы
                     card.classList.remove("expanded");
+                    extraInfo.style.visibility = "hidden"; // Скрываем содержимое
                 } else {
                     // Открытие
-                    extraInfo.style.maxHeight = "350px"; // Устанавливаем фиксированную высоту
+                    extraInfo.style.maxHeight = "350px"; // Устанавливаем максимальную высоту
                     extraInfo.style.padding = "200px 100px"; // Добавляем отступы
                     card.classList.add("expanded");
+                    extraInfo.style.visibility = "visible"; // Показываем содержимое
                 }
             });
         });
     });
-
 </script>
 <script>
     // Функция для получения значения параметра из URL
@@ -148,6 +177,89 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Получаем все элементы для фильтрации
+    const toggles = document.querySelectorAll(".agetoggle1");
+    const cards = document.querySelectorAll(".containerPrepods"); // Карточки преподавателей
+
+    // Массив для хранения активных возрастных диапазонов
+    let activeRanges = ["18-21", "21-27", "27-35", "35-99"]; // Изначально все диапазоны активны
+
+    // Функция для фильтрации карточек по возрасту
+    function filterCardsByActiveRanges() {
+        cards.forEach(card => {
+            const ageElement = card.querySelector(".age");
+            if (!ageElement) return;
+
+            const age = parseInt(ageElement.textContent); // Получаем возраст из карточки
+            let matchesRange = false;
+
+            // Проверяем, попадает ли возраст в хотя бы один выбранный диапазон
+            activeRanges.forEach(range => {
+                switch(range) {
+                    case "18-21":
+                        if (age >= 18 && age <= 21) matchesRange = true;
+                        break;
+                    case "21-27":
+                        if (age > 21 && age <= 27) matchesRange = true;
+                        break;
+                    case "27-35":
+                        if (age > 27 && age <= 35) matchesRange = true;
+                        break;
+                    case "35-99":
+                        if (age > 35 && age <= 99) matchesRange = true;
+                        break;
+                    default: break;
+                }
+            });
+
+            // Показываем или скрываем карточку в зависимости от того, соответствует ли она хотя бы одному диапазону
+            if (matchesRange) {
+                card.style.display = "block"; // Показываем карточку
+            } else {
+                card.style.display = "none";  // Скрываем карточку
+            }
+        });
+    }
+
+    // Обработчик событий для каждой кнопки фильтра
+    toggles.forEach((toggle, index) => {
+        toggle.addEventListener("click", function() {
+            const selectedRange = toggle.getAttribute("data-age-range");
+
+            // Добавляем или удаляем диапазон из массива активных фильтров
+            if (activeRanges.includes(selectedRange)) {
+                activeRanges = activeRanges.filter(range => range !== selectedRange); // Убираем диапазон, если он уже был выбран
+                toggle.classList.remove("active"); // Убираем класс active
+            } else {
+                activeRanges.push(selectedRange); // Добавляем новый диапазон
+                toggle.classList.add("active"); // Добавляем класс active
+            }
+
+            // Применяем фильтрацию
+            filterCardsByActiveRanges();
+        });
+    });
+
+    // Изначальная фильтрация, все диапазоны активны
+    filterCardsByActiveRanges();
+
+    // Добавление атрибутов для фильтрации
+    toggles[0].setAttribute("data-age-range", "18-21");
+    toggles[1].setAttribute("data-age-range", "21-27");
+    toggles[2].setAttribute("data-age-range", "27-35");
+    toggles[3].setAttribute("data-age-range", "35-99");
+
+    // Изначально делаем все кнопки активными
+    toggles.forEach(toggle => {
+        toggle.classList.add("active"); // Активируем все фильтры при загрузке страницы
+    });
+});
+
+</script>
+
 
 
 <script src="{% static 'main/js/search.js' %}"></script>

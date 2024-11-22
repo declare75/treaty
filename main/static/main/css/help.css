@@ -5,7 +5,9 @@
     box-sizing: border-box;
     font-family: Manrope, sans-serif;
 }
-
+body {
+    height: 1200px;
+}
 /* Основной контейнер */
 .container6 {
     display: flex;
@@ -55,6 +57,7 @@ body.dark-theme .welcome-text {
     margin-top: 50px;
     margin-left: auto;
     margin-right: auto;
+
 }
 
 /* Элемент вопроса */
@@ -169,7 +172,7 @@ body.dark-theme .faq-item,
 body.dark-theme .faq-question,
 body.dark-theme .faq-answer,
 body.dark-theme .contact-button {
-    background-color: #333333;
+    background-color: #212121;
 }
 
 body.dark-theme .contact-button {

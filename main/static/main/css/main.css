@@ -1,7 +1,13 @@
 body {
     overflow-x: hidden; /* Убирает горизонтальный скроллбар */
+    min-height: 100%;  /* Убедитесь, что тело занимает всю высоту страницы */
+    position: relative; /* Устанавливаем относительное позиционирование для body */
+    opacity: 0;
+    padding-bottom: 100px;
 }
-
+body.theme-loaded {
+    opacity: 1;
+}
 aside {
     float: left;
     background: #181818;
@@ -244,22 +250,55 @@ main .features p {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    margin-left: -105px;
+
 
 }
+#resultsContainer {
+    max-height: 900px; /* Увеличьте max-height, чтобы вместить все элементы */
+    overflow-y: auto;  /* Включает прокрутку, если элементов слишком много */
+    max-width: 1450px;
+    position: absolute;
+    top: 680px;
+    left: 335px;
+    border-radius: 15px;
+
+}
+
+
 .divider {
-    width: 950px;
-    height: 2px;
-    background-color: #d3d3d3;
+    width: 970px;
+    height: 200px;
     margin-bottom: 10px;
     margin-left: 100px;
+    position: absolute;
+    z-index: -1000;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.05);
+}
+body.dark-theme .divider {
+    background-color: #212121;
 }
 
 .alert {
-    top: 600px;
-    left: 437px;
     flex: 1 1 300px;
     margin: 0;
+    z-index: 2;
+
+}
+
+#resultsContainer::-webkit-scrollbar {
+    width: 10px; /* Ширина скроллбара */
+}
+
+#resultsContainer::-webkit-scrollbar-thumb {
+    background-color: #7396FC; /* Цвет "ползунка" скроллбара */
+    border-radius: 5px; /* Скругленные углы "ползунка" */
+}
+
+#resultsContainer::-webkit-scrollbar-track {
+    background-color: #e0e0e0; /* Цвет фона области прокрутки */
+    border-radius: 5px; /* Скругленные углы области */
 }
 
 .avatar {
@@ -291,7 +330,7 @@ main .features p {
 .ratingEllipse {
     position: absolute;
     margin-left: 110px;
-    margin-top: 30px;
+    margin-top: 120px;
 }
 .rating {
     position: absolute;
@@ -300,7 +339,7 @@ main .features p {
     font-size: 13px;
     z-index: 1;
     margin-left: 119px;
-    margin-top: 38px;
+    margin-top: 128px;
 }
 .age {
     position: absolute;
@@ -563,6 +602,9 @@ main .features p {
 .input-email {
     border-radius: 50px;
 }
+body.dark-theme .input-email, .input-password, #regEmail, #regLastName, #regFirstName, #regMiddleName, #regPassword, #registerForm {
+    color: white;
+}
 
 .container button.declare {
     background-color: transparent;
@@ -652,7 +694,6 @@ main .features p {
     height: 37.0px;
     border-radius: 0px 20px 20px 0px;
     flex-shrink: 0;
-    border-radius: 0px 20px 20px 0px;
     background: #000;
     position: absolute;
     left: 1345px;
@@ -667,4 +708,30 @@ main .features p {
     font-weight: 500;
     line-height: normal;
     padding: 5px 36px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding-top: 50px; /* Добавляем пространство внутри футера */
+}
+.contact-button2 {
+    width: 202px;
+    height: 47px;
+    background-color: white;
+    color: #466ee5;
+    font-family: 'Manrope', sans-serif;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    text-decoration: none;
+    position: absolute;
+    bottom: 60px;
+    left: 1550px;
+    border-radius: 77px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }

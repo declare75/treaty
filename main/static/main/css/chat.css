@@ -258,10 +258,7 @@ a {
     color: inherit;         /* Убирает синий цвет и наследует цвет родительского элемента */
 }
 
-a:hover {
-    text-decoration: none;  /* Убирает подчеркивание при наведении */
-    color: inherit;         /* Оставляет тот же цвет при наведении */
-}
+
 
 
 .chat-item a {
@@ -611,4 +608,362 @@ body.dark-theme .message-textarea {
     left: 1383px;
     cursor: pointer;
     z-index: 1000;  /* Чтобы иконка была поверх всех других элементов */
+}
+
+.newlessontext {
+    color: #242424;
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 5px 5px;
+}
+
+.approvepart {
+    color: #242424;
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 5px 20px;
+    text-align: center;
+}
+
+.approvelesson {
+    background-color: #466ee5;
+    color: white;
+    border: none;
+    padding: 5px 5px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.declinelesson {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 5px 5px;
+    border-radius: 5px;
+}
+.contentzone .declinelesson, .approvelesson {
+    display: flex;  /* Используем Flexbox */
+    justify-content: center;  /* Центрируем кнопки по горизонтали */
+    gap: 10px;  /* Расстояние между кнопками */
+}
+.approvelesson, .declinelesson {
+    padding: 5px 10px;  /* Паддинги для кнопок */
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.approvelesson {
+    background-color: #466ee5;
+    color: white;
+}
+
+.declinelesson {
+    background-color: black;
+    color: white;
+}
+
+.warningbox {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #7396FC; /* Цвет по умолчанию для уведомлений */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: opacity 0.5s ease, visibility 0s 0.5s; /* Задержка для visibility */
+}
+
+.warningbox.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.warningbox:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Цвет фона для success */
+.warningbox-success {
+    background-color: #28a745; /* Зеленый для успеха */
+}
+
+/* Цвет фона для warning */
+.warningbox-warning {
+    background-color: #ff9800; /* Оранжевый для предупреждения */
+}
+
+.backgroundlesson {
+  position: absolute;
+  width: 380px;
+  height: 800px;
+  top: 86px;
+  left: 1455px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0px -4px 22px #00000040;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  z-index: -100;
+}
+body.dark-theme .backgroundlesson {
+  position: absolute;
+  width: 380px;
+  height: 800px;
+  top: 86px;
+  left: 1455px;
+  background-color: #212121;
+  border-radius: 15px;
+  box-shadow: 0px -4px 22px #00000040;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  z-index: -100;
+}
+.plantext {
+    color: #242424;
+    font-family: Manrope;
+    font-size: 21px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    padding: 5px 20px;
+    position: absolute;
+    top: 126px;
+    left: 1485px;
+    z-index: 2;
+}
+body.dark-theme .plantext {
+    color: white;
+    font-family: Manrope;
+    font-size: 21px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    padding: 5px 20px;
+    position: absolute;
+    top: 126px;
+    left: 1485px;
+    z-index: 2;
+}
+
+.lesson-item {
+    position: absolute;
+    top: 200px;
+    right: 20px;
+    bottom: 20px;
+    left: 1495px;
+    max-height: 300px; /* Увеличьте max-height, чтобы вместить все элементы */
+    max-width: 300px;
+    overflow-y: auto;  /* Включает прокрутку, если элементов слишком много */
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #466ee5;
+    border-color: #466ee5;
+    border-radius: 5px;
+    
+}
+body.dark-theme .lesson-item {
+    position: absolute;
+    top: 200px;
+    right: 20px;
+    bottom: 20px;
+    left: 1495px;
+    max-height: 300px; /* Увеличьте max-height, чтобы вместить все элементы */
+    max-width: 300px;
+    overflow-y: auto;  /* Включает прокрутку, если элементов слишком много */
+    padding: 10px;
+    background-color: #212121;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    border: none;
+}
+
+.lesson-item::-webkit-scrollbar {
+    width: 10px; /* Ширина скроллбара */
+}
+
+.lesson-item::-webkit-scrollbar-thumb {
+    background-color: #7396FC; /* Цвет "ползунка" скроллбара */
+    border-radius: 5px; /* Скругленные углы "ползунка" */
+}
+
+.lesson-item::-webkit-scrollbar-track {
+    background-color: #e0e0e0; /* Цвет фона области прокрутки */
+    border-radius: 5px; /* Скругленные углы области */
+}
+
+.lessonitem {
+    margin-bottom: 10px;  /* Отступы между элементами */
+    padding: 5px;
+    background-color: white;
+    border: 1px solid #466ee5;
+    border-radius: 4px;
+}
+body.dark-theme .lessonitem {
+    margin-bottom: 10px;  /* Отступы между элементами */
+    padding: 5px;
+    background-color: #212121;
+    border: 1px solid #466ee5;
+    border-radius: 4px;
+    color: white;
+}
+.lessonitem1 {
+    margin-bottom: 10px;  /* Отступы между элементами */
+    padding: 5px;
+    background-color: #466ee5;
+    border: none;
+    border-radius: 4px;
+    color: white;
+}
+.lessonitem2 {
+    margin-bottom: 10px;  /* Отступы между элементами */
+    padding: 5px;
+    background-color: black;
+    border: none;
+    border-radius: 4px;
+    color: white;
+}
+
+.lessonitem button {
+    margin-top: 5px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.lessonitem button:hover {
+    opacity: 0.8;
+}
+
+
+.datetime {
+    position: absolute;
+    left: 1510px;
+    top: 555px;
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+body.dark-theme .datetime {
+    position: absolute;
+    left: 1510px;
+    top: 555px;
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: white;
+}
+.datetimeinput {
+    position: absolute;
+    height: 30px;
+    left: 1620px;
+    top: 550px;
+    border-color: #466ee5;
+    border-radius: 15px;
+    color: black;
+    padding: 0px 4px;
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+
+.dlit {
+    position: absolute;
+    left: 1510px;
+    top: 595px;
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+body.dark-theme .dlit {
+    position: absolute;
+    left: 1510px;
+    top: 595px;
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: white;
+}
+
+.dlitinput {
+    position: absolute;
+    left: 1713px;
+    top: 590px;
+    border-color: #466ee5;
+    height: 30px;
+    border-radius: 15px;
+    color: black;
+    padding: 4px 4px;
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.topic {
+    position: absolute;
+    left: 1510px;
+    top: 635px;
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+body.dark-theme .topic {
+    position: absolute;
+    left: 1510px;
+    top: 635px;
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: white;
+}
+.topicinput {
+    position: absolute;
+    left: 1603px;
+    top: 630px;
+    height: 30px;
+    border-color: #466ee5;
+    border-radius: 15px;
+    color: black;
+    padding: 4px 10px;
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.submitlesson {
+    position: absolute;
+    left: 1590px;
+    top: 680px;
+    background-color: #466ee5;
+    color: white;
+    border: none;
+    padding: 4px 4px;
+    border-radius: 5px;
 }

@@ -1,9 +1,8 @@
 .background {
     width: 1900px;
-    height: 4000px;
+    height: 3500px;
     color: #212121;
     z-index: -1000;
-
 }
 
 body {
@@ -311,15 +310,19 @@ body.dark-theme .helptext {
 }
 .imgblock {
     position: relative; /* Позиционирование родительского блока */
+
 }
 
 .imgblock div {
     position: absolute; /* Каждое изображение позиционируется абсолютно */
+
 }
 
 .imgblock div img {
     transition: transform 1s ease, filter 1s ease; /* Плавная анимация для смещения и фильтра */
     cursor: pointer;
+    border-radius: 30px;
+    box-shadow: 5px 5px 20px 4px rgba(0, 0, 0, 0.35);
 }
 
 
