@@ -3,28 +3,35 @@ document.addEventListener("DOMContentLoaded", function() {
     const themeImage = document.getElementById("themeImage");
     const body = document.body;
 
+    // Получаем сохраненную тему из localStorage
     const savedTheme = localStorage.getItem("theme");
-    console.log("Сохраненная тема:", savedTheme);
 
+    // Применяем сохраненную тему сразу, до рендера контента
     if (savedTheme === "dark") {
         body.classList.add("dark-theme");
-        toggle.checked = true;
-        themeImage.src = "/static/main/img/themedark.svg";
+        if (toggle) toggle.checked = true;  // Устанавливаем состояние переключателя
+        if (themeImage) themeImage.src = "/static/main/img/themedark.svg";
     } else {
         body.classList.remove("dark-theme");
-        themeImage.src = "/static/main/img/themelight.svg";
+        if (themeImage) themeImage.src = "/static/main/img/themelight.svg";
     }
 
-    toggle.addEventListener("change", function() {
-        if (toggle.checked) {
-            body.classList.add("dark-theme");
-            themeImage.src = "/static/main/img/themedark.svg";
-            localStorage.setItem("theme", "dark");
-        } else {
-            body.classList.remove("dark-theme");
-            themeImage.src = "/static/main/img/themelight.svg";
-            localStorage.setItem("theme", "light");
-        }
-        console.log("Активная тема после переключения:", localStorage.getItem("theme"));
-    });
+    // После того как тема загружена, показываем страницу
+    body.classList.add("theme-loaded");
+
+    // Слушаем изменение переключателя темы
+    if (toggle) {
+        toggle.addEventListener("change", function() {
+            if (toggle.checked) {
+                body.classList.add("dark-theme");
+                themeImage.src = "/static/main/img/themedark.svg";
+                localStorage.setItem("theme", "dark");
+            } else {
+                body.classList.remove("dark-theme");
+                themeImage.src = "/static/main/img/themelight.svg";
+                localStorage.setItem("theme", "light");
+            }
+            console.log("Активная тема после переключения:", localStorage.getItem("theme"));
+        });
+    }
 });
