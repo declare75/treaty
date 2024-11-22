@@ -14,15 +14,18 @@
 <div class="chat-list">
     {% for chat in chat_data %}
     <a href="{% url 'chat_view' chat.chat_user.id %}" class="chat-item">
-        <p class="FIOtext">{{ chat.chat_user.get_display_name }}</p>
-        <img src="{% if chat.chat_user.avatar %}{{ chat.chat_user.avatar.url }}{% else %}{% static 'main/img/noimageavatar.svg' %}{% endif %}"
-             style="width: 65px; height: 65px; border-radius: 50%; object-fit: cover;"
-             class="avatarreview">
-        {% if chat.last_message %}
-        <p class="last-message">{{ chat.last_message.content|truncatechars:30 }}</p>
-        {% else %}
-        <p class="last-message">Нет сообщений</p>
-        {% endif %}
+        <div class="chat-item-content">
+            <img src="{% if chat.chat_user.avatar %}{{ chat.chat_user.avatar.url }}{% else %}{% static 'main/img/noimageavatar.svg' %}{% endif %}"
+                 class="avatarreview">
+            <div class="text-content">
+                <p class="FIOtext">{{ chat.chat_user.get_display_name }}</p>
+                {% if chat.last_message %}
+                <p class="last-message">{{ chat.last_message.content|truncatechars:30|escape }}</p>
+                {% else %}
+                <p class="last-message">Нет сообщений</p>
+                {% endif %}
+            </div>
+        </div>
     </a>
     {% if not forloop.last %}
     <div class="chat-divider"></div>
@@ -32,7 +35,6 @@
     <div class="nochatsunder">Вы можете написать собеседнику, используя его Email</div>
     {% endfor %}
 </div>
-
 <div class="searchuser">Найти пользователя по Email</div>
 <div class="searchrec"></div>
 <div id="notification" class="notification hidden"></div> <!-- Контейнер для уведомления -->

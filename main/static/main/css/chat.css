@@ -271,27 +271,52 @@ a {
     color: inherit;             /* Сохраняем цвет текста при наведении */
 }
 
+.chat-item {
+    display: flex;
+    align-items: center; /* Выравнивание по центру по вертикали */
+    padding: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.chat-item-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.avatarreview {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px; /* Отступ между аватаром и текстом */
+}
+
+.text-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Центрирование по вертикали */
+}
+
 .FIOtext {
     color: #242424;
     font-family: Manrope;
     font-size: 25px;
-    font-style: normal;
     font-weight: 400;
-    line-height: normal;
-    margin-left: 100px;
-    position: absolute;
+    line-height: 1.2;
+    margin: 0;
 }
+
 .last-message {
     color: #B5B5B5;
     font-family: Manrope;
     font-size: 20px;
-    font-style: normal;
     font-weight: 400;
     line-height: normal;
-    margin-left: 140px;
-    margin-top: -25px;
-    position: absolute;
+    margin-top: 5px;
 }
+
 .chat-list {
     width: 617px;               /* Ширина контейнера для всех чатов */
     display: flex;              /* Flexbox для вертикального выравнивания */
@@ -968,12 +993,6 @@ body.dark-theme .topic {
     border: none;
     padding: 4px 4px;
     border-radius: 5px;
-}
-.avatarreview {
-
-    margin-left: 10px;
-    margin-top: 5px;
-
 }
 @media (max-width: 768px) {
     .rectangle, .rectangle6 {
