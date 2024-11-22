@@ -20,7 +20,7 @@
             <div class="text-content">
                 <p class="FIOtext">{{ chat.chat_user.get_display_name }}</p>
                 {% if chat.last_message %}
-                <p class="last-message">{{ chat.last_message.content|truncatechars:30 }}</p>
+                <p class="last-message">{{ chat.last_message.content|truncatechars:30|escape }}</p>
                 {% else %}
                 <p class="last-message">Нет сообщений</p>
                 {% endif %}
