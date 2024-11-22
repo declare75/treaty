@@ -69,6 +69,9 @@ def chat_view(request, receiver_id):
         Q(teacher=receiver, student=request.user)
     ).order_by("date_time")
 
+    # Считаем количество занятий между пользователями
+    lessons_count = lessons.count()
+
     # Кнопки для начала/завершения занятия
     start_lesson_button = None
     end_lesson_button = None
@@ -78,6 +81,7 @@ def chat_view(request, receiver_id):
             start_lesson_button = lesson  # Преподаватель может начать занятие
         elif lesson.status == 'in_progress' and lesson.teacher == request.user:
             end_lesson_button = lesson  # Преподаватель может завершить занятие
+
 
     if request.method == "POST":
         # Проверка на создание занятия
@@ -138,6 +142,7 @@ def chat_view(request, receiver_id):
                     ),
                     timestamp=timezone.now(),
                 )
+
 
 
 
@@ -247,6 +252,7 @@ def chat_view(request, receiver_id):
         "messages": messages,
         "receiver": receiver,
         "lessons": lessons,  # Передаем список всех занятий
+        "lessons_count": lessons_count,  # Передаем количество занятий
         "start_lesson_button": start_lesson_button,
         "end_lesson_button": end_lesson_button
     })

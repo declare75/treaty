@@ -11,7 +11,7 @@ body.dark-theme .FIO {
 body.dark-theme .filterobject button {
     background-color: #212121;
     color: white;
-    border: 2px solid white;
+    border: 1px solid white;
 }
 
 body.dark-theme .filterobject button:hover {
@@ -299,4 +299,10 @@ body.dark-theme .filterobject button:hover {
     z-index: -10000;
     border-radius: 15px;
     background-color: #466ee5;
+}
+body.dark-theme .age1 {
+    color: white;
+}
+body.dark-theme .oplatatext {
+    color: white;
 }

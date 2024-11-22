@@ -4,6 +4,7 @@
 {% block title %}Мессенджер{% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{% static 'main/css/chat.css' %}">
+
 {% endblock %}
 
 {% block content %}
@@ -39,31 +40,58 @@
     {% endfor %}
 </div>
 
-<!-- Выводим список занятий, кроме тех, что в статусе 'pending' -->
+{% if user.is_staff %}
 <div class="lessons-list">
-    <h3>Запланированные занятия:</h3>
+    <div class="plantext">Запланированные занятия</div>
+    <div class="backgroundlesson"></div>
     {% for lesson in lessons %}
     {% if lesson.status != 'pending' %}
     <div class="lesson-item">
-        <p><strong>{{ lesson.topic }}</strong> - {{ lesson.date_time|date:"j F, H:i" }}</p>
+        {% for lesson in lessons %}
+        <div class="lessonitem">
+            <strong>{{ lesson.topic }}</strong> - {{ lesson.date_time|date:"j F, H:i" }}
+        </div>
 
-        <!-- Если занятие можно начать -->
         {% if lesson.status == 'scheduled' %}
         <a href="{% url 'chat_view' receiver.id %}?start_lesson={{ lesson.id }}">
-            <button type="button">Начать занятие</button>
+            <button class="lessonitem1" type="button">Начать занятие</button>
         </a>
         {% endif %}
 
-        <!-- Если занятие можно завершить -->
         {% if lesson.status == 'in_progress' %}
         <a href="{% url 'chat_view' receiver.id %}?end_lesson={{ lesson.id }}">
-            <button type="button" class="btn btn-warning">Завершить занятие</button>
+            <button class="lessonitem2" type="button">Завершить занятие</button>
         </a>
         {% endif %}
+        {% endfor %}
     </div>
+
     {% endif %}
     {% endfor %}
 </div>
+
+{% if not lesson %}
+<form method="post" action="{% url 'chat_view' receiver.id %}">
+    {% csrf_token %}
+    <div class="datetime" for="date_time">Дата и время:</div>
+    <input class="datetimeinput" type="datetime-local" name="date_time" required><br>
+
+    <div class="dlit" for="duration">Длительность</div>
+    <input class="dlitinput" type="time" name="duration" required><br>
+
+    <div class="topic" for="topic">Тема</div>
+    <input class="topicinput" type="text" name="topic" required><br>
+
+    <button class="submitlesson" type="submit" name="schedule_lesson">Запланировать</button>
+    <div class="warningbox hidden" id="successMessage">
+        Занятие успешно создано, если поля были заполнены верно!
+    </div>
+
+</form>
+{% endif %}
+{% endif %}
+
+
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="recundertextarea"></div>
@@ -88,25 +116,40 @@
     </div>
 </form>
 
-{% if not lesson %}
-<form method="post" action="{% url 'chat_view' receiver.id %}">
-    {% csrf_token %}
-    <label for="date_time">Дата и время:</label>
-    <input type="datetime-local" name="date_time" required><br>
 
-    <label for="duration">Длительность (часы:минуты):</label>
-    <input type="time" name="duration" required><br>
-
-    <label for="topic">Тема:</label>
-    <input type="text" name="topic" required><br>
-
-    <button type="submit" name="schedule_lesson">Запланировать</button>
-</form>
-{% endif %}
 <div id="notification" class="warningbox hidden">
     <span id="notification-text"></span>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Получаем параметры из текущего URL
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Проверяем, если есть параметры confirm_lesson или decline_lesson
+        if (urlParams.has('confirm_lesson') || urlParams.has('decline_lesson')) {
+            // Ожидаем 1 секунду
+            setTimeout(function () {
+                // Возвращаемся на предыдущую страницу
+                window.history.back();
+            }, 100);
+        }
+    });
+</script>
+<script>
+    document.querySelector('.submitlesson').addEventListener('click', function(event) {
+        // Если нужно предотвратить отправку формы, раскомментируйте следующую строку:
+        // event.preventDefault();
+
+        var message = document.getElementById('successMessage');
+        message.classList.remove('hidden');
+
+        // Скрыть уведомление через 3 секунды
+        setTimeout(function() {
+            message.classList.add('hidden');
+        }, 5000);
+    });
+</script>
 <script>
     // WebSocket для получения сообщений
     const protocol = window.location.protocol === "https:" ? "wss" : "ws";
