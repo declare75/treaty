@@ -1,9 +1,8 @@
 .background {
     width: 1900px;
-    height: 4000px;
+    height: 3500px;
     color: #212121;
     z-index: -1000;
-
 }
 
 body {
