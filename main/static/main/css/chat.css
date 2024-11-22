@@ -279,6 +279,7 @@ a {
     font-weight: 400;
     line-height: normal;
     margin-left: 100px;
+    position: absolute;
 }
 .last-message {
     color: #B5B5B5;
@@ -288,7 +289,8 @@ a {
     font-weight: 400;
     line-height: normal;
     margin-left: 140px;
-    margin-top: -10px;
+    margin-top: -25px;
+    position: absolute;
 }
 .chat-list {
     width: 617px;               /* Ширина контейнера для всех чатов */
@@ -966,4 +968,125 @@ body.dark-theme .topic {
     border: none;
     padding: 4px 4px;
     border-radius: 5px;
+}
+.avatarreview {
+
+    margin-left: 10px;
+    margin-top: 5px;
+
+}
+@media (max-width: 768px) {
+    .rectangle, .rectangle6 {
+        width: 100%;
+        height: auto;
+        left: 0;
+        top: 20px;
+    }
+
+    .yourchatstext, .yourchatstext2 {
+        font-size: 20px;
+        left: 20px;
+        top: 50px;
+    }
+
+    .krujok, .krujok2 {
+        width: 6px;
+        height: 6px;
+        top: 65px;
+        left: 20px;
+    }
+
+    .nochats, .nochatsunder, .searchuser {
+        width: 100%;
+        left: 20px;
+    }
+
+    .searchrec {
+        width: 100%;
+        left: 20px;
+        top: 200px;
+    }
+
+    .searchrec2 {
+        width: 100%;
+        left: 20px;
+        top: 250px;
+    }
+
+    .startchat, .startchat2 {
+        width: 100%;
+        left: 20px;
+        top: 350px;
+        font-size: 18px;
+    }
+
+    .chat-list {
+        margin-left: 0;
+        margin-top: 20px;
+        max-height: none;
+        width: 100%;
+    }
+
+    .chat-item {
+        width: 100%;
+        height: auto;
+        padding: 15px;
+        background-color: #fff;
+    }
+
+    /* Изменяем шрифт и размеры кнопок для маленьких экранов */
+    .username {
+        font-size: 10px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .message {
+        max-width: 90%;
+    }
+
+    #chat-box {
+        max-width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+        gap: 5px;
+    }
+
+    .tree2 {
+        display: none; /* Скрываем лишний элемент */
+    }
+}
+
+/* Для планшетов (ширина экрана от 769px до 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .rectangle, .rectangle6 {
+        width: 90%;
+        height: auto;
+        left: 5%;
+        top: 50px;
+    }
+
+    .yourchatstext, .yourchatstext2 {
+        font-size: 25px;
+    }
+
+    .krujok, .krujok2 {
+        width: 8px;
+        height: 8px;
+    }
+
+    .chat-list {
+        margin-left: 5%;
+        margin-top: 20px;
+    }
+
+    .startchat, .startchat2 {
+        width: 100%;
+        font-size: 18px;
+    }
+
+    .message {
+        max-width: 75%;
+    }
 }
