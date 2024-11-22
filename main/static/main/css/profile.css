@@ -1,20 +1,17 @@
-body {
-    background-color: #ffffff !important; /* Добавьте !important для приоритета */
-    color: #000000 !important;
-}
 
-body.dark-theme {
-    background-color: #212121 !important;
-    color: #ffffff !important;
-    transition: background-color 0.4s ease;
-}
 
-.profile {
+
+
+body.profile {
   background-color: #ffffff;
   display: flex;
   flex-direction: row;
   justify-content: center;
   width: 100%;
+  opacity: 0;
+
+
+
 }
 
 .profile .rectangle {
@@ -23,14 +20,18 @@ body.dark-theme {
   height: 560px;
   top: 180px;
   left: 485px;
-  background-color: #ffffff;
+
   border-radius: 15px;
   box-shadow: 0px -4px 22px #00000040;
   transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  opacity: 1;
+
 }
 body.dark-theme .profile .rectangle {
     background-color: #212121;
     box-shadow: 0px -4px 22px #00000040;
+    opacity: 1;
+
 }
 
 .profile .rectangle-2 {
@@ -42,10 +43,12 @@ body.dark-theme .profile .rectangle {
     border-radius: 15px 100px 70px 15px;
     background: linear-gradient(90deg, #466EE5 0%, #799BFF 100%);
     transition: background 0.3s ease; /* Плавный переход для фона */
+    opacity: 1;
 }
 
-.dark-theme .profile .rectangle-2 {
+body.dark-theme .profile .rectangle-2 {
     background: linear-gradient(90deg, #2A438D 0%, #475A94 100%);
+    opacity: 1;
 }
 
 
