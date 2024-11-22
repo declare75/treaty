@@ -26,9 +26,10 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    transition: color 0.4s ease;
+
     text-decoration: none;
     position: relative; /* Для корректного отображения псевдоэлемента */
+    opacity: 1;
 }
 
 /* Псевдоэлемент линии */
@@ -62,6 +63,7 @@ body.dark-theme .brand-logog:hover::after {
 
 body.dark-theme .brand-logog {
     color: white; /* Цвет логотипа в темной теме */
+    opacity: 1;
 }
 
 
@@ -109,6 +111,7 @@ body.dark-theme .brand-logog {
 .phone-numberg {
     color: #333;
     font-size: 14px;
+    font-family: 'Manrope', sans-serif;
 }
 
 body.dark-theme .phone-numberg {
@@ -124,21 +127,23 @@ body.dark-theme .phone-numberg {
     border-radius: 15px;
     width: 69px;
     height: 28px;
-    color: white;
-    background-color: #242424; /* изменено */
     border: none; /* убираем границу */
     box-shadow: none; /* убираем тень */
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    transition: transform 0.3s ease;
     font-family: 'Manrope', sans-serif;
     font-size: 15px;
     font-weight: 500;
     line-height: normal;
     cursor: pointer;
+    color: white;
+    background-color: #212121;
+
 }
 
 .logregbtng:hover {
     transform: scale(1.05); /* Увеличиваем кнопку примерно на 2 пикселя */
     outline: none;
+
 }
 
 /* Адаптивность */
