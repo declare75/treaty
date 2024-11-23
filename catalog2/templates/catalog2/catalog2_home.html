@@ -126,7 +126,9 @@
                         <img src="{% static 'main/img/button.svg' %}" alt="button" class="button">
                     </a>
                     <div class="review">
-                        <div class="FIOreview">{{ el.user.last_name }} {{ el.user.first_name }} {{ el.user.middle_name }}</div>
+                        <div class="FIOreview">{{ el.user.last_name }} {{ el.user.first_name }} {{ el.user.middle_name
+                            }}
+                        </div>
                         <div class="reviewdesc">{{ el.description }}</div>
                         <img src="{{ el.user.avatar.url }}" alt="{{ el.user.get_display_name }}"
                              style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"
@@ -166,42 +168,38 @@
     });
 </script>
 <script>
+document.addEventListener("DOMContentLoaded", function () {
     // Функция для получения значения параметра из URL
-function getQueryParam(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const filterValue = getQueryParam('filter'); // Получаем значение параметра filter
-    if (filterValue) {
-        filterBySubject(filterValue); // Автоматически вызываем фильтрацию
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
     }
-});
 
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Получаем все элементы для фильтрации
-    const toggles = document.querySelectorAll(".agetoggle1");
+    // Получаем элементы для фильтрации
+    const toggles = document.querySelectorAll(".agetoggle1"); // Кнопки возрастных фильтров
+    const subjectButtons = document.querySelectorAll(".filterobject button"); // Кнопки фильтров предметов
     const cards = document.querySelectorAll(".containerPrepods"); // Карточки преподавателей
+    const filterButtonShow = document.querySelector(".filter-button.show"); // Кнопка "filter-button show"
+    const closeButton = document.querySelector(".close-button"); // Кнопка для сброса фильтров
 
-    // Массив для хранения активных возрастных диапазонов
-    let activeRanges = ["18-21", "21-27", "27-35", "35-99"]; // Изначально все диапазоны активны
+    // Переменные для активных фильтров
+    let activeRanges = ["18-21", "21-27", "27-35", "35-99"]; // Все диапазоны активны изначально
+    let activeSubject = getQueryParam("filter"); // Предмет из URL (если есть)
+    let showActive = false; // Переменная для состояния кнопки "filter-button show"
 
-    // Функция для фильтрации карточек по возрасту
-    function filterCardsByActiveRanges() {
+    // Функция для фильтрации карточек
+    function filterCards() {
         cards.forEach(card => {
             const ageElement = card.querySelector(".age");
+            const subjectElement = card.querySelector(".subject");
             if (!ageElement) return;
 
-            const age = parseInt(ageElement.textContent); // Получаем возраст из карточки
+            const age = parseInt(ageElement.textContent); // Получаем возраст
             let matchesRange = false;
 
-            // Проверяем, попадает ли возраст в хотя бы один выбранный диапазон
+            // Проверяем соответствие возрастному диапазону
             activeRanges.forEach(range => {
-                switch(range) {
+                switch (range) {
                     case "18-21":
                         if (age >= 18 && age <= 21) matchesRange = true;
                         break;
@@ -214,55 +212,121 @@ document.addEventListener("DOMContentLoaded", function() {
                     case "35-99":
                         if (age > 35 && age <= 99) matchesRange = true;
                         break;
-                    default: break;
                 }
             });
 
-            // Показываем или скрываем карточку в зависимости от того, соответствует ли она хотя бы одному диапазону
-            if (matchesRange) {
-                card.style.display = "block"; // Показываем карточку
+            // Проверяем соответствие предмету
+            const matchesSubject = activeSubject
+                ? subjectElement && subjectElement.textContent.includes(activeSubject)
+                : true;
+
+            // Показываем или скрываем карточку
+            if (matchesRange && matchesSubject) {
+                card.style.display = "block";
             } else {
-                card.style.display = "none";  // Скрываем карточку
+                card.style.display = "none";
             }
         });
     }
 
-    // Обработчик событий для каждой кнопки фильтра
-    toggles.forEach((toggle, index) => {
-        toggle.addEventListener("click", function() {
+    // Обработчик для кнопок возрастных фильтров
+    toggles.forEach(toggle => {
+        toggle.addEventListener("click", function () {
             const selectedRange = toggle.getAttribute("data-age-range");
 
-            // Добавляем или удаляем диапазон из массива активных фильтров
+            // Добавляем или убираем диапазон из активных
             if (activeRanges.includes(selectedRange)) {
-                activeRanges = activeRanges.filter(range => range !== selectedRange); // Убираем диапазон, если он уже был выбран
-                toggle.classList.remove("active"); // Убираем класс active
+                activeRanges = activeRanges.filter(range => range !== selectedRange); // Убираем диапазон
+                toggle.classList.remove("active"); // Убираем стиль активного фильтра
             } else {
-                activeRanges.push(selectedRange); // Добавляем новый диапазон
-                toggle.classList.add("active"); // Добавляем класс active
+                activeRanges.push(selectedRange); // Добавляем диапазон
+                toggle.classList.add("active"); // Добавляем стиль активного фильтра
             }
 
-            // Применяем фильтрацию
-            filterCardsByActiveRanges();
+            filterCards(); // Применяем фильтрацию
         });
     });
 
-    // Изначальная фильтрация, все диапазоны активны
-    filterCardsByActiveRanges();
+    // Обработчик для кнопок предметов
+    subjectButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            // Если filter-button.show активна, не меняем состояние предметного фильтра
+            if (showActive) return;
 
-    // Добавление атрибутов для фильтрации
+            const newSubject = button.textContent;
+
+            // Если нажали на активную кнопку, включаем filter-button.show
+            if (activeSubject === newSubject) {
+                filterButtonShow.click(); // Имитация клика по кнопке "filter-button show"
+            } else {
+                activeSubject = newSubject; // Устанавливаем текущий предмет
+                subjectButtons.forEach(btn => btn.classList.remove("active")); // Сбрасываем активные кнопки
+                button.classList.add("active"); // Устанавливаем активную кнопку
+                filterCards(); // Применяем фильтрацию
+            }
+        });
+    });
+
+    // Обработчик для кнопки "filter-button show"
+    if (filterButtonShow) {
+        filterButtonShow.addEventListener("click", function () {
+            showActive = !showActive; // Переключаем состояние
+            filterButtonShow.classList.toggle("active"); // Переключаем класс активности
+
+            // Сбрасываем фильтр по предмету, но оставляем возрастной фильтр
+            if (!showActive) {
+                activeSubject = null;
+                subjectButtons.forEach(button => button.classList.remove("active")); // Убираем активные классы у кнопок предметов
+            }
+
+            filterCards(); // Применяем фильтрацию
+        });
+    }
+
+    // Обработчик для кнопки closeButton (сброс фильтра по предметам)
+    if (closeButton) {
+        closeButton.addEventListener("click", function () {
+            // Сбрасываем фильтр по предметам
+            activeSubject = null;
+            subjectButtons.forEach(button => button.classList.remove("active"));  // Убираем активные классы у кнопок
+
+            // Снимаем активный класс с кнопки фильтра по предметам
+            if (filterBySubject) {
+                filterBySubject.classList.remove("active");
+            }
+
+            // Применяем фильтрацию
+            filterCards();
+        });
+    }
+
+    // Устанавливаем атрибуты для кнопок возрастных фильтров
     toggles[0].setAttribute("data-age-range", "18-21");
     toggles[1].setAttribute("data-age-range", "21-27");
     toggles[2].setAttribute("data-age-range", "27-35");
     toggles[3].setAttribute("data-age-range", "35-99");
 
-    // Изначально делаем все кнопки активными
+    // Активируем кнопки возрастных фильтров по умолчанию
     toggles.forEach(toggle => {
-        toggle.classList.add("active"); // Активируем все фильтры при загрузке страницы
+        toggle.classList.add("active");
     });
+
+    // Если есть фильтр предмета в URL, делаем соответствующую кнопку активной
+    if (activeSubject) {
+        subjectButtons.forEach(button => {
+            if (button.textContent === activeSubject) {
+                button.classList.add("active");
+            }
+        });
+    }
+
+    // Применяем фильтрацию при загрузке страницы
+    filterCards();
 });
 
-</script>
 
+
+</script>
 
 
 <script src="{% static 'main/js/search.js' %}"></script>
