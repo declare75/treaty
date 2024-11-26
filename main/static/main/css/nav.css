@@ -1,14 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
-
-/* Основные стили навигации */
 .navbarg {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Элементы будут выравниваться по краям */
+    position: relative;
     padding: 30px 140px;
     background-color: transparent;
-    width: 100%; /* Убедитесь, что navbar занимает всю ширину */
+    width: 100%;
+}
+
+.nav-container {
+    margin: 0 auto;
+    padding: 0 15px;
+    max-width: 1678px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 20px;
+    row-gap: 20px;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .navbar-brandg {
@@ -16,7 +30,6 @@
     align-items: center;
 }
 
-/* Основные стили для логотипа */
 .brand-logog {
     margin-top: -5px;
     color: #242424;
@@ -26,86 +39,95 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-
     text-decoration: none;
-    position: relative; /* Для корректного отображения псевдоэлемента */
+    position: relative;
     opacity: 1;
 }
 
-/* Псевдоэлемент линии */
 .brand-logog::after {
-    content: ""; /* Необходимо для отображения псевдоэлемента */
-    position: absolute; /* Абсолютное позиционирование */
-    left: 50%; /* Центрируем линию по горизонтали относительно логотипа */
-    bottom: -13px; /* Располагаем линию ниже текста */
-    width: 0; /* Начальная ширина линии */
-    height: 3px; /* Высота линии */
-    background-color: black; /* Цвет линии */
-    transition: width 0.3s ease, left 0.3s ease, background-color 0.3s ease; /* Плавный переход */
-    transform: translateX(-50%); /* Для точной центровки линии */
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -13px;
+    width: 0;
+    height: 3px;
+    background-color: black;
+    transition: width 0.3s ease, left 0.3s ease, background-color 0.3s ease;
+    transform: translateX(-50%);
 }
 
-/* При наведении на логотип - линия расширяется */
 .brand-logog:hover::after {
-    width: 95%; /* Линия будет расширяться на 60% от ширины логотипа */
-    left: 50%; /* Центрируем линию относительно логотипа */
-    transform: translateX(-50%); /* Центрируем линию, чтобы она не уходила влево или вправо */
+    width: 95%;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-/* Темная тема */
+
 body.dark-theme .brand-logog::after {
-    background-color: white; /* Линия будет белой в темной теме */
+    background-color: white;
 }
 
 body.dark-theme .brand-logog:hover::after {
-    background-color: white; /* Линия будет белой при наведении в темной теме */
+    background-color: white;
 }
 
 body.dark-theme .brand-logog {
-    color: white; /* Цвет логотипа в темной теме */
+    color: white;
     opacity: 1;
 }
 
 
 .hamburger {
-    display: none; /* скрыть гамбургер на больших экранах */
+    display: none;
     font-size: 24px;
     cursor: pointer;
+    position: absolute; /* Позволяет разместить бургер в нужной части */
+    top: 50%; /* Центруем вертикально относительно родителя */
+    right: 20px; /* Размещаем его с правого края */
+    transform: translateY(-50%); /* Компенсируем вертикальное смещение */
+    z-index: 1010; /* Поверх всех элементов */
 }
 
 .navbar-menug {
     display: flex;
-    gap: 20px;
-    margin-top: 0px;
-    margin-left: 20px; /* Этот отступ можно уменьшить или убрать */
-}
-
-.nav-linkg {
-    text-decoration: none;
-    height: 23px; /* Устанавливаем фиксированную высоту */
-    text-align: center;
-    font-family: 'Manrope', sans-serif;
-    color: #b4b4b4;
+    justify-content: center;
+    align-items: center;
+    column-gap: 28px;
     font-size: 17px;
+    font-family: 'Manrope', sans-serif;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.navbar-menug__item{
+    display: flex;
+}
+
+.navbar-menug__link{
+    color: #b4b4b4;
+    text-decoration: none;
+    height: 23px;
+    text-align: center;
     letter-spacing: 0;
-    line-height: 23px; /* Сохраняем одинаковую высоту строки */
-    transition: color 0.3s ease, transform 0.1s ease; /* Добавляем плавный переход для font-weight */
-    font-weight: normal; /* Нормальный вес текста */
+    line-height: 23px;
+    transition: color 0.3s ease, transform 0.1s ease;
+    font-weight: normal;
 }
 
-.nav-linkg:hover {
-    color: #466ee5; /* Изменяем цвет текста при наведении */
-    transform: scale(1.03); /* Увеличиваем текст на 10% при наведении */
+.navbar-menug__link:hover {
+    color: #466ee5;
+    transform: scale(1.03);
 }
 
-/* Используем flex для правой части navbar, чтобы элементы выравнивались справа */
+
 .col-4g {
     margin-top: -5px;
     display: flex;
     align-items: center;
-    gap: 10px; /* Уменьшаем gap между элементами */
-    margin-left: auto; /* Это выравнивает элемент вправо */
-    padding: 0; /* Убираем лишние отступы */
+    gap: 10px;
+    margin-left: auto;
+    padding: 0;
 }
 
 .phone-numberg {
@@ -118,7 +140,6 @@ body.dark-theme .phone-numberg {
     color: white;
 }
 
-/* Стили для кнопки Вход/Выход */
 .logregbtng {
     display: flex;
     align-items: center;
@@ -127,8 +148,8 @@ body.dark-theme .phone-numberg {
     border-radius: 15px;
     width: 69px;
     height: 28px;
-    border: none; /* убираем границу */
-    box-shadow: none; /* убираем тень */
+    border: none;
+    box-shadow: none;
     transition: transform 0.3s ease;
     font-family: 'Manrope', sans-serif;
     font-size: 15px;
@@ -141,13 +162,44 @@ body.dark-theme .phone-numberg {
 }
 
 .logregbtng:hover {
-    transform: scale(1.05); /* Увеличиваем кнопку примерно на 2 пикселя */
+    transform: scale(1.05);
     outline: none;
-
 }
 
-/* Адаптивность */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
+    .navbarg {
+        padding: 20px 50px;
+    }
+    .navbar-menug {
+        column-gap: 20px;
+    }
+    .logregbtng {
+        width: 60px;
+        height: 25px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 992px) {
+    .navbarg {
+        padding: 15px 30px;
+    }
+    .navbar-menug {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        column-gap: 15px;
+    }
+    .brand-logog {
+        font-size: 28px;
+    }
+    .logregbtng {
+        width: 55px;
+        height: 22px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 780px) {
     .navbar-menug {
         border-radius: 15px 15px 0 0;
         overflow: hidden;
@@ -161,9 +213,9 @@ body.dark-theme .phone-numberg {
         margin-left: 0px;
         background-color: white;
         z-index: 1001;
-        padding: 30px 50px;
-        opacity: 0; /* Скрываем меню по умолчанию */
-        transform: translateY(100%); /* Начальная позиция меню */
+        padding: 20px;
+        opacity: 0;
+        transform: translateY(100%);
         transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
         align-items: flex-start;
         pointer-events: none;
@@ -179,18 +231,18 @@ body.dark-theme .phone-numberg {
     }
 
     .navbar-menug.active {
-        opacity: 1; /* Полностью видимо */
-        visibility: visible; /* Делаем видимым */
-        transform: translateY(0); /* Плавное появление снизу */
-        pointer-events: auto; /* Включаем взаимодействие */
-        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s; /* Убираем задержку для плавного открытия */
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s;
     }
 
     .headline {
         display: none;
     }
     .hamburger {
-        display: block; /* показываем гамбургер на мобильных */
+        display: block;
         font-size: 30px;
     }
 
@@ -199,21 +251,21 @@ body.dark-theme .phone-numberg {
     }
 
     .col-4g {
-        display: none; /* прячем номер телефона и кнопку на мобильных устройствах */
+        display: none;
     }
     .navbarg {
         padding: 10px 20px;
     }
     .menu-overlay {
-        display: none; /* По умолчанию скрыт */
+        display: none;
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Затемненный фон */
-        z-index: 1000; /* За меню */
-        opacity: 0; /* Изначально прозрачный */
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        opacity: 0;
         transition: opacity 0.3s ease;
     }
 
@@ -223,9 +275,48 @@ body.dark-theme .phone-numberg {
     }
 }
 
-/* Стили для модального окна */
+@media (max-width: 480px) {
+    .navbarg {
+        padding: 8px 10px;
+    }
+    .navbar-menug {
+        row-gap: 8px;
+    }
+    .brand-logog {
+        font-size: 24px;
+    }
+    .phone-numberg {
+        font-size: 12px;
+    }
+    .logregbtng {
+        width: 45px;
+        height: 18px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 320px) {
+    .navbarg {
+        padding: 5px;
+    }
+    .brand-logog {
+        font-size: 20px;
+    }
+    .navbar-menug {
+        font-size: 14px;
+    }
+    .phone-numberg {
+        font-size: 10px;
+    }
+    .logregbtng {
+        width: 40px;
+        height: 16px;
+        font-size: 10px;
+    }
+}
+
 .auth-modal {
-    display: none; /* скрываем по умолчанию */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -240,7 +331,6 @@ body.dark-theme .phone-numberg {
     display: flex;
 }
 
-/* Дополнительные улучшения */
 body.dark-theme .logregbtng {
     background-color: white;
     color: #212121;
@@ -256,20 +346,19 @@ body.dark-theme .logregbtntext2 {
 }
 
 .navbarg.scrolled {
-    background-color: rgba(255, 255, 255, 0.99); /* Полупрозрачный белый фон (стеклянный эффект) */
-    height: 60px; /* Уменьшаем высоту */
-    padding: 10px 30px; /* Добавляем отступы сверху и по бокам */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень снизу */
-    position: fixed; /* Закрепление вверху */
+    background-color: rgba(255, 255, 255, 0.99);
+    height: 60px;
+    padding: 10px 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000; /* Поверх остальных элементов */
+    z-index: 1000;
     transition: background-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
-    border-radius: 0 0 15px 15px; /* Закругленные нижние углы */
+    border-radius: 0 0 15px 15px;
 }
 
 body.dark-theme .navbarg.scrolled {
     background-color: #212121;
 }
-
