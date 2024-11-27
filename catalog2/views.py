@@ -1,16 +1,18 @@
 from .models import Prepods, Subject
-from .forms import PrepodForm
+from .forms import PrepodForm, ReviewForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
+from chat.models import Lesson
 
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
 
 
 def catalog2_home(request):
+    # Обрабатываем POST-запрос для добавления нового объявления
     if request.method == 'POST':
         form = PrepodForm(request.POST, request.FILES)
         if form.is_valid():
@@ -31,13 +33,17 @@ def catalog2_home(request):
 
     # Отображаем список одобренных объявлений
     catalog2 = Prepods.objects.filter(is_approved=True)
-    form = PrepodForm()  # Форма для добавления нового объявления
+
+    # Форма для добавления нового отзыва
+    form = ReviewForm()  # Форма для добавления отзыва
 
     return render(request, 'catalog2/catalog2_home.html', {
         'catalog2': catalog2,
-        'form': form,
+        'form': form,  # Передаем форму отзыва в шаблон
         'subjects': subjects  # Передаем предметы в шаблон
     })
+
+
 
 def success_page(request):
     return render(request, 'catalog2/success_page.html')
@@ -58,7 +64,7 @@ def add_prepod(request):
             return JsonResponse({'message': 'Ошибка в форме'}, status=400)
 
     form = PrepodForm()
-    return render(request, 'catalog2_home.html', {'form': form})
+    return render(request, 'catalog2/catalog2_home.html', {'form': form})
 
 @login_required
 def user_prepods(request):
@@ -85,3 +91,27 @@ def get_subjects(request):
     subjects = Subject.objects.all()
     subjects_data = [{"id": subject.id, "name": subject.name} for subject in subjects]
     return JsonResponse({"subjects": subjects_data})
+
+
+@login_required
+def add_review(request, teacher_id):
+    # Получаем преподавателя
+    teacher = get_object_or_404(CustomUser, id=teacher_id, is_staff=True)
+
+    # Проверяем наличие завершенного занятия
+    if not Lesson.has_completed_lesson(student=request.user, teacher=teacher):
+        return render(request, "error.html", {"message": "Вы можете оставить отзыв только после завершенного занятия."})
+
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            # Сохраняем отзыв
+            review = form.save(commit=False)
+            review.reviewer = request.user
+            review.teacher = teacher
+            review.save()
+            return redirect("catalog2_home")  # Перенаправляем на главную страницу каталога
+    else:
+        form = ReviewForm()
+
+    return render(request, "catalog2/add_review.html", {"form": form, "teacher": teacher})
