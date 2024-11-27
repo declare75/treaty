@@ -486,6 +486,7 @@ textarea {
 .review-meta8 {
     font-size: 0.875rem;
     color: #666;
+
     position: absolute;
     top: 2px; /* Фиксированная позиция сверху */
     left: 320px; /* Фиксированная позиция справа */
@@ -539,4 +540,23 @@ textarea {
     top: 0px;
     z-index: 100000;
     height: 500px;
+}
+
+body.dark-theme .borderright {
+    background-color: #212121;
+}
+body.dark-theme .borderleft {
+    background-color: #212121;
+}
+body.dark-theme .reviewer-name8 {
+    color: white;
+}
+body.dark-theme .review-text8 {
+    color: white;
+}
+body.dark-theme .review-meta8 {
+    color: white;
+}
+body.dark-theme .custom-btn-cancel {
+    color: white;
 }
