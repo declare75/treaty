@@ -124,9 +124,9 @@
 
                     <!-- Отображение существующих отзывов -->
                     <div class="reviews">
-                        {% for review in el.user.reviews.all %}
+                        {% for review in el.user.reviews_received.all %}
                         <div class="review">
-                            <p><strong>{{ review.reviewer.full_name }}</strong>:</p>
+                            <p><strong>{{ review.reviewer.get_full_name }}</strong>:</p>
                             <p>{{ review.text }}</p>
                             <p class="small text-muted">Оценка: {{ review.rating }} - {{ review.created_at|date:"d.m.Y" }}</p>
                         </div>
