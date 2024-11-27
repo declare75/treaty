@@ -125,8 +125,7 @@
                         <img src="{% static 'main/img/button.svg' %}" alt="button" class="button">
                     </a>
                     <div class="review">
-                        <div class="FIOreview">{{ el.user.last_name }} {{ el.user.first_name }} {{ el.user.middle_name
-                            }}
+                        <div class="FIOreview">{{ el.user.last_name }} {{ el.user.first_name }} {{ el.user.middle_name }}
                         </div>
                         <div class="reviewdesc">{{ el.description }}</div>
                         <img src="{{ el.user.avatar.url }}" alt="{{ el.user.get_display_name }}"

@@ -52,7 +52,7 @@
     bottom: -13px;
     width: 0;
     height: 3px;
-    background-color: white;
+    background-color: black;
     transition: width 0.3s ease, left 0.3s ease, background-color 0.3s ease;
     transform: translateX(-50%);
 }
