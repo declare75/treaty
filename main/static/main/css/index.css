@@ -86,14 +86,33 @@ body.dark-theme {
     left: 0;
     z-index: -1001;
 }
+.texthuynya {
+    font-family: Manrope;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    color: white;
+    word-spacing: 5px;
+    position: absolute;
+    top: 1100px; /* Центрирование по вертикали */
+    left: 50%; /* Центрирование по горизонтали */
+    transform: translate(-50%, -50%); /* Смещение от своего центра и поворот */
+    width: 200px;
+    height: 15px;
+    background-color: #212121;
+    border-radius: 20px;
+}
 
+body.dark-theme .texthuynya {
+    background-color: white;
+}
 .huynya {
     width: 1920px; /* ширина фигуры */
-    height: 190px; /* высота фигуры */
+    height: 150px; /* высота фигуры */
     background-color: white; /* цвет заливки */
     clip-path: polygon(0 0, 100% 100%, 0 100%); /* определяем форму треугольника */
     position: absolute;
-    top: 911px;
+    top: 951px;
 }
 .huynya2 {
     width: 1920px; /* ширина фигуры */
