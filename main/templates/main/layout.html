@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{% static 'main/css/nav.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/reglog.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/profile.css' %}">
     <title>{% block title %}{% endblock %} - treaty</title>
 
     {% block style %}
@@ -121,6 +122,13 @@
 
 </header>
 <main>
+    {% if messages %}
+    <div id="messages">
+        {% for message in messages %}
+        <div class="warningbox warningbox-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
 {% block content %}
 
 {% endblock %}
@@ -169,6 +177,19 @@
         })
         .catch(error => console.error('Ошибка при выходе:', error));
     }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const warningboxes = document.querySelectorAll('.warningbox');
+
+        warningboxes.forEach(function(warningbox) {
+            // Убираем класс hidden через 5 секунд
+            setTimeout(function() {
+                warningbox.classList.add('hidden');
+            }, 5000); // Уведомление будет скрываться через 5 секунд
+        });
+    });
 </script>
 
 

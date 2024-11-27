@@ -8,13 +8,22 @@ from django.http import JsonResponse
 from django.urls import reverse
 from django.utils.dateparse import parse_duration
 from datetime import timedelta
+from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
 
 
-@login_required
+
 def chat_list_view(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, 'Чтобы увидеть данную страницу, необходимо авторизоваться.')
+        # Возврат на предыдущую страницу
+        referer = request.META.get('HTTP_REFERER')  # Получение предыдущего URL
+        if referer:
+            return HttpResponseRedirect(referer)
+        return redirect('home')
     user = request.user
 
     # Получаем уникальные чаты пользователя, используя кастомную модель
