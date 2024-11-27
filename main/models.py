@@ -40,6 +40,7 @@ class CustomUser(AbstractUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
+    rating = models.FloatField(default=0.0)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -48,6 +49,15 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} {self.middle_name}"
+
+    def calculate_rating(self):
+        from catalog2.models import Review  # Импорт модели Review
+        reviews = Review.objects.filter(teacher=self)
+        if reviews.exists():
+            self.rating = reviews.aggregate(models.Avg('rating'))['rating__avg']
+        else:
+            self.rating = 0.0
+        self.save()
 
     def get_display_name(self):
         return f"{self.first_name} {self.last_name[0]}.{self.middle_name[0]}."
