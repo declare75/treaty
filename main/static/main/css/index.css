@@ -1,51 +1,55 @@
 .background {
     width: 1900px;
-    height: 3500px;
+    height: 3200px;
     color: #212121;
-    z-index: -1000;
 }
 
 body {
-    background-color: #ffffff !important; /* Добавьте !important для приоритета */
     overflow-x: hidden; /* Убирает горизонтальный скроллбар */
+    user-select: none; /* Современные браузеры */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer */
 }
-
+img, a {
+    -webkit-user-drag: none; /* Safari */
+    user-drag: none; /* Chrome */
+}
 body.dark-theme {
     background-color: #212121 !important;
 }
 
 
+/* Контейнер, который будет двигаться */
+.containerscroll {
+    position: relative;
+    transition: transform 0.3s ease; /* Плавный переход */
+}
+
+/* Элементы внутри контейнера */
 .web-platform1 {
-    width: 388.0px;
-    height: 68.0px;
-    color: #242424;
+    width: 388px;
+    height: 68px;
+    color: white;
     font-family: 'Manrope', sans-serif;
     font-size: 50px;
-    font-style: normal;
     font-weight: 600;
     line-height: normal;
-    position: absolute;
     top: 174px;
     left: 204px;
-    transition: color 0.3s ease;
-}
-body.dark-theme .web-platform1 {
-    color: white;
+    position: absolute;
 }
 
 .onlinebox {
-    width: 418.0px;
-    height: 53.0px;
-    position: absolute;
+    width: 418px;
+    height: 53px;
     border-radius: 57px;
     transform: rotate(3.757deg);
-    flex-shrink: 0;
-    border-radius: 57px;
     border: 2px dashed #466EE5;
     background: rgba(70, 110, 229, 0.20);
     top: 250px;
     left: 186px;
-    transition: top 0.3s ease, left 0.3s ease; /* Плавный переход для top и left */
+    position: absolute;
 }
 
 .textinbox {
@@ -53,7 +57,6 @@ body.dark-theme .web-platform1 {
     color: #466EE5;
     font-family: Manrope;
     font-size: 50px;
-    font-style: normal;
     font-weight: 600;
     line-height: normal;
     top: -10px;
@@ -67,7 +70,6 @@ body.dark-theme .web-platform1 {
     top: 0px;
     left: 418px;
     transform: rotate(-30deg);
-    flex-shrink: 0;
     border-radius: 15px;
     background: #466EE5;
 }
@@ -79,10 +81,21 @@ body.dark-theme .web-platform1 {
     top: -20px;
     left: 399px;
     transform: rotate(-60deg);
-    flex-shrink: 0;
     border-radius: 15px;
     background: #466EE5;
 }
+
+.textunderonlinebox {
+    width: 100%;
+    font-size: 20px;
+    color: #333;
+    position: absolute;
+    top: 350px;
+    left: 50px;
+    max-width: 900px;
+}
+
+
 
 .peopleline {
     position: absolute;
@@ -90,20 +103,115 @@ body.dark-theme .web-platform1 {
     height: 374px;
     top: 406px;
     left: 0;
+    z-index: -1001;
 }
 
+.huynya {
+    background-color: white;
+    width: 100%;
+    height: 150px;
+    position: absolute;
+    top: 850px;
+    border-radius: 75px 75px 0px 0px;
+}
+body.dark-theme .huynya {
+    background-color: #212121;
+}
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.video-container video {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    filter: brightness(40%);
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.video-container video.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.video-container video.inactive {
+    z-index: 0;
+}
+
+.video-container video.no-transition {
+    transition: none; /* Убираем анимацию для начальной загрузки */
+    opacity: 1;
+}
+
+/* Индикаторы */
+.indicator-container {
+    position: absolute;
+    top: 800px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    opacity: 35%;
+    border-radius: 50%;
+    transition: all 0.5s ease-in-out;
+}
+
+.indicator.active {
+    width: 40px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: white;
+    opacity: 35%;
+}
+
+
+.navbar-menug__link{
+    color: white;
+}
+.brand-logog {
+    color: white;
+}
+.phone-numberg {
+    color: white;
+}
+.video-container {
+    width: 100%; /* Ширина контейнера */
+    height: 920px; /* Высота, оставляемая видимой */
+    overflow: hidden; /* Скрываем всё, что выходит за границы */
+    position: absolute;
+    top: 0px;
+    z-index: -1000;
+}
 .people {
     position: absolute;
     width: 681px;
     height: 700px;
     top: 52px;
     left: 1015px;
+    z-index: -1001;
 }
-
+.logregbtng {
+    background-color: white;
+    color: black;
+}
 .textunderonlinebox {
-    width: 319.0px;
+    width: 380.0px;
     height: 80.0px;
-    color: #B5B5B5;
+    color: white;
     font-family: Manrope;
     font-size: 15px;
     font-style: normal;
@@ -262,81 +370,95 @@ body.dark-theme .helptext {
     }
 }
 
-.leftimg {
-    width: 45.0px;
-    height: 400.0px;
-    border-radius: 0px 30px 30px 0px;
-    flex-shrink: 0;
-    border-radius: 0px 30px 30px 0px;
-    background: #466EE5;
-    position: absolute;
-    top: 1230px;
-}
-.rightimg {
-    width: 45.0px;
-    height: 400.0px;
-    border-radius: 30px 0px 0px 30px;
-    flex-shrink: 0;
-    border-radius: 30px 0px 0px 30px;
-    background: #466EE5;
-    position: absolute;
-    top: 1230px;
-    left: 1875px;
-}
-.engimg {
-    position: absolute;
-    top: 1140px;
-    left: 100px;
-}
-.ruimg {
-    position: absolute;
-    top: 1230px;
-    left: 455px;
-}
-.informimg {
-    position: absolute;
-    top: 1140px;
-    left: 810px;
-}
-.bioimg {
-    position: absolute;
-    top: 1230px;
-    left: 1165px;
-}
-.historyimg {
-    position: absolute;
-    top: 1140px;
-    left: 1520px;
-}
 .imgblock {
-    position: relative; /* Позиционирование родительского блока */
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    top: 950px;
+    left: 0px;
+}
+
+.imgslide {
+    display: flex;
+    transition: transform 0.5s ease;
 
 }
 
-.imgblock div {
-    position: absolute; /* Каждое изображение позиционируется абсолютно */
-
-}
-
-.imgblock div img {
-    transition: transform 1s ease, filter 1s ease; /* Плавная анимация для смещения и фильтра */
+.img-card {
+    position: relative;
+    flex-shrink: 0;
+    width: 300px;  /* Ширина каждой карточки */
+    height: 400px; /* Высота карточки */
+    margin: 25px;
     cursor: pointer;
-    border-radius: 30px;
-    box-shadow: 5px 5px 20px 4px rgba(0, 0, 0, 0.35);
+    overflow: hidden; /* Обрезаем элементы, выходящие за пределы карточки */
+    transition: transform 0.3s ease; /* Плавность для уменьшения */
+    left: 70px;
+}
+
+.img-card img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+/* Уменьшение карточки при наведении */
+.img-card:hover {
+    transform: scale(0.95); /* Уменьшаем размер карточки */
+}
+
+/* Оверлей с текстом и стрелкой */
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Затемнение */
+    display: flex;
+    justify-content: center;
+    align-items: center;  /* Центрируем текст по вертикали и горизонтали */
+    opacity: 0; /* Изначально невидимый */
+    border-radius: 30px; /* Радиус углов */
+    transition: opacity 0.3s ease; /* Плавная анимация для изменения прозрачности */
+}
+
+/* Видимость оверлея при наведении */
+.img-card:hover .overlay {
+    opacity: 1; /* Появление оверлея */
+}
+
+/* Стиль текста и стрелки */
+.overlay p {
+    color: white;
+    margin-bottom: 10px; /* Отступ снизу для текста */
+    font-family: 'Manrope', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.arrow {
+    color: white;
+    font-size: 34px;
+    position: absolute;
+    top: 200px;
 }
 
 
-.imgblock div img.gray {
-    filter: grayscale(100%); /* Фильтр для серого оттенка */
+
+.leftimg {
+    position: absolute;
+    top: 1510px;
+    left: 876px;
 }
 
-.imgblock div img.up {
-    transform: translateY(90px); /* Смещение вниз на 90px для изображений, которые были выше */
+.rightimg {
+    position: absolute;
+    top: 1510px;
+    left: 950px;
 }
 
-.imgblock div img.down {
-    transform: translateY(-90px); /* Смещение вверх на 90px для изображений, которые были ниже */
-}
 .ustal {
     width: 611.0px;
     height: 136.0px;
@@ -347,7 +469,7 @@ body.dark-theme .helptext {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 1770px;
+    top: 1600px;
     left: 190px;
 }
 
@@ -364,48 +486,49 @@ body.dark-theme .ustal {
     border: 2px dashed #466ee5;
     background: rgba(70, 110, 229, 0.20);
     position: absolute;
-    top: 1854.99px;
+    top: 1684.99px;
     left: 402px;
 }
 .bigimg {
     position: absolute;
-    top: 1979px;
+    top: 1809px;
     left: 720px;
 }
 .littleimg {
     position: absolute;
-    top: 2819px;
+    top: 2649px;
     left: 190px;
 }
 
 .rec1logo {
     position: absolute;
-    top: 2006px;
+    top: 1836px;
     left: 224px;
 }
 .rec2logo {
     position: absolute;
-    top: 2426px;
+    top: 2256px;
     left: 224px;
+    z-index: 1;
 }
 .rec3logo {
     position: absolute;
-    top: 2426px;
+    top: 2256px;
     left: 754px;
 }
 .rec4logo {
     position: absolute;
-    top: 2426px;
+    top: 2256px;
     left: 1280px;
 }
 .rec5logo {
     position: absolute;
-    top: 2836px;
+    top: 2666px;
     left: 738px;
 }
 .rec6logo {
     position: absolute;
-    top: 2847px;
+    top: 2677px;
     left: 1277px;
 }
 .rec1text {
@@ -418,7 +541,7 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2168px;
+    top: 1998px;
     left: 224px;
 }
 .rec2text {
@@ -431,8 +554,9 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2588px;
+    top: 2418px;
     left: 224px;
+    z-index: 1;
 }
 .rec3text {
     width: 386.0px;
@@ -444,7 +568,7 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2588px;
+    top: 2418px;
     left: 754px;
 }
 .rec4text {
@@ -457,7 +581,7 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2588px;
+    top: 2418px;
     left: 1284px;
 }
 .rec5text {
@@ -470,7 +594,7 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 3008px;
+    top: 2838px;
     left: 754px;
 }
 .rec6text {
@@ -483,7 +607,7 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 3008px;
+    top: 2838px;
     left: 1284px;
 }
 .rec1header {
@@ -496,7 +620,7 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2100px;
+    top: 1930px;
     left: 224px;
 }
 
@@ -529,8 +653,9 @@ body.dark-theme .rec6header {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2520px;
+    top: 2350px;
     left: 224px;
+    z-index: 1;
 }
 .rec3header {
     width: 408.0px;
@@ -542,7 +667,7 @@ body.dark-theme .rec6header {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2520px;
+    top: 2350px;
     left: 754px;
 }
 .rec4header {
@@ -555,7 +680,7 @@ body.dark-theme .rec6header {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2520px;
+    top: 2350px;
     left: 1284px;
 }
 .rec5header {
@@ -568,7 +693,7 @@ body.dark-theme .rec6header {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2940px;
+    top: 2770px;
     left: 754px;
 }
 .rec6header {
@@ -581,10 +706,10 @@ body.dark-theme .rec6header {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2940px;
+    top: 2770px;
     left: 1284px;
 }
-.rec1 {
+.nadpis1 .rec1 {
     width: 480.0px;
     height: 370.0px;
     border-radius: 15px;
@@ -593,9 +718,46 @@ body.dark-theme .rec6header {
     border: 2px solid #466EE5;
     box-shadow: 4px 1px 12.1px 2px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 1986px;
+    top: 1816px;
     left: 190px;
+    transition: transform 0.3s ease-in-out; /* Плавная анимация для карточки */
+    z-index: 2;
 }
+
+.nadpis1 .rec1logo,
+.nadpis1 .rec1header,
+.nadpis1 .rec1text {
+    transition: transform 0.3s ease-in-out; /* Плавная анимация для всех дочерних элементов */
+    transform-origin: center center; /* Центрируем точку трансформации для всех дочерних элементов */
+}
+
+.nadpis1 .rec1:hover {
+    transform: scale(1.05) rotate(5deg); /* Увеличиваем и поворачиваем всю карточку */
+}
+
+/* Для логотипа, заголовка и текста при наведении */
+.nadpis1 .rec1:hover .rec1logo,
+.nadpis1 .rec1:hover .rec1header,
+.nadpis1 .rec1:hover .rec1text {
+    transform: scale(1.05) rotate(5deg); /* Применяем трансформацию ко всем дочерним элементам */
+}
+.nadpis2 .rec2:hover {
+     transform: scale(1.05) rotate(5deg);
+}
+.nadpis3 .rec3:hover {
+     transform: scale(1.05) rotate(5deg);
+}
+.nadpis4 .rec4:hover {
+     transform: scale(1.05) rotate(5deg);
+}
+.nadpis5 .rec5:hover {
+     transform: scale(1.05) rotate(5deg);
+}
+.nadpis6 .rec6:hover {
+     transform: scale(1.05) rotate(5deg);
+}
+
+
 .rec2 {
     width: 480.0px;
     height: 370.0px;
@@ -605,8 +767,10 @@ body.dark-theme .rec6header {
     border: 2px solid #466EE5;
     box-shadow: 4px 1px 12.1px 2px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 2406px;
+    top: 2236px;
     left: 190px;
+    transition: transform 0.3s ease-in-out;
+    z-index: 2;
 }
 .rec3 {
     width: 480.0px;
@@ -617,8 +781,10 @@ body.dark-theme .rec6header {
     border: 2px solid #466EE5;
     box-shadow: 4px 1px 12.1px 2px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 2406px;
+    top: 2236px;
     left: 720px;
+    transition: transform 0.3s ease-in-out;
+    z-index: 2;
 }
 .rec4 {
     width: 480.0px;
@@ -629,8 +795,10 @@ body.dark-theme .rec6header {
     border: 2px solid #466EE5;
     box-shadow: 4px 1px 12.1px 2px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 2406px;
+    top: 2236px;
     left: 1250px;
+    transition: transform 0.3s ease-in-out;
+    z-index: 2;
 }
 .rec5 {
     width: 480.0px;
@@ -641,8 +809,10 @@ body.dark-theme .rec6header {
     border: 2px solid #466EE5;
     box-shadow: 4px 1px 12.1px 2px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 2826px;
+    top: 2656px;
     left: 720px;
+    transition: transform 0.3s ease-in-out;
+    z-index: 2;
 }
 .rec6 {
     width: 480.0px;
@@ -653,6 +823,8 @@ body.dark-theme .rec6header {
     border: 2px solid #466EE5;
     box-shadow: 4px 1px 12.1px 2px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 2826px;
+    top: 2656px;
     left: 1250px;
+    transition: transform 0.3s ease-in-out;
+    z-index: 2;
 }

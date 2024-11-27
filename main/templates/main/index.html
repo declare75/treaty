@@ -15,38 +15,61 @@
 <a href="https://t.me/TreatySupportBot" class="contact-button2" target="_blank">Связаться с нами</a>
 <div class="background">
     <div class="features52">
-        <h1 class="web-platform1">Веб-платформа</h1>
-        <div class="onlinebox">
-            <div class="textinbox">онлайн занятий</div>
-            <div class="rectangleinbox"></div>
-            <div class="rectangleinbox2"></div>
+        <div class="containerscroll">
+            <h1 class="web-platform1">Веб-платформа</h1>
+            <div class="onlinebox">
+                <div class="textinbox">онлайн занятий</div>
+                <div class="rectangleinbox"></div>
+                <div class="rectangleinbox2"></div>
+            </div>
+            <div class="textunderonlinebox">
+                Обучайтесь дистанционно в комфортных условиях, не выходя за рамки платформы. Профессионалы вашей сферы
+                помогут вам с изучением любых материалов и задач.
+            </div>
         </div>
-        <div class="textunderonlinebox">Обучайтесь дистанционно в комфортных условиях, не выходя за рамки платформы
-            Профессионалы вашей сферы помогут вам с изучением любых материалов и задач
-        </div>
-        <div class="pen">
-            <img src="{% static 'main/img/pen.svg' %}">
-        </div>
-        <div class="backpack">
-            <img src="{% static 'main/img/backpack.svg' %}">
-        </div>
-        <div class="dnevnik">
-            <img src="{% static 'main/img/dnevnik.svg' %}">
-        </div>
-        <div class="noj">
-            <img src="{% static 'main/img/noj.svg' %}">
-        </div>
-        <div class="lineika">
-            <img src="{% static 'main/img/lineika.svg' %}">
-        </div>
-        <div class="skrepka" id="skrepka">
-            <img src="{% static 'main/img/skrepka.svg' %}">
-        </div>
+
+
+<!--        <div class="pen">-->
+<!--            <img src="{% static 'main/img/pen.svg' %}">-->
+<!--        </div>-->
+<!--        <div class="backpack">-->
+<!--            <img src="{% static 'main/img/backpack.svg' %}">-->
+<!--        </div>-->
+<!--        <div class="dnevnik">-->
+<!--            <img src="{% static 'main/img/dnevnik.svg' %}">-->
+<!--        </div>-->
+<!--        <div class="noj">-->
+<!--            <img src="{% static 'main/img/noj.svg' %}">-->
+<!--        </div>-->
+<!--        <div class="lineika">-->
+<!--            <img src="{% static 'main/img/lineika.svg' %}">-->
+<!--        </div>-->
+<!--        <div class="skrepka" id="skrepka">-->
+<!--            <img src="{% static 'main/img/skrepka.svg' %}">-->
+<!--        </div>-->
         <div class="people">
             <img src="{% static 'main/img/people.svg' %}" alt="people">
         </div>
+        <div class="video-container">
+            <video id="video1" autoplay muted>
+                <source src="{% static 'main/img/video2.mp4' %}" type="video/mp4">
+                Видео не поддерживается
+            </video>
+            <video id="video2" muted>
+                <source src="{% static 'main/img/video3.mp4' %}" type="video/mp4">
+                Видео не поддерживается
+            </video>
+            <div class="indicator-container">
+                <div class="indicator active"></div>
+                <div class="indicator"></div>
+            </div>
+        </div>
+
+
+        <div class="huynya"></div>
+
         <div class="peopleline">
-            <img src="{% static 'main/img/peopleline.png' %}" alt="peopleline">
+            <img src="{% static 'main/img/peopleline2.png' %}" alt="peopleline">
         </div>
     </div>
     <div>
@@ -57,15 +80,100 @@
         <div class="rectangleupperhelptext"></div>
         <div class="rectangleupperhelptext2"></div>
     </div>
-    <div class="leftimg"></div>
-    <div class="rightimg"></div>
-    <div class="imgblock">
-        <div class="engimg"><img src="{% static 'main/img/eng.svg' %}"></div>
-        <div class="ruimg"><img src="{% static 'main/img/ru.svg' %}"></div>
-        <div class="informimg"><img src="{% static 'main/img/inform.svg' %}"></div>
-        <div class="bioimg"><img src="{% static 'main/img/bio.svg' %}"></div>
-        <div class="historyimg"><img src="{% static 'main/img/history.svg' %}"></div>
+    <div class="rightimg">
+            <img src="{% static 'main/img/rightimg.svg' %}">
     </div>
+    <div class="leftimg">
+            <img src="{% static 'main/img/leftimg.svg' %}">
+    </div>
+    <div class="imgblock">
+        <div class="imgslide">
+            <!-- Каждая карточка получает класс img-card -->
+            <div class="img-card engimg">
+                <img src="{% static 'main/img/eng.svg' %}">
+                <div class="overlay">
+                    <p>Перейти к каталогу</p>
+                    <span class="arrow">→</span>
+                </div>
+            </div>
+            <div class="img-card ruimg">
+                <img src="{% static 'main/img/ru.svg' %}">
+                <div class="overlay">
+                    <p>Перейти к каталогу</p>
+                    <span class="arrow">→</span>
+                </div>
+            </div>
+            <div class="img-card informimg">
+                <img src="{% static 'main/img/inform.svg' %}">
+                <div class="overlay">
+                    <p>Перейти к каталогу</p>
+                    <span class="arrow">→</span>
+                </div>
+            </div>
+            <div class="img-card bioimg">
+                <img src="{% static 'main/img/bio.svg' %}">
+                <div class="overlay">
+                    <p>Перейти к каталогу</p>
+                    <span class="arrow">→</span>
+                </div>
+            </div>
+            <div class="img-card historyimg">
+
+                <img src="{% static 'main/img/history.svg' %}">
+                <div class="overlay">
+                    <p>Перейти к каталогу</p>
+                    <span class="arrow">→</span>
+                </div>
+            </div>
+            <div class="img-card chemistryimg">
+                <div class="chemistryimg">
+                    <img src="{% static 'main/img/chemistry.svg' %}">
+                    <div class="overlay">
+                        <p>Перейти к каталогу</p>
+                        <span class="arrow">→</span>
+                    </div>
+                </div>
+            </div>
+            <div class="img-card economyimg">
+                <img src="{% static 'main/img/economy.svg' %}">
+                <div class="overlay">
+                    <p>Перейти к каталогу</p>
+                    <span class="arrow">→</span>
+                </div>
+            </div>
+            <div class="img-card astroimg">
+                <img src="{% static 'main/img/astro.svg' %}">
+                <div class="overlay">
+                    <p>Перейти к каталогу</p>
+                    <span class="arrow">→</span>
+                </div>
+            </div>
+            <div class="img-card germimg">
+                <img src="{% static 'main/img/germ.svg' %}">
+                <div class="overlay">
+                    <p>Перейти к каталогу</p>
+                    <span class="arrow">→</span>
+                </div>
+            </div>
+            <div class="img-card literimg">
+                <img src="{% static 'main/img/liter.svg' %}">
+                <div class="overlay">
+                    <p>Перейти к каталогу</p>
+                    <span class="arrow">→</span>
+                </div>
+            </div>
+            <div class="img-card geoimg">
+                <img src="{% static 'main/img/geoimg.svg' %}">
+                <div class="overlay">
+                    <p>Перейти к каталогу</p>
+                    <span class="arrow">→</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <h51 class="ustal">Уставай меньше, узнавай</h51>
     <div class="bolshebox">
         <div class="textinbox">больше</div>
@@ -73,47 +181,60 @@
     <div class="imgblock2">
         <div class="bigimg"><img src="{% static 'main/img/bigimg.png' %}"></div>
         <div class="littleimg"><img src="{% static 'main/img/littleimg.png' %}"></div>
-        <div class="rec1">
+        <div class="nadpis1">
+            <div class="rec1">
+            </div>
+            <div class="rec1logo"><img src="{% static 'main/img/rec1logo.svg' %}"></div>
+            <div class="rec1header">Быстрое обучение</div>
+            <div class="rec1text">Не нужно тратить время на дорогу и подготовку. Наши видеозвонки и мессенджер позволяют
+                учиться в любое время и месте, ускоряя процесс обучения
+            </div>
         </div>
-        <div class="rec1logo"><img src="{% static 'main/img/rec1logo.svg' %}"></div>
-        <div class="rec1header">Быстрое обучение</div>
-        <div class="rec1text">Не нужно тратить время на дорогу и подготовку. Наши видеозвонки и мессенджер позволяют
-            учиться в любое время и месте, ускоряя процесс обучения
+        <div class="nadpis2">
+            <div class="rec2">
+            </div>
+            <div class="rec2logo"><img src="{% static 'main/img/rec2logo.svg' %}"></div>
+            <div class="rec2header">Доступно везде</div>
+            <div class="rec2text">Неважно, где вы находитесь — платформа доступна даже в небольших городах и удалённых
+                регионах, позволяя легко найти подходящего репетитора
+            </div>
         </div>
-        <div class="rec2">
+        <div class="nadpis3">
+            <div class="rec3">
+            </div>
+            <div class="rec3logo"><img src="{% static 'main/img/rec3logo.svg' %}"></div>
+            <div class="rec3header">Гибкость расписания</div>
+            <div class="rec3text">Выберите удобное время для занятий. Онлайн-формат позволяет корректировать расписание
+                под
+                ваш ритм жизни
+            </div>
         </div>
-        <div class="rec2logo"><img src="{% static 'main/img/rec2logo.svg' %}"></div>
-        <div class="rec2header">Доступно везде</div>
-        <div class="rec2text">Неважно, где вы находитесь — платформа доступна даже в небольших городах и удалённых
-            регионах, позволяя легко найти подходящего репетитора
+        <div class="nadpis4">
+            <div class="rec4">
+            </div>
+            <div class="rec4logo"><img src="{% static 'main/img/rec4logo.svg' %}"></div>
+            <div class="rec4header">Простой поиск</div>
+            <div class="rec4text">Удобный фильтр и рейтинг помогут быстро найти подходящего специалиста по вашей теме и
+                уровню подготовки
+            </div>
         </div>
-        <div class="rec3">
+        <div class="nadpis5">
+            <div class="rec5">
+            </div>
+            <div class="rec5logo"><img src="{% static 'main/img/rec5logo.svg' %}"></div>
+            <div class="rec5header">Проверенные специалисты</div>
+            <div class="rec5text">Каждый репетитор проходит тщательную проверку. Отзывы и рейтинги позволяют объективно
+                оценить качество обучения
+            </div>
         </div>
-        <div class="rec3logo"><img src="{% static 'main/img/rec3logo.svg' %}"></div>
-        <div class="rec3header">Гибкость расписания</div>
-        <div class="rec3text">Выберите удобное время для занятий. Онлайн-формат позволяет корректировать расписание под
-            ваш ритм жизни
-        </div>
-        <div class="rec4">
-        </div>
-        <div class="rec4logo"><img src="{% static 'main/img/rec4logo.svg' %}"></div>
-        <div class="rec4header">Простой поиск</div>
-        <div class="rec4text">Удобный фильтр и рейтинг помогут быстро найти подходящего специалиста по вашей теме и
-            уровню подготовки
-        </div>
-        <div class="rec5">
-        </div>
-        <div class="rec5logo"><img src="{% static 'main/img/rec5logo.svg' %}"></div>
-        <div class="rec5header">Проверенные специалисты</div>
-        <div class="rec5text">Каждый репетитор проходит тщательную проверку. Отзывы и рейтинги позволяют объективно
-            оценить качество обучения
-        </div>
-        <div class="rec6">
-        </div>
-        <div class="rec6logo"><img src="{% static 'main/img/rec6logo.svg' %}"></div>
-        <div class="rec6header">Поддержка платформы</div>
-        <div class="rec6text">Наша техподдержка всегда на связи, чтобы обеспечить бесперебойную работу и ответить на
-            ваши вопросы
+        <div class="nadpis6">
+            <div class="rec6">
+            </div>
+            <div class="rec6logo"><img src="{% static 'main/img/rec6logo.svg' %}"></div>
+            <div class="rec6header">Поддержка платформы</div>
+            <div class="rec6text">Наша техподдержка всегда на связи, чтобы обеспечить бесперебойную работу и ответить на
+                ваши вопросы
+            </div>
         </div>
     </div>
 </div>
@@ -131,68 +252,158 @@
     });
 </script>
 <script>
-    document.querySelectorAll('.imgblock div img').forEach(img => {
-        img.addEventListener('mouseenter', () => {
-            // Получаем текущие CSS стили изображения
-            const topValue = parseInt(window.getComputedStyle(img.parentElement).top); // Изменение: используем parentElement для получения top
+    document.addEventListener("DOMContentLoaded", function () {
+        const videos = document.querySelectorAll(".video-container video");
+        const indicators = document.querySelectorAll(".indicator");
+        let currentVideo = 0;
+        const fadeTime = 1; // Время наложения (в секундах)
 
-            // Если top равен 1140px, добавляем класс `.down`, иначе — `.up`
-            if (topValue === 1140) {
-                img.classList.add('up'); // Сдвигаем вниз
-            } else if (topValue === 1230) {
-                img.classList.add('down'); // Сдвигаем вверх
-            }
+        function playNextVideo() {
+            const current = videos[currentVideo];
+            const nextVideoIndex = (currentVideo + 1) % videos.length;
+            const next = videos[nextVideoIndex];
 
-            // Добавляем серый фильтр ко всем остальным изображениям
-            document.querySelectorAll('.imgblock div img').forEach(otherImg => {
-                if (otherImg !== img) {
-                    otherImg.classList.add('gray');
+            // Смена активного индикатора
+            indicators[currentVideo].classList.remove("active");
+            indicators[nextVideoIndex].classList.add("active");
+
+            // Установить следующее видео активным
+            next.currentTime = 0; // Обнуляем следующее видео
+            next.classList.add("active");
+            next.play();
+
+            // Отключить текущее видео через fadeTime
+            setTimeout(() => {
+                current.classList.remove("active");
+                current.classList.add("inactive");
+                current.nextTriggered = false; // Сбрасываем состояние для текущего видео
+            }, fadeTime * 1000);
+
+            // Обновить текущий индекс
+            currentVideo = nextVideoIndex;
+        }
+
+        // Добавить плавный переход перед концом текущего видео
+        videos.forEach((video) => {
+            video.addEventListener("timeupdate", () => {
+                if (video.duration - video.currentTime <= fadeTime && !video.nextTriggered) {
+                    video.nextTriggered = true; // Гарантируем, что это событие не будет вызвано дважды
+                    playNextVideo();
+                }
+            });
+
+            video.addEventListener("loadeddata", () => {
+                // Первое видео отображается сразу без анимации
+                if (video === videos[0]) {
+                    video.classList.add("no-transition"); // Убираем анимацию
+                    video.classList.add("active");
+                    indicators[0].classList.add("active");
+
+                    // После первой загрузки можно включить переходы для следующих видео
+                    setTimeout(() => {
+                        video.classList.remove("no-transition");
+                    }, 100);
                 }
             });
         });
 
-        img.addEventListener('mouseleave', () => {
-            // Убираем классы `.up` и `.down` после ухода мыши
-            img.classList.remove('up', 'down');
-
-            // Убираем серый фильтр со всех остальных изображений
-            document.querySelectorAll('.imgblock div img').forEach(otherImg => {
-                otherImg.classList.remove('gray');
-            });
-        });
+        // Убедиться, что первое видео играет сразу
+        videos[currentVideo].play();
     });
 </script>
+
+
+
 <script>
-    const skrepka = document.getElementById('skrepka');
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.querySelector('.containerscroll'); // Контейнер, который будет двигаться
+    const platform = document.querySelector('.web-platform1');
+    const onlinebox = document.querySelector('.onlinebox');
+    const textunderonlinebox = document.querySelector('.textunderonlinebox');
 
-    let isDragging = false;
-    let offsetX, offsetY;
+    let maxScroll = 250; // Максимальное расстояние, на которое элементы могут двигаться
+    let offset = 0;
 
-    // Предотвращаем перетаскивание по умолчанию
-    skrepka.addEventListener('dragstart', (e) => {
-        e.preventDefault();
-    });
+    // Следим за прокруткой страницы
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
 
-    skrepka.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        offsetX = e.clientX - skrepka.getBoundingClientRect().left;
-        offsetY = e.clientY - skrepka.getBoundingClientRect().top;
-        skrepka.style.animation = 'none'; // Убираем анимацию
-        skrepka.style.transform = 'scale(1.2)'; // Увеличиваем скрепку при захвате
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-            skrepka.style.left = `${e.clientX - offsetX}px`;
-            skrepka.style.top = `${e.clientY - offsetY}px`;
+        // Двигаем контейнер, пока скроллим
+        if (scrollY < maxScroll) {
+            offset = scrollY;
+        } else {
+            offset = maxScroll; // Не даем прокрутке выходить за 250px
         }
-    });
 
-    document.addEventListener('mouseup', () => {
-        isDragging = false;
-        skrepka.style.animation = 'float 6s ease-in-out infinite'; // Возвращаем анимацию
-        skrepka.style.transform = 'scale(1)'; // Возвращаем оригинальный размер
+        // Обновляем позицию контейнера
+        container.style.transform = `translateY(${offset}px)`;
     });
+});
+
+</script>
+<script>
+let currentIndex = 1; // Устанавливаем начальный индекс на 1, чтобы показывалось второе изображение
+const slides = document.querySelectorAll('.imgslide div');
+const totalSlides = slides.length;
+const slideWidth = 350;  // Ширина одного слайда
+
+// Получаем кнопки
+const leftButton = document.querySelector('.leftimg');
+const rightButton = document.querySelector('.rightimg');
+
+// Обработчик для кнопки "влево"
+leftButton.addEventListener('click', () => {
+    moveSlide('prev');
+});
+
+// Обработчик для кнопки "вправо"
+rightButton.addEventListener('click', () => {
+    moveSlide('next');
+});
+
+// Функция для движения слайдера
+function moveSlide(direction) {
+    if (direction === 'next') {
+        if (currentIndex < totalSlides - 1) {
+            currentIndex++;
+        }
+    } else if (direction === 'prev') {
+        if (currentIndex > 0) {
+            currentIndex--;
+        }
+    }
+
+    updateSlider();
+    updateButtonStates();
+}
+
+// Обновление положения слайдера
+function updateSlider() {
+    const offset = -currentIndex * slideWidth; // Сдвиг на ширину одного слайда (300px)
+    document.querySelector('.imgslide').style.transform = `translateX(${offset}px)`;
+}
+
+// Обновление состояния кнопок
+function updateButtonStates() {
+    // Если первая картинка (engimg), блокируем кнопку "влево"
+    if (currentIndex === 0) {
+        leftButton.style.pointerEvents = 'none';  // Отключаем кнопку
+    } else {
+        leftButton.style.pointerEvents = 'auto'; // Включаем кнопку
+    }
+
+    // Если последняя картинка (chemistryimg), блокируем кнопку "вправо"
+    if (currentIndex === 6) {
+        rightButton.style.pointerEvents = 'none'; // Отключаем кнопку
+    } else {
+        rightButton.style.pointerEvents = 'auto'; // Включаем кнопку
+    }
+}
+
+// Инициализация состояния кнопок при загрузке
+updateSlider();
+updateButtonStates();
+
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -202,14 +413,20 @@ document.addEventListener('DOMContentLoaded', () => {
         ruimg: 'Русский язык',
         informimg: 'Информатика',
         bioimg: 'Биология',
-        historyimg: 'История'
+        historyimg: 'История',
+        chemistryimg: 'Химия',
+        economyimg: 'Экономика',
+        astroimg: 'Астрономия',
+        germimg: 'Немецкий язык',
+        literimg: 'Литература',
+        geoimg: 'География'
     };
 
-    // Добавляем клик-обработчики для каждой картинки
+    // Добавляем клик-обработчики для оверлеев
     Object.keys(filters).forEach(className => {
-        const element = document.querySelector(`.${className}`);
-        if (element) {
-            element.addEventListener('click', () => {
+        const overlay = document.querySelector(`.${className} .overlay`);
+        if (overlay) {
+            overlay.addEventListener('click', () => {
                 const filter = filters[className];
                 if (filter) {
                     window.location.href = `/catalog2?filter=${encodeURIComponent(filter)}`;
@@ -219,6 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
+
 <script>
     // Выбираем navbar
     const navbar = document.querySelector('.navbarg');
@@ -231,5 +449,16 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.classList.remove('scrolled');
         }
     });
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const video = document.getElementById("videoloop");
+    if (video) {
+        video.load(); // Перезагружаем видео
+        video.play(); // Запускаем воспроизведение
+    }
+});
+
 </script>
 {% endblock %}

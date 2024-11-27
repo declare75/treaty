@@ -8,6 +8,25 @@ body.dark-theme .FIO {
     color: white;
 }
 
+.filterobject button.active {
+    background-color: #466ee5; /* Цвет активной кнопки */
+    color: white; /* Текст белого цвета */
+    border-color: #466ee5; /* Цвет границы активной кнопки */
+}
+
+body.dark-theme .filterobject button.active {
+    background-color: #466ee5; /* Цвет активной кнопки */
+    color: white; /* Текст белого цвета */
+    border-color: #466ee5; /* Цвет границы активной кнопки */
+}
+
+.filterobject button:hover {
+    background-color: #5b7fde; /* Цвет фона при наведении */
+    color: white;
+    border-color: #5b7fde;
+}
+
+
 body.dark-theme .filterobject button {
     background-color: #212121;
     color: white;

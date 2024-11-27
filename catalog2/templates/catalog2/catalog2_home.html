@@ -72,7 +72,6 @@
     <p>Преподаватели /</p>
 </div>
 <div class="searchbtnm">Найти</div>
-<div id="filterButtonContainer"></div>
 <div><input type="text" id="searchInput" placeholder="Введите имя преподавателя" class="searchM"
             onkeyup="filterSearch()"></div>
 <div class="filterobject">
@@ -249,22 +248,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Обработчик для кнопок предметов
     subjectButtons.forEach(button => {
-        button.addEventListener("click", function () {
-            // Если filter-button.show активна, не меняем состояние предметного фильтра
-            if (showActive) return;
+      button.addEventListener("click", function () {
+        const newSubject = button.textContent;
 
-            const newSubject = button.textContent;
+        // Если нажали на активную кнопку, отменяем выбор фильтра
+        if (activeSubject === newSubject) {
+            activeSubject = null; // Сбрасываем фильтр
+            button.classList.remove("active"); // Убираем стиль активной кнопки
+        } else {
+            activeSubject = newSubject; // Устанавливаем текущий предмет
+            subjectButtons.forEach(btn => btn.classList.remove("active")); // Сбрасываем активные кнопки
+            button.classList.add("active"); // Устанавливаем активную кнопку
+        }
 
-            // Если нажали на активную кнопку, включаем filter-button.show
-            if (activeSubject === newSubject) {
-                filterButtonShow.click(); // Имитация клика по кнопке "filter-button show"
-            } else {
-                activeSubject = newSubject; // Устанавливаем текущий предмет
-                subjectButtons.forEach(btn => btn.classList.remove("active")); // Сбрасываем активные кнопки
-                button.classList.add("active"); // Устанавливаем активную кнопку
-                filterCards(); // Применяем фильтрацию
-            }
-        });
+        filterCards(); // Применяем фильтрацию
+      });
     });
 
     // Обработчик для кнопки "filter-button show"
