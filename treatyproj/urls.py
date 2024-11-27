@@ -5,6 +5,7 @@ from django.urls import path, include
 from django.contrib import admin
 from catalog2 import views
 from main import views as main_views
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('', include('main.urls')),
@@ -14,6 +15,7 @@ urlpatterns = [
     path('chats/', include('chat.urls')),
     path('register/', main_views.register_view, name='register'),
     path('profile/', main_views.profile_view, name='profile'),
+    path('favicon.ico', RedirectView.as_view(url='/static/main/img/t.svg', permanent=True)),
 
 ]
 
