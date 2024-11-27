@@ -1,45 +1,48 @@
-
-
-
-
 body.profile {
   background-color: #ffffff;
   display: flex;
-  flex-direction: row;
   justify-content: center;
   width: 100%;
+  height: 100%;
   opacity: 0;
+}
 
-
-
+.profile .profile-container{
+    padding: 30px;
+    margin: 55px auto;
+    max-width: 1010px;
+    max-height: 620px;
+    height: 100%;
+    width: 100%;
 }
 
 .profile .rectangle {
-  position: absolute;
-  width: 950px;
-  height: 560px;
-  top: 180px;
-  left: 485px;
-
+  display: flex;
+  max-width: 950px;
+  max-height: 560px;
+  width: 100%;
+  height: 100%;
   border-radius: 15px;
   box-shadow: 0px -4px 22px #00000040;
   transition: background-color 0.4s ease, box-shadow 0.4s ease;
   opacity: 1;
-
 }
+
 body.dark-theme .profile .rectangle {
     background-color: #212121;
     box-shadow: 0px -4px 22px #00000040;
     opacity: 1;
-
 }
 
 .profile .rectangle-2 {
-    position: absolute;
-    width: 305px;
-    height: 560px;
-    top: 0;
-    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 305px;
+    max-height: 560px;
+    width: 100%;
+    height: 100%;
+    margin: 0;
     border-radius: 15px 100px 70px 15px;
     background: linear-gradient(90deg, #466EE5 0%, #799BFF 100%);
     transition: background 0.3s ease; /* Плавный переход для фона */
@@ -51,12 +54,12 @@ body.dark-theme .profile .rectangle-2 {
     opacity: 1;
 }
 
-
 .profile .name {
-    width: 163.0px;
-    height: 54.0px;
-    top: 265px;
-    left: 71px;
+    max-width: 163.0px;
+    max-height: 54.0px;
+    width: 100%;
+    height: 100%;
+    margin: 266px 0;
     font-family: Manrope;
     font-weight: 500;
     color: #ffffff;
@@ -72,8 +75,6 @@ body.dark-theme .profile .rectangle-2 {
 .profile .name input {
     width: 163.0px;
     height: 30.0px;
-    top: 265px;
-    left: 81px;
     font-family: Manrope;
     font-weight: 500;
     font-size: 15px;
@@ -110,13 +111,13 @@ body.dark-theme .profile .rectangle-2 {
     border-style: none;
     border-radius: 7px
 }
+
 .avatar {
-    width: 127.0px;
-    height: 127.0px;
+    max-width: 127.0px;
+    max-height: 127.0px;
+    width: 100%;
+    height: 100%;
     flex-shrink: 0;
-    position: absolute;
-    top: 80px;
-    left: -30px;
     overflow: hidden;
     transition: box-shadow 0.3s ease; /* Плавный переход для тени */
     border-radius: 50%;
@@ -205,22 +206,78 @@ body.dark-theme .profile .rectangle-2 {
   border-radius: 3.5px;
 }
 
+.profile .rectangle5{
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 576px;
+    max-height: 444px;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    margin: 12px 20px;
+}
+
+.profile .rectangle3{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width: 576px;
+  max-height: 329px;
+  width: 100%;
+  height: 100%;
+}
+
+.profile .top-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile .row{
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  row-gap: 19px;
+  column-gap: 57px;
+  align-items: center;
+  width: 100%;
+}
+
 .profile .rectangle-group {
-  position: absolute;
-  width: 133px;
-  height: 20px;
-  top: 30px;
-  left: 785px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 3px;
+  max-width: 143px;
+  max-height: 23px;
+  width: 100%;
+  height: 100%;
+}
+
+.profile .rectangle4{
+    max-width: 406px;
+    max-height: 79px;
+    width: 100%;
+    height: 100%;
+    margin-top: 21px;
+}
+
+.profile .switch-row{
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  row-gap: 19px;
+  column-gap: 218px;
+  align-items: center;
+  width: 100%;
 }
 
 .profile .edit {
-  top: 0;
-  left: 0;
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  row-gap: 5px;
   font-family: Manrope;
   font-weight: 500;
   color: #242424;
   font-size: 15px;
-  position: absolute;
   letter-spacing: 0;
   line-height: normal;
   border: none;
@@ -232,11 +289,11 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .edit img {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 0px;
-  left: 120px;
+  margin-top: 4px;
+  max-width: 15px;
+  max-height: 15px;
+  width: 100%;
+  height: 100%;
 }
 
 .profile .iconamoon-edit-light {
@@ -248,13 +305,10 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .title {
-  top: 26px;
-  left: 340px;
   font-family: Manrope;
   font-weight: 400;
   color: #242424;
   font-size: 20px;
-  position: absolute;
   letter-spacing: 0;
   line-height: normal;
   -webkit-user-drag: none;
@@ -264,13 +318,11 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .settings {
-  top: 328px;
-  left: 340px;
+  margin-top: 33px;
   font-family: Manrope;
   font-weight: 400;
   color: #242424;
   font-size: 20px;
-  position: absolute;
   letter-spacing: 0;
   line-height: normal;
   -webkit-user-drag: none;
@@ -280,9 +332,7 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .email-title {
-  position: absolute;
-  top: 89px;
-  left: 340px;
+  margin-top: 6px;
   font-family: Manrope;
   font-weight: 400;
   color: #242424;
@@ -296,13 +346,10 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .theme {
-  top: 391px;
-  left: 340px;
   font-family: Manrope;
   font-weight: 400;
   color: #242424;
   font-size: 20px;
-  position: absolute;
   letter-spacing: 0;
   line-height: normal;
   -webkit-user-drag: none;
@@ -312,13 +359,10 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .notification {
-  top: 391px;
-  left: 616px;
   font-family: Manrope;
   font-weight: 400;
   color: #242424;
   font-size: 20px;
-  position: absolute;
   letter-spacing: 0;
   line-height: normal;
   -webkit-user-drag: none;
@@ -328,13 +372,10 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .phone-title {
-  top: 89px;
-  left: 616px;
   font-family: Manrope;
   font-weight: 400;
   color: #242424;
   font-size: 20px;
-  position: absolute;
   letter-spacing: 0;
   line-height: normal;
   -webkit-user-drag: none;
@@ -344,13 +385,10 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .birthday-title {
-  top: 192px;
-  left: 340px;
   font-family: Manrope;
   font-weight: 400;
   color: #242424;
   font-size: 20px;
-  position: absolute;
   letter-spacing: 0;
   line-height: normal;
   -webkit-user-drag: none;
@@ -360,13 +398,10 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .contact-title {
-  top: 192px;
-  left: 616px;
   font-family: Manrope;
   font-weight: 400;
   color: #242424;
   font-size: 20px;
-  position: absolute;
   letter-spacing: 0;
   line-height: normal;
   -webkit-user-drag: none;
@@ -388,9 +423,6 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .email {
-  position: absolute;
-  top: 135px;
-  left: 340px;
   font-family: Manrope;
   font-weight: 400;
   color: #b4b4b4;
@@ -402,9 +434,6 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .birthday {
-  position: absolute;
-  top: 238px;
-  left: 340px;
   font-family: Manrope;
   font-weight: 400;
   color: #b4b4b4;
@@ -416,13 +445,10 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .phone {
-  top: 135px;
-  left: 616px;
   font-family: Manrope;
   font-weight: 400;
   color: #b4b4b4;
   font-size: 20px;
-  position: absolute;
   letter-spacing: 0;
   line-height: normal;
   -webkit-user-drag: none;
@@ -430,9 +456,6 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .contact {
-  position: absolute;
-  top: 238px;
-  left: 616px;
   font-family: Manrope;
   font-weight: 400;
   color: #b4b4b4;
@@ -444,11 +467,12 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .theme-switch {
-  position: absolute;
+  display: flex;
+  aligh-items: center;
+  justify-content: flex-start;
+  position:relative;
   width: 68px;
   height: 33px;
-  top: 438px;
-  left: 340px;
 }
 
 .profile .theme-switch input {
@@ -456,15 +480,14 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .theme-switch label {
-  position: absolute;
-  top: 0;
-  left: 0;
+  flex-shrink: 0;
   width: 100%;
   height: 100%;
   background-color: #466ee5;
   border-radius: 41px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  position: relative;
 }
 
 .profile .theme-switch label::after{
@@ -513,11 +536,12 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .notification-switch {
-  position: absolute;
+  display: flex;
+  aligh-items: center;
+  justify-content: flex-start;
+  position:relative;
   width: 68px;
   height: 33px;
-  top: 438px;
-  left: 616px;
   background-color: #466ee5;
   border-radius: 41px;
 }
@@ -527,7 +551,8 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 .profile .notification-switch label {
-  position: absolute;
+  flex-shrink: 0;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
@@ -644,7 +669,7 @@ body.dark-theme .profile .rectangle-2 {
     z-index: 10;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .profile .rectangle {
         width: 90%;
         left: 5%;
@@ -726,7 +751,7 @@ body.dark-theme .profile .rectangle-2 {
         position: relative;
         cursor: pointer;
         width: 120px; /* Увеличиваем для мобильных */
-    }
+   /* }
 
     #avatarContainer:hover::after {
         font-size: 10px;
@@ -735,7 +760,7 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 /* Для самых маленьких экранов */
-@media (max-width: 480px) {
+/*@media (max-width: 480px) {
     .profile .rectangle {
         width: 100%;
         top: 50px;
@@ -785,7 +810,7 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 /* Для планшетов (от 768px до 1024px) */
-@media (min-width: 768px) and (max-width: 1024px) {
+/*@media (min-width: 768px) and (max-width: 1024px) {
     .profile .rectangle {
         width: 85%;
         left: 7.5%;
@@ -828,7 +853,7 @@ body.dark-theme .profile .rectangle-2 {
 }
 
 /* Для десктопов (больше 1024px) */
-@media (min-width: 1024px) {
+/*@media (min-width: 1024px) {
     .profile .rectangle {
         width: 950px;
         left: 50%;
@@ -866,4 +891,4 @@ body.dark-theme .profile .rectangle-2 {
     .profile .contact-title {
         font-size: 20px;
     }
-}
+} */
