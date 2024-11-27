@@ -72,7 +72,6 @@
     <p>Преподаватели /</p>
 </div>
 <div class="searchbtnm">Найти</div>
-<div id="filterButtonContainer"></div>
 <div><input type="text" id="searchInput" placeholder="Введите имя преподавателя" class="searchM"
             onkeyup="filterSearch()"></div>
 <div class="filterobject">
@@ -111,7 +110,7 @@
                 </div>
                 <p class="desc">{{ el.description }}</p>
                 <p class="age">{{ el.user.get_age }}</p>
-                <p class="rating">{{ el.rating }}</p>
+                <p class="rating">{{ el.user.rating|floatformat:1 }}</p>
                 <img src="{% static 'main/img/ratingEllipse.svg' %}" alt="rating" class="ratingEllipse">
                 {% if el.user.avatar %}
                 <img src="{{ el.user.avatar.url }}" alt="{{ el.user.get_display_name }}"
@@ -121,26 +120,124 @@
                 {% endif %}
                 <div class="morebtn" style="cursor: pointer;">Подробнее</div>
                 <div class="extra-info">
-                    <p>Подробная информация здесь...</p>
-                    <a href="{% url 'chat_view' receiver_id=el.user.id %}" target="_blank">
-                        <img src="{% static 'main/img/button.svg' %}" alt="button" class="button">
-                    </a>
-                    <div class="review">
-                        <div class="FIOreview">{{ el.user.last_name }} {{ el.user.first_name }} {{ el.user.middle_name
-                            }}
+                    <div class="borderleft"></div>
+                    <div class="borderright"></div>
+                    <p class="reviewtext8">Отзывы преподавателя</p>
+                    <div class="rightimg2">
+                        <img src="{% static 'main/img/rightimg2.svg' %}" id="nextButton">
+                    </div>
+                    <div class="leftimg2">
+                        <img src="{% static 'main/img/leftimg2.svg' %}" id="prevButton">
+                    </div>
+                    <!-- Отображение существующих отзывов -->
+                    <div class="reviews8">
+                        {% for review in el.user.reviews_received.all %}
+                        <div class="review8">
+                            <p class="reviewer-name8"><strong>{{ review.reviewer.get_full_name }}</strong></p>
+
+                            <div class="review-content8">
+                                <p class="review-text8">{{ review.text }}</p>
+                                <p class="review-meta8 small">{{ review.created_at|date:"d.m.Y" }}</p>
+
+                                <span class="review-stars8">
+                                    {% for star in "★★★★★" %}
+                                    {% if forloop.counter <= review.rating %}
+                                    <span class="star-filled8">&#9733;</span>
+                                    {% else %}
+                                    <span class="star-empty8">&#9733;</span>
+                                    {% endif %}
+                                    {% endfor %}
+                                </span>
+                            </div>
                         </div>
-                        <div class="reviewdesc">{{ el.description }}</div>
-                        <img src="{{ el.user.avatar.url }}" alt="{{ el.user.get_display_name }}"
-                             style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"
-                             class="avatarreview">
+                        {% empty %}
+                        <p>Пока отзывов нет.</p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="custom-modal" id="modal7" tabindex="-1" aria-labelledby="modalLabel7" aria-hidden="true">
+                        <div class="custom-modal-dialog">
+                            <div class="custom-modal-content">
+                                <div class="custom-modal-body">
+                                    <form method="post" action="{% url 'add_review' el.user.id %}">
+                                        {% csrf_token %}
+
+                                        <!-- Звезды для рейтинга -->
+                                        <div class="star-rating">
+                                            <span class="star" data-value="1">&#9733;</span> <!-- Звезда -->
+                                            <span class="star" data-value="2">&#9733;</span>
+                                            <span class="star" data-value="3">&#9733;</span>
+                                            <span class="star" data-value="4">&#9733;</span>
+                                            <span class="star" data-value="5">&#9733;</span>
+                                        </div>
+                                        <h5 class="custom-modal-title" id="modalLabel7">Оставьте отзыв</h5>
+
+                                        <!-- Скрытое поле для отправки рейтинга -->
+                                        {{ form.rating }}
+
+                                        <!-- Появится после выбора звезд -->
+                                        <div class="review-form">
+                                            <div class="form-text8">
+                                                {{ form.text }}
+                                                <p id="char-counter8">Осталось символов: 150</p>
+                                            </div>
+                                            <button type="submit" class="custom-btn-submit">Отправить</button>
+                                            <button type="button" class="custom-btn-cancel">Отмена</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
 <div class="space-bottom"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const textInput = document.querySelector('.form-text8 textarea');
+    const charCounter = document.getElementById('char-counter8');
+    const maxChars = 150;
+
+    if (textInput) {
+        textInput.addEventListener('input', () => {
+            const remainingChars = maxChars - textInput.value.length;
+            charCounter.textContent = `Осталось символов: ${remainingChars}`;
+
+            // Предотвращаем ввод, если достигнут предел символов
+            if (remainingChars < 0) {
+                textInput.value = textInput.value.substring(0, maxChars);
+                charCounter.textContent = `Осталось символов: 0`;
+            }
+        });
+    }
+});
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Элементы
+        const modal = new bootstrap.Modal(document.getElementById('modal7'));
+        const openButton = document.getElementById('openModal7');
+        const closeButton = document.getElementById('closeModal7');
+
+        // Открытие модального окна
+        openButton.addEventListener('click', function () {
+            modal.show();
+        });
+
+        // Закрытие модального окна
+        closeButton.addEventListener('click', function () {
+            modal.hide();
+        });
+    });
+
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const moreButtons = document.querySelectorAll(".morebtn");
@@ -168,170 +265,201 @@
     });
 </script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    // Функция для получения значения параметра из URL
-    function getQueryParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+        // Функция для получения значения параметра из URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
 
-    // Получаем элементы для фильтрации
-    const toggles = document.querySelectorAll(".agetoggle1"); // Кнопки возрастных фильтров
-    const subjectButtons = document.querySelectorAll(".filterobject button"); // Кнопки фильтров предметов
-    const cards = document.querySelectorAll(".containerPrepods"); // Карточки преподавателей
-    const filterButtonShow = document.querySelector(".filter-button.show"); // Кнопка "filter-button show"
-    const closeButton = document.querySelector(".close-button"); // Кнопка для сброса фильтров
+        // Получаем элементы для фильтрации
+        const toggles = document.querySelectorAll(".agetoggle1"); // Кнопки возрастных фильтров
+        const subjectButtons = document.querySelectorAll(".filterobject button"); // Кнопки фильтров предметов
+        const cards = document.querySelectorAll(".containerPrepods"); // Карточки преподавателей
+        const filterButtonShow = document.querySelector(".filter-button.show"); // Кнопка "filter-button show"
+        const closeButton = document.querySelector(".close-button"); // Кнопка для сброса фильтров
 
-    // Переменные для активных фильтров
-    let activeRanges = ["18-21", "21-27", "27-35", "35-99"]; // Все диапазоны активны изначально
-    let activeSubject = getQueryParam("filter"); // Предмет из URL (если есть)
-    let showActive = false; // Переменная для состояния кнопки "filter-button show"
+        // Переменные для активных фильтров
+        let activeRanges = ["18-21", "21-27", "27-35", "35-99"]; // Все диапазоны активны изначально
+        let activeSubject = getQueryParam("filter"); // Предмет из URL (если есть)
+        let showActive = false; // Переменная для состояния кнопки "filter-button show"
 
-    // Функция для фильтрации карточек
-    function filterCards() {
-        cards.forEach(card => {
-            const ageElement = card.querySelector(".age");
-            const subjectElement = card.querySelector(".subject");
-            if (!ageElement) return;
+        // Функция для фильтрации карточек
+        function filterCards() {
+            cards.forEach(card => {
+                const ageElement = card.querySelector(".age");
+                const subjectElement = card.querySelector(".subject");
+                if (!ageElement) return;
 
-            const age = parseInt(ageElement.textContent); // Получаем возраст
-            let matchesRange = false;
+                const age = parseInt(ageElement.textContent); // Получаем возраст
+                let matchesRange = false;
 
-            // Проверяем соответствие возрастному диапазону
-            activeRanges.forEach(range => {
-                switch (range) {
-                    case "18-21":
-                        if (age >= 18 && age <= 21) matchesRange = true;
-                        break;
-                    case "21-27":
-                        if (age > 21 && age <= 27) matchesRange = true;
-                        break;
-                    case "27-35":
-                        if (age > 27 && age <= 35) matchesRange = true;
-                        break;
-                    case "35-99":
-                        if (age > 35 && age <= 99) matchesRange = true;
-                        break;
+                // Проверяем соответствие возрастному диапазону
+                activeRanges.forEach(range => {
+                    switch (range) {
+                        case "18-21":
+                            if (age >= 18 && age <= 21) matchesRange = true;
+                            break;
+                        case "21-27":
+                            if (age > 21 && age <= 27) matchesRange = true;
+                            break;
+                        case "27-35":
+                            if (age > 27 && age <= 35) matchesRange = true;
+                            break;
+                        case "35-99":
+                            if (age > 35 && age <= 99) matchesRange = true;
+                            break;
+                    }
+                });
+
+                // Проверяем соответствие предмету
+                const matchesSubject = activeSubject
+                    ? subjectElement && subjectElement.textContent.includes(activeSubject)
+                    : true;
+
+                // Показываем или скрываем карточку
+                if (matchesRange && matchesSubject) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
                 }
             });
+        }
 
-            // Проверяем соответствие предмету
-            const matchesSubject = activeSubject
-                ? subjectElement && subjectElement.textContent.includes(activeSubject)
-                : true;
+        // Обработчик для кнопок возрастных фильтров
+        toggles.forEach(toggle => {
+            toggle.addEventListener("click", function () {
+                const selectedRange = toggle.getAttribute("data-age-range");
 
-            // Показываем или скрываем карточку
-            if (matchesRange && matchesSubject) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
+                // Добавляем или убираем диапазон из активных
+                if (activeRanges.includes(selectedRange)) {
+                    activeRanges = activeRanges.filter(range => range !== selectedRange); // Убираем диапазон
+                    toggle.classList.remove("active"); // Убираем стиль активного фильтра
+                } else {
+                    activeRanges.push(selectedRange); // Добавляем диапазон
+                    toggle.classList.add("active"); // Добавляем стиль активного фильтра
+                }
+
+                filterCards(); // Применяем фильтрацию
+            });
         });
-    }
 
-    // Обработчик для кнопок возрастных фильтров
-    toggles.forEach(toggle => {
-        toggle.addEventListener("click", function () {
-            const selectedRange = toggle.getAttribute("data-age-range");
-
-            // Добавляем или убираем диапазон из активных
-            if (activeRanges.includes(selectedRange)) {
-                activeRanges = activeRanges.filter(range => range !== selectedRange); // Убираем диапазон
-                toggle.classList.remove("active"); // Убираем стиль активного фильтра
-            } else {
-                activeRanges.push(selectedRange); // Добавляем диапазон
-                toggle.classList.add("active"); // Добавляем стиль активного фильтра
-            }
-
-            filterCards(); // Применяем фильтрацию
-        });
-    });
-
-    // Обработчик для кнопок предметов
-    subjectButtons.forEach(button => {
-        button.addEventListener("click", function () {
-            // Если filter-button.show активна, не меняем состояние предметного фильтра
-            if (showActive) return;
-
+        // Обработчик для кнопок предметов
+        subjectButtons.forEach(button => {
+          button.addEventListener("click", function () {
             const newSubject = button.textContent;
 
-            // Если нажали на активную кнопку, включаем filter-button.show
+            // Если нажали на активную кнопку, отменяем выбор фильтра
             if (activeSubject === newSubject) {
-                filterButtonShow.click(); // Имитация клика по кнопке "filter-button show"
+                activeSubject = null; // Сбрасываем фильтр
+                button.classList.remove("active"); // Убираем стиль активной кнопки
             } else {
                 activeSubject = newSubject; // Устанавливаем текущий предмет
                 subjectButtons.forEach(btn => btn.classList.remove("active")); // Сбрасываем активные кнопки
                 button.classList.add("active"); // Устанавливаем активную кнопку
-                filterCards(); // Применяем фильтрацию
-            }
-        });
-    });
-
-    // Обработчик для кнопки "filter-button show"
-    if (filterButtonShow) {
-        filterButtonShow.addEventListener("click", function () {
-            showActive = !showActive; // Переключаем состояние
-            filterButtonShow.classList.toggle("active"); // Переключаем класс активности
-
-            // Сбрасываем фильтр по предмету, но оставляем возрастной фильтр
-            if (!showActive) {
-                activeSubject = null;
-                subjectButtons.forEach(button => button.classList.remove("active")); // Убираем активные классы у кнопок предметов
             }
 
             filterCards(); // Применяем фильтрацию
+          });
         });
-    }
 
-    // Обработчик для кнопки closeButton (сброс фильтра по предметам)
-    if (closeButton) {
-        closeButton.addEventListener("click", function () {
-            // Сбрасываем фильтр по предметам
-            activeSubject = null;
-            subjectButtons.forEach(button => button.classList.remove("active"));  // Убираем активные классы у кнопок
+        // Обработчик для кнопки "filter-button show"
+        if (filterButtonShow) {
+            filterButtonShow.addEventListener("click", function () {
+                showActive = !showActive; // Переключаем состояние
+                filterButtonShow.classList.toggle("active"); // Переключаем класс активности
 
-            // Снимаем активный класс с кнопки фильтра по предметам
-            if (filterBySubject) {
-                filterBySubject.classList.remove("active");
-            }
+                // Сбрасываем фильтр по предмету, но оставляем возрастной фильтр
+                if (!showActive) {
+                    activeSubject = null;
+                    subjectButtons.forEach(button => button.classList.remove("active")); // Убираем активные классы у кнопок предметов
+                }
 
-            // Применяем фильтрацию
-            filterCards();
+                filterCards(); // Применяем фильтрацию
+            });
+        }
+
+        // Обработчик для кнопки closeButton (сброс фильтра по предметам)
+        if (closeButton) {
+            closeButton.addEventListener("click", function () {
+                // Сбрасываем фильтр по предметам
+                activeSubject = null;
+                subjectButtons.forEach(button => button.classList.remove("active"));  // Убираем активные классы у кнопок
+
+                // Снимаем активный класс с кнопки фильтра по предметам
+                if (filterBySubject) {
+                    filterBySubject.classList.remove("active");
+                }
+
+                // Применяем фильтрацию
+                filterCards();
+            });
+        }
+
+        // Устанавливаем атрибуты для кнопок возрастных фильтров
+        toggles[0].setAttribute("data-age-range", "18-21");
+        toggles[1].setAttribute("data-age-range", "21-27");
+        toggles[2].setAttribute("data-age-range", "27-35");
+        toggles[3].setAttribute("data-age-range", "35-99");
+
+        // Активируем кнопки возрастных фильтров по умолчанию
+        toggles.forEach(toggle => {
+            toggle.classList.add("active");
         });
-    }
 
-    // Устанавливаем атрибуты для кнопок возрастных фильтров
-    toggles[0].setAttribute("data-age-range", "18-21");
-    toggles[1].setAttribute("data-age-range", "21-27");
-    toggles[2].setAttribute("data-age-range", "27-35");
-    toggles[3].setAttribute("data-age-range", "35-99");
+        // Если есть фильтр предмета в URL, делаем соответствующую кнопку активной
+        if (activeSubject) {
+            subjectButtons.forEach(button => {
+                if (button.textContent === activeSubject) {
+                    button.classList.add("active");
+                }
+            });
+        }
 
-    // Активируем кнопки возрастных фильтров по умолчанию
-    toggles.forEach(toggle => {
-        toggle.classList.add("active");
+        // Применяем фильтрацию при загрузке страницы
+        filterCards();
     });
-
-    // Если есть фильтр предмета в URL, делаем соответствующую кнопку активной
-    if (activeSubject) {
-        subjectButtons.forEach(button => {
-            if (button.textContent === activeSubject) {
-                button.classList.add("active");
-            }
-        });
-    }
-
-    // Применяем фильтрацию при загрузке страницы
-    filterCards();
-});
-
 
 
 </script>
 
+<script>
+    let currentIndex = 0; // Индекс текущего отзыва
+
+    // Получаем все элементы с отзывами
+    const reviews = document.querySelector('.reviews8');
+    const reviewCount = document.querySelectorAll('.review8').length;
+
+    // Функция для сдвига слайдера
+    function moveSlider(step) {
+        currentIndex += step;
+
+        // Если индекс выходит за пределы, вернуться к началу
+        if (currentIndex < 0) {
+            currentIndex = reviewCount - 1;
+        } else if (currentIndex >= reviewCount) {
+            currentIndex = 0;
+        }
+
+        // Сдвиг слайдера на нужное количество пикселей
+        reviews.style.transform = `translateX(-${currentIndex * 200}px)`;
+    }
+
+    // Обработчик клика для кнопки "вправо"
+    document.getElementById('nextButton').addEventListener('click', () => {
+        moveSlider(1); // Сдвиг в правую сторону
+    });
+
+    // Обработчик клика для кнопки "влево"
+    document.getElementById('prevButton').addEventListener('click', () => {
+        moveSlider(-1); // Сдвиг в левую сторону
+    });
+</script>
 
 <script src="{% static 'main/js/search.js' %}"></script>
 <script src="{% static 'main/js/addprepod.js' %}"></script>
 <script src="{% static 'main/js/logreg.js' %}"></script>
 <script src="{% static 'main/js/reg.js' %}"></script>
 <script src="{% static 'main/js/upload.js' %}"></script>
+<script src="{% static 'main/js/reviewstars.js' %}"></script>
 {% endblock %}

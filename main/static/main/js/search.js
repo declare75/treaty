@@ -24,7 +24,6 @@ function filterBySubject(subject) {
     const input = document.getElementById('searchInput');
     input.value = '';
     selectedSubject = subject.toLowerCase();
-    input.placeholder = `Поиск по предмету: ${subject}`;
 
     const filterButtonContainer = document.getElementById('filterButtonContainer');
     const filterButton = document.createElement('button');

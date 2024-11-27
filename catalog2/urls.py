@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from . import views
 from .views import edit_prepod
 
+
 urlpatterns = [
     path('', views.catalog2_home, name='catalog2_home'),
     path('success/', views.success_page, name='success_page'),
@@ -13,6 +14,7 @@ urlpatterns = [
     path('posts/', views.user_prepods, name='user_prepods'),
     path('get-subjects/', views.get_subjects, name='get_subjects'),
     path('get-subjects/', views.get_subjects, name='get_subjects'),
+    path('add_review/<int:teacher_id>/', views.add_review, name='add_review'),
 ]
 
 if settings.DEBUG:

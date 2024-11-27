@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.conf import settings
 
 # Используем кастомную модель пользователя
 CustomUser = get_user_model()
@@ -31,3 +32,17 @@ class Prepods(models.Model):
     class Meta:
         verbose_name = 'объявление'
         verbose_name_plural = 'Каталоги'
+
+class Review(models.Model):
+    reviewer = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reviews_written"
+    )  # Кто оставил отзыв
+    teacher = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reviews_received"
+    )  # Преподаватель, которому оставили отзыв
+    text = models.TextField()  # Текст отзыва
+    created_at = models.DateTimeField(auto_now_add=True)  # Время создания
+    rating = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return f"{self.reviewer} -> {self.teacher} ({self.rating})"

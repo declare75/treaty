@@ -29,3 +29,6 @@ class Lesson(models.Model):
     def __str__(self):
         return f"Lesson on {self.topic} at {self.date_time.strftime('%Y-%m-%d %H:%M')}"
 
+    @staticmethod
+    def has_completed_lesson(student, teacher):
+        return Lesson.objects.filter(student=student, teacher=teacher, status="completed")
