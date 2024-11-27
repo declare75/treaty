@@ -1,7 +1,6 @@
 .background {
     width: 1900px;
-    height: 3200px;
-    color: #212121;
+    height: 3400px;
 }
 
 body {
@@ -28,47 +27,37 @@ body.dark-theme {
 
 /* Элементы внутри контейнера */
 .web-platform1 {
-    width: 388px;
+
     height: 68px;
     color: white;
     font-family: 'Manrope', sans-serif;
-    font-size: 50px;
-    font-weight: 600;
+    font-size: 75px;
+    font-weight: 400;
     line-height: normal;
-    top: 174px;
-    left: 204px;
+    top: 200px;
+    left: 669px;
     position: absolute;
 }
 
-.onlinebox {
-    width: 418px;
-    height: 53px;
-    border-radius: 57px;
-    transform: rotate(3.757deg);
-    border: 2px dashed #466EE5;
-    background: rgba(70, 110, 229, 0.20);
-    top: 250px;
-    left: 186px;
-    position: absolute;
-}
+
 
 .textinbox {
     position: absolute;
-    color: #466EE5;
+    color: white;
     font-family: Manrope;
-    font-size: 50px;
-    font-weight: 600;
+    font-size: 75px;
+    font-weight: 400;
     line-height: normal;
-    top: -10px;
-    left: 10px;
+    top: 290px;
+    left: 668px;
 }
 
 .rectangleinbox {
     position: absolute;
     width: 18px;
     height: 7px;
-    top: 0px;
-    left: 418px;
+    top: 235px;
+    left: 1230px;
     transform: rotate(-30deg);
     border-radius: 15px;
     background: #466EE5;
@@ -78,22 +67,14 @@ body.dark-theme {
     position: absolute;
     width: 30px;
     height: 7px;
-    top: -20px;
-    left: 399px;
+    top: 215px;
+    left: 1210px;
     transform: rotate(-60deg);
     border-radius: 15px;
     background: #466EE5;
 }
 
-.textunderonlinebox {
-    width: 100%;
-    font-size: 20px;
-    color: #333;
-    position: absolute;
-    top: 350px;
-    left: 50px;
-    max-width: 900px;
-}
+
 
 
 
@@ -107,21 +88,49 @@ body.dark-theme {
 }
 
 .huynya {
-    background-color: white;
-    width: 100%;
-    height: 150px;
+    width: 1920px; /* ширина фигуры */
+    height: 190px; /* высота фигуры */
+    background-color: white; /* цвет заливки */
+    clip-path: polygon(0 0, 100% 100%, 0 100%); /* определяем форму треугольника */
     position: absolute;
-    top: 850px;
-    border-radius: 75px 75px 0px 0px;
+    top: 911px;
+}
+.huynya2 {
+    width: 1920px; /* ширина фигуры */
+    height: 190px; /* высота фигуры */
+    background-color: #F8F8F8; /* цвет заливки */
+    clip-path: polygon(0 0, 100% 100%, 0 100%); /* определяем форму треугольника */
+    position: absolute;
+    top: 1711px;
+}
+.continuation {
+    width: 1920px; /* ширина продолжения */
+    height: 1689px; /* высота продолжения */
+    background-color: #F8F8F8; /* цвет совпадает с треугольником */
+    position: absolute;
+    top: 1901px; /* положение под треугольником */
+    z-index: -1000;
 }
 body.dark-theme .huynya {
     background-color: #212121;
+}
+body.dark-theme .huynya2 {
+    background-color: #2E2E2E;
+}
+body.dark-theme .continuation {
+    width: 1920px; /* ширина продолжения */
+    height: 1689px; /* высота продолжения */
+    background-color: #2E2E2E; /* цвет совпадает с треугольником */
+    position: absolute;
+    top: 1901px; /* положение под треугольником */
 }
 .video-container {
     position: relative;
     width: 100%;
     height: 100vh;
     overflow: hidden;
+    background: black; /* Добавляем черный фон на контейнер */
+
 }
 
 .video-container video {
@@ -134,6 +143,7 @@ body.dark-theme .huynya {
     filter: brightness(40%);
     opacity: 0;
     transition: opacity 1s ease-in-out;
+    background: black; /* Фон на случай, если видео не загрузится */
 }
 
 .video-container video.active {
@@ -149,6 +159,7 @@ body.dark-theme .huynya {
     transition: none; /* Убираем анимацию для начальной загрузки */
     opacity: 1;
 }
+
 
 /* Индикаторы */
 .indicator-container {
@@ -185,12 +196,15 @@ body.dark-theme .huynya {
 .brand-logog {
     color: white;
 }
+.brand-logog::after {
+    background-color: white;
+}
 .phone-numberg {
     color: white;
 }
 .video-container {
     width: 100%; /* Ширина контейнера */
-    height: 920px; /* Высота, оставляемая видимой */
+    height: 1100px; /* Высота, оставляемая видимой */
     overflow: hidden; /* Скрываем всё, что выходит за границы */
     position: absolute;
     top: 0px;
@@ -209,17 +223,28 @@ body.dark-theme .huynya {
     color: black;
 }
 .textunderonlinebox {
-    width: 380.0px;
+    width: 700.0px;
     height: 80.0px;
-    color: white;
+    color: grey;
     font-family: Manrope;
     font-size: 15px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
-    top: 345px;
-    left: 205px;
+    top: 700px;
+    left: 649px;
     position: absolute;
+}
+
+.textinbox2 {
+    position: absolute;
+    color: #466EE5;
+    font-family: Manrope;
+    font-size: 50px;
+    font-weight: 600;
+    line-height: normal;
+    top: -10px;
+    left: 10px;
 }
 
 .skrepka {
@@ -294,6 +319,18 @@ body.dark-theme .huynya {
         transform: translateY(-10px); /* Поднятие вверх на 10 пикселей */
     }
 }
+/* Начальное состояние (скрыто) */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Состояние, когда элемент становится видимым */
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 .helptext {
     position: absolute;
@@ -306,7 +343,7 @@ body.dark-theme .huynya {
     font-weight: 600;
     line-height: normal;
     left: 591px;
-    top: 940px;
+    top: 1140px;
 }
 
 body.dark-theme .helptext {
@@ -316,7 +353,7 @@ body.dark-theme .helptext {
 .linesunderhelptext {
     position: absolute;
     left: 1205px;
-    top: 995.5px;
+    top: 1195.5px;
 }
 
 .rectangleupperhelptext {
@@ -328,7 +365,7 @@ body.dark-theme .helptext {
     flex-shrink: 0;
     border-radius: 15px;
     background: #466EE5;
-    top: 942.31px;
+    top: 1142.31px;
     left: 1310px;
     animation: wobble2 2s ease-in-out infinite;
 }
@@ -341,7 +378,7 @@ body.dark-theme .helptext {
     flex-shrink: 0;
     border-radius: 15px;
     background: #466EE5;
-    top: 963.84px;
+    top: 1163.84px;
     left: 1333px;
     animation: wobble 2s ease-in-out infinite;
 }
@@ -376,12 +413,12 @@ body.dark-theme .helptext {
     position: relative;
     top: 950px;
     left: 0px;
+
 }
 
 .imgslide {
     display: flex;
     transition: transform 0.5s ease;
-
 }
 
 .img-card {
@@ -394,6 +431,8 @@ body.dark-theme .helptext {
     overflow: hidden; /* Обрезаем элементы, выходящие за пределы карточки */
     transition: transform 0.3s ease; /* Плавность для уменьшения */
     left: 70px;
+    box-shadow: 6px 6px 6px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 30px;
 }
 
 .img-card img {
@@ -449,13 +488,13 @@ body.dark-theme .helptext {
 
 .leftimg {
     position: absolute;
-    top: 1510px;
+    top: 1710px;
     left: 876px;
 }
 
 .rightimg {
     position: absolute;
-    top: 1510px;
+    top: 1710px;
     left: 950px;
 }
 
@@ -469,7 +508,7 @@ body.dark-theme .helptext {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 1600px;
+    top: 1800px;
     left: 190px;
 }
 
@@ -486,49 +525,49 @@ body.dark-theme .ustal {
     border: 2px dashed #466ee5;
     background: rgba(70, 110, 229, 0.20);
     position: absolute;
-    top: 1684.99px;
+    top: 1884.99px;
     left: 402px;
 }
 .bigimg {
     position: absolute;
-    top: 1809px;
+    top: 2009px;
     left: 720px;
 }
 .littleimg {
     position: absolute;
-    top: 2649px;
+    top: 2849px;
     left: 190px;
 }
 
 .rec1logo {
     position: absolute;
-    top: 1836px;
+    top: 2036px;
     left: 224px;
 }
 .rec2logo {
     position: absolute;
-    top: 2256px;
+    top: 2456px;
     left: 224px;
     z-index: 1;
 }
 .rec3logo {
     position: absolute;
-    top: 2256px;
+    top: 2456px;
     left: 754px;
 }
 .rec4logo {
     position: absolute;
-    top: 2256px;
+    top: 2456px;
     left: 1280px;
 }
 .rec5logo {
     position: absolute;
-    top: 2666px;
+    top: 2866px;
     left: 738px;
 }
 .rec6logo {
     position: absolute;
-    top: 2677px;
+    top: 2877px;
     left: 1277px;
 }
 .rec1text {
@@ -541,7 +580,7 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 1998px;
+    top: 2198px;
     left: 224px;
 }
 .rec2text {
@@ -554,7 +593,7 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2418px;
+    top: 2618px;
     left: 224px;
     z-index: 1;
 }
@@ -568,7 +607,7 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2418px;
+    top: 2618px;
     left: 754px;
 }
 .rec4text {
@@ -581,7 +620,7 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2418px;
+    top: 2618px;
     left: 1284px;
 }
 .rec5text {
@@ -594,7 +633,7 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2838px;
+    top: 3038px;
     left: 754px;
 }
 .rec6text {
@@ -607,7 +646,7 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2838px;
+    top: 3038px;
     left: 1284px;
 }
 .rec1header {
@@ -620,7 +659,7 @@ body.dark-theme .ustal {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 1930px;
+    top: 2130px;
     left: 224px;
 }
 
@@ -653,7 +692,7 @@ body.dark-theme .rec6header {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2350px;
+    top: 2550px;
     left: 224px;
     z-index: 1;
 }
@@ -667,7 +706,7 @@ body.dark-theme .rec6header {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2350px;
+    top: 2550px;
     left: 754px;
 }
 .rec4header {
@@ -680,7 +719,7 @@ body.dark-theme .rec6header {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2350px;
+    top: 2550px;
     left: 1284px;
 }
 .rec5header {
@@ -693,7 +732,7 @@ body.dark-theme .rec6header {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2770px;
+    top: 2970px;
     left: 754px;
 }
 .rec6header {
@@ -706,7 +745,7 @@ body.dark-theme .rec6header {
     font-weight: 600;
     line-height: normal;
     position: absolute;
-    top: 2770px;
+    top: 2970px;
     left: 1284px;
 }
 .nadpis1 .rec1 {
@@ -718,7 +757,7 @@ body.dark-theme .rec6header {
     border: 2px solid #466EE5;
     box-shadow: 4px 1px 12.1px 2px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 1816px;
+    top: 2016px;
     left: 190px;
     transition: transform 0.3s ease-in-out; /* Плавная анимация для карточки */
     z-index: 2;
@@ -767,7 +806,7 @@ body.dark-theme .rec6header {
     border: 2px solid #466EE5;
     box-shadow: 4px 1px 12.1px 2px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 2236px;
+    top: 2436px;
     left: 190px;
     transition: transform 0.3s ease-in-out;
     z-index: 2;
@@ -781,7 +820,7 @@ body.dark-theme .rec6header {
     border: 2px solid #466EE5;
     box-shadow: 4px 1px 12.1px 2px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 2236px;
+    top: 2436px;
     left: 720px;
     transition: transform 0.3s ease-in-out;
     z-index: 2;
@@ -795,7 +834,7 @@ body.dark-theme .rec6header {
     border: 2px solid #466EE5;
     box-shadow: 4px 1px 12.1px 2px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 2236px;
+    top: 2436px;
     left: 1250px;
     transition: transform 0.3s ease-in-out;
     z-index: 2;
@@ -809,7 +848,7 @@ body.dark-theme .rec6header {
     border: 2px solid #466EE5;
     box-shadow: 4px 1px 12.1px 2px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 2656px;
+    top: 2856px;
     left: 720px;
     transition: transform 0.3s ease-in-out;
     z-index: 2;
@@ -823,8 +862,12 @@ body.dark-theme .rec6header {
     border: 2px solid #466EE5;
     box-shadow: 4px 1px 12.1px 2px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 2656px;
+    top: 2856px;
     left: 1250px;
     transition: transform 0.3s ease-in-out;
     z-index: 2;
+}
+
+.blockhelp {
+    padding: 200px 0px;
 }

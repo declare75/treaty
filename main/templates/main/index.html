@@ -5,6 +5,7 @@
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'main/css/index.css' %}">
+
 {% endblock %}
 
 {% block content %}
@@ -16,17 +17,18 @@
 <div class="background">
     <div class="features52">
         <div class="containerscroll">
-            <h1 class="web-platform1">Веб-платформа</h1>
+            <h1 class="web-platform1">веб-платформа</h1>
             <div class="onlinebox">
                 <div class="textinbox">онлайн занятий</div>
                 <div class="rectangleinbox"></div>
                 <div class="rectangleinbox2"></div>
             </div>
-            <div class="textunderonlinebox">
-                Обучайтесь дистанционно в комфортных условиях, не выходя за рамки платформы. Профессионалы вашей сферы
-                помогут вам с изучением любых материалов и задач.
-            </div>
         </div>
+        <div class="textunderonlinebox">
+            Обучайтесь дистанционно в комфортных условиях, не выходя за рамки платформы<br>
+            Профессионалы вашей сферы помогут вам с изучением любых материалов и задач
+        </div>
+
 
 
 <!--        <div class="pen">-->
@@ -67,390 +69,185 @@
 
 
         <div class="huynya"></div>
-
+        <div class="huynya2"></div>
+        <div class="continuation"></div>
         <div class="peopleline">
             <img src="{% static 'main/img/peopleline2.png' %}" alt="peopleline">
         </div>
     </div>
-    <div>
-        <div class="helptext">Помощь по любым предметам</div>
-        <div class="linesunderhelptext">
-            <img src="{% static 'main/img/linesunderhelptext.svg' %}">
+    <div class="blockhelp">
+        <div>
+            <div class="helptext fade-in">Помощь по любым предметам</div>
+            <div class="linesunderhelptext fade-in">
+                <img src="{% static 'main/img/linesunderhelptext.svg' %}">
+            </div>
+            <div class="rectangleupperhelptext fade-in"></div>
+            <div class="rectangleupperhelptext2 fade-in"></div>
         </div>
-        <div class="rectangleupperhelptext"></div>
-        <div class="rectangleupperhelptext2"></div>
-    </div>
-    <div class="rightimg">
+        <div class="rightimg fade-in">
             <img src="{% static 'main/img/rightimg.svg' %}">
-    </div>
-    <div class="leftimg">
+        </div>
+        <div class="leftimg fade-in">
             <img src="{% static 'main/img/leftimg.svg' %}">
-    </div>
-    <div class="imgblock">
-        <div class="imgslide">
-            <!-- Каждая карточка получает класс img-card -->
-            <div class="img-card engimg">
-                <img src="{% static 'main/img/eng.svg' %}">
-                <div class="overlay">
-                    <p>Перейти к каталогу</p>
-                    <span class="arrow">→</span>
+        </div>
+        <div class="imgblock fade-in">
+            <div class="imgslide fade-in">
+                <!-- Каждая карточка получает класс img-card -->
+                <div class="img-card engimg">
+                    <img src="{% static 'main/img/eng.svg' %}">
+                    <div class="overlay">
+                        <p>Перейти к каталогу</p>
+                        <span class="arrow">→</span>
+                    </div>
                 </div>
-            </div>
-            <div class="img-card ruimg">
-                <img src="{% static 'main/img/ru.svg' %}">
-                <div class="overlay">
-                    <p>Перейти к каталогу</p>
-                    <span class="arrow">→</span>
+                <div class="img-card ruimg">
+                    <img src="{% static 'main/img/ru.svg' %}">
+                    <div class="overlay">
+                        <p>Перейти к каталогу</p>
+                        <span class="arrow">→</span>
+                    </div>
                 </div>
-            </div>
-            <div class="img-card informimg">
-                <img src="{% static 'main/img/inform.svg' %}">
-                <div class="overlay">
-                    <p>Перейти к каталогу</p>
-                    <span class="arrow">→</span>
+                <div class="img-card informimg">
+                    <img src="{% static 'main/img/inform.svg' %}">
+                    <div class="overlay">
+                        <p>Перейти к каталогу</p>
+                        <span class="arrow">→</span>
+                    </div>
                 </div>
-            </div>
-            <div class="img-card bioimg">
-                <img src="{% static 'main/img/bio.svg' %}">
-                <div class="overlay">
-                    <p>Перейти к каталогу</p>
-                    <span class="arrow">→</span>
+                <div class="img-card bioimg">
+                    <img src="{% static 'main/img/bio.svg' %}">
+                    <div class="overlay">
+                        <p>Перейти к каталогу</p>
+                        <span class="arrow">→</span>
+                    </div>
                 </div>
-            </div>
-            <div class="img-card historyimg">
+                <div class="img-card historyimg">
 
-                <img src="{% static 'main/img/history.svg' %}">
-                <div class="overlay">
-                    <p>Перейти к каталогу</p>
-                    <span class="arrow">→</span>
+                    <img src="{% static 'main/img/history.svg' %}">
+                    <div class="overlay">
+                        <p>Перейти к каталогу</p>
+                        <span class="arrow">→</span>
+                    </div>
                 </div>
-            </div>
-            <div class="img-card chemistryimg">
-                <div class="chemistryimg">
-                    <img src="{% static 'main/img/chemistry.svg' %}">
+                <div class="img-card chemistryimg">
+                    <div class="chemistryimg">
+                        <img src="{% static 'main/img/chemistry.svg' %}">
+                        <div class="overlay">
+                            <p>Перейти к каталогу</p>
+                            <span class="arrow">→</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="img-card economyimg">
+                    <img src="{% static 'main/img/economy.svg' %}">
+                    <div class="overlay">
+                        <p>Перейти к каталогу</p>
+                        <span class="arrow">→</span>
+                    </div>
+                </div>
+                <div class="img-card astroimg">
+                    <img src="{% static 'main/img/astro.svg' %}">
+                    <div class="overlay">
+                        <p>Перейти к каталогу</p>
+                        <span class="arrow">→</span>
+                    </div>
+                </div>
+                <div class="img-card germimg">
+                    <img src="{% static 'main/img/germ.svg' %}">
+                    <div class="overlay">
+                        <p>Перейти к каталогу</p>
+                        <span class="arrow">→</span>
+                    </div>
+                </div>
+                <div class="img-card literimg">
+                    <img src="{% static 'main/img/liter.svg' %}">
+                    <div class="overlay">
+                        <p>Перейти к каталогу</p>
+                        <span class="arrow">→</span>
+                    </div>
+                </div>
+                <div class="img-card geoimg">
+                    <img src="{% static 'main/img/geoimg.svg' %}">
                     <div class="overlay">
                         <p>Перейти к каталогу</p>
                         <span class="arrow">→</span>
                     </div>
                 </div>
             </div>
-            <div class="img-card economyimg">
-                <img src="{% static 'main/img/economy.svg' %}">
-                <div class="overlay">
-                    <p>Перейти к каталогу</p>
-                    <span class="arrow">→</span>
-                </div>
-            </div>
-            <div class="img-card astroimg">
-                <img src="{% static 'main/img/astro.svg' %}">
-                <div class="overlay">
-                    <p>Перейти к каталогу</p>
-                    <span class="arrow">→</span>
-                </div>
-            </div>
-            <div class="img-card germimg">
-                <img src="{% static 'main/img/germ.svg' %}">
-                <div class="overlay">
-                    <p>Перейти к каталогу</p>
-                    <span class="arrow">→</span>
-                </div>
-            </div>
-            <div class="img-card literimg">
-                <img src="{% static 'main/img/liter.svg' %}">
-                <div class="overlay">
-                    <p>Перейти к каталогу</p>
-                    <span class="arrow">→</span>
-                </div>
-            </div>
-            <div class="img-card geoimg">
-                <img src="{% static 'main/img/geoimg.svg' %}">
-                <div class="overlay">
-                    <p>Перейти к каталогу</p>
-                    <span class="arrow">→</span>
-                </div>
-            </div>
         </div>
     </div>
 
 
 
-    <h51 class="ustal">Уставай меньше, узнавай</h51>
+    <h51 class="ustal fade-in">Уставай меньше, узнавай</h51>
     <div class="bolshebox">
-        <div class="textinbox">больше</div>
+        <div class="textinbox2">больше</div>
     </div>
     <div class="imgblock2">
-        <div class="bigimg"><img src="{% static 'main/img/bigimg.png' %}"></div>
-        <div class="littleimg"><img src="{% static 'main/img/littleimg.png' %}"></div>
+        <div class="bigimg fade-in"><img src="{% static 'main/img/bigimg.png' %}"></div>
+        <div class="littleimg fade-in"><img src="{% static 'main/img/littleimg.png' %}"></div>
         <div class="nadpis1">
-            <div class="rec1">
+            <div class="rec1 fade-in">
             </div>
-            <div class="rec1logo"><img src="{% static 'main/img/rec1logo.svg' %}"></div>
-            <div class="rec1header">Быстрое обучение</div>
-            <div class="rec1text">Не нужно тратить время на дорогу и подготовку. Наши видеозвонки и мессенджер позволяют
+            <div class="rec1logo fade-in"><img src="{% static 'main/img/rec1logo.svg' %}"></div>
+            <div class="rec1header fade-in">Быстрое обучение</div>
+            <div class="rec1text fade-in">Не нужно тратить время на дорогу и подготовку. Наши видеозвонки и мессенджер позволяют
                 учиться в любое время и месте, ускоряя процесс обучения
             </div>
         </div>
         <div class="nadpis2">
-            <div class="rec2">
+            <div class="rec2 fade-in">
             </div>
-            <div class="rec2logo"><img src="{% static 'main/img/rec2logo.svg' %}"></div>
-            <div class="rec2header">Доступно везде</div>
-            <div class="rec2text">Неважно, где вы находитесь — платформа доступна даже в небольших городах и удалённых
+            <div class="rec2logo fade-in"><img src="{% static 'main/img/rec2logo.svg' %}"></div>
+            <div class="rec2header fade-in">Доступно везде</div>
+            <div class="rec2text fade-in">Неважно, где вы находитесь — платформа доступна даже в небольших городах и удалённых
                 регионах, позволяя легко найти подходящего репетитора
             </div>
         </div>
         <div class="nadpis3">
-            <div class="rec3">
+            <div class="rec3 fade-in">
             </div>
-            <div class="rec3logo"><img src="{% static 'main/img/rec3logo.svg' %}"></div>
-            <div class="rec3header">Гибкость расписания</div>
-            <div class="rec3text">Выберите удобное время для занятий. Онлайн-формат позволяет корректировать расписание
+            <div class="rec3logo fade-in"><img src="{% static 'main/img/rec3logo.svg' %}"></div>
+            <div class="rec3header fade-in">Гибкость расписания</div>
+            <div class="rec3text fade-in">Выберите удобное время для занятий. Онлайн-формат позволяет корректировать расписание
                 под
                 ваш ритм жизни
             </div>
         </div>
         <div class="nadpis4">
-            <div class="rec4">
+            <div class="rec4 fade-in">
             </div>
-            <div class="rec4logo"><img src="{% static 'main/img/rec4logo.svg' %}"></div>
-            <div class="rec4header">Простой поиск</div>
-            <div class="rec4text">Удобный фильтр и рейтинг помогут быстро найти подходящего специалиста по вашей теме и
+            <div class="rec4logo fade-in"><img src="{% static 'main/img/rec4logo.svg' %}"></div>
+            <div class="rec4header fade-in">Простой поиск</div>
+            <div class="rec4text fade-in">Удобный фильтр и рейтинг помогут быстро найти подходящего специалиста по вашей теме и
                 уровню подготовки
             </div>
         </div>
         <div class="nadpis5">
-            <div class="rec5">
+            <div class="rec5 fade-in">
             </div>
-            <div class="rec5logo"><img src="{% static 'main/img/rec5logo.svg' %}"></div>
-            <div class="rec5header">Проверенные специалисты</div>
-            <div class="rec5text">Каждый репетитор проходит тщательную проверку. Отзывы и рейтинги позволяют объективно
+            <div class="rec5logo fade-in"><img src="{% static 'main/img/rec5logo.svg' %}"></div>
+            <div class="rec5header fade-in">Проверенные специалисты</div>
+            <div class="rec5text fade-in">Каждый репетитор проходит тщательную проверку. Отзывы и рейтинги позволяют объективно
                 оценить качество обучения
             </div>
         </div>
         <div class="nadpis6">
-            <div class="rec6">
+            <div class="rec6 fade-in">
             </div>
-            <div class="rec6logo"><img src="{% static 'main/img/rec6logo.svg' %}"></div>
-            <div class="rec6header">Поддержка платформы</div>
-            <div class="rec6text">Наша техподдержка всегда на связи, чтобы обеспечить бесперебойную работу и ответить на
+            <div class="rec6logo fade-in"><img src="{% static 'main/img/rec6logo.svg' %}"></div>
+            <div class="rec6header fade-in">Поддержка платформы</div>
+            <div class="rec6text fade-in">Наша техподдержка всегда на связи, чтобы обеспечить бесперебойную работу и ответить на
                 ваши вопросы
             </div>
         </div>
     </div>
 </div>
-<script>
-    // Находим элемент .onlinebox
-    const onlineBox = document.querySelector('.onlinebox');
-    let initialRotation = 3.757; // начальный угол поворота в градусах
-
-    window.addEventListener('scroll', () => {
-        // Рассчитываем, насколько нужно повернуть
-        const scrollRotation = window.scrollY * 0.02; // Коэффициент вращения
-
-        // Обновляем поворот элемента, уменьшая его
-        onlineBox.style.transform = `rotate(${initialRotation - scrollRotation}deg)`;
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const videos = document.querySelectorAll(".video-container video");
-        const indicators = document.querySelectorAll(".indicator");
-        let currentVideo = 0;
-        const fadeTime = 1; // Время наложения (в секундах)
-
-        function playNextVideo() {
-            const current = videos[currentVideo];
-            const nextVideoIndex = (currentVideo + 1) % videos.length;
-            const next = videos[nextVideoIndex];
-
-            // Смена активного индикатора
-            indicators[currentVideo].classList.remove("active");
-            indicators[nextVideoIndex].classList.add("active");
-
-            // Установить следующее видео активным
-            next.currentTime = 0; // Обнуляем следующее видео
-            next.classList.add("active");
-            next.play();
-
-            // Отключить текущее видео через fadeTime
-            setTimeout(() => {
-                current.classList.remove("active");
-                current.classList.add("inactive");
-                current.nextTriggered = false; // Сбрасываем состояние для текущего видео
-            }, fadeTime * 1000);
-
-            // Обновить текущий индекс
-            currentVideo = nextVideoIndex;
-        }
-
-        // Добавить плавный переход перед концом текущего видео
-        videos.forEach((video) => {
-            video.addEventListener("timeupdate", () => {
-                if (video.duration - video.currentTime <= fadeTime && !video.nextTriggered) {
-                    video.nextTriggered = true; // Гарантируем, что это событие не будет вызвано дважды
-                    playNextVideo();
-                }
-            });
-
-            video.addEventListener("loadeddata", () => {
-                // Первое видео отображается сразу без анимации
-                if (video === videos[0]) {
-                    video.classList.add("no-transition"); // Убираем анимацию
-                    video.classList.add("active");
-                    indicators[0].classList.add("active");
-
-                    // После первой загрузки можно включить переходы для следующих видео
-                    setTimeout(() => {
-                        video.classList.remove("no-transition");
-                    }, 100);
-                }
-            });
-        });
-
-        // Убедиться, что первое видео играет сразу
-        videos[currentVideo].play();
-    });
-</script>
-
-
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.containerscroll'); // Контейнер, который будет двигаться
-    const platform = document.querySelector('.web-platform1');
-    const onlinebox = document.querySelector('.onlinebox');
-    const textunderonlinebox = document.querySelector('.textunderonlinebox');
-
-    let maxScroll = 250; // Максимальное расстояние, на которое элементы могут двигаться
-    let offset = 0;
-
-    // Следим за прокруткой страницы
-    window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-
-        // Двигаем контейнер, пока скроллим
-        if (scrollY < maxScroll) {
-            offset = scrollY;
-        } else {
-            offset = maxScroll; // Не даем прокрутке выходить за 250px
-        }
-
-        // Обновляем позицию контейнера
-        container.style.transform = `translateY(${offset}px)`;
-    });
-});
-
-</script>
-<script>
-let currentIndex = 1; // Устанавливаем начальный индекс на 1, чтобы показывалось второе изображение
-const slides = document.querySelectorAll('.imgslide div');
-const totalSlides = slides.length;
-const slideWidth = 350;  // Ширина одного слайда
-
-// Получаем кнопки
-const leftButton = document.querySelector('.leftimg');
-const rightButton = document.querySelector('.rightimg');
-
-// Обработчик для кнопки "влево"
-leftButton.addEventListener('click', () => {
-    moveSlide('prev');
-});
-
-// Обработчик для кнопки "вправо"
-rightButton.addEventListener('click', () => {
-    moveSlide('next');
-});
-
-// Функция для движения слайдера
-function moveSlide(direction) {
-    if (direction === 'next') {
-        if (currentIndex < totalSlides - 1) {
-            currentIndex++;
-        }
-    } else if (direction === 'prev') {
-        if (currentIndex > 0) {
-            currentIndex--;
-        }
-    }
-
-    updateSlider();
-    updateButtonStates();
-}
-
-// Обновление положения слайдера
-function updateSlider() {
-    const offset = -currentIndex * slideWidth; // Сдвиг на ширину одного слайда (300px)
-    document.querySelector('.imgslide').style.transform = `translateX(${offset}px)`;
-}
-
-// Обновление состояния кнопок
-function updateButtonStates() {
-    // Если первая картинка (engimg), блокируем кнопку "влево"
-    if (currentIndex === 0) {
-        leftButton.style.pointerEvents = 'none';  // Отключаем кнопку
-    } else {
-        leftButton.style.pointerEvents = 'auto'; // Включаем кнопку
-    }
-
-    // Если последняя картинка (chemistryimg), блокируем кнопку "вправо"
-    if (currentIndex === 6) {
-        rightButton.style.pointerEvents = 'none'; // Отключаем кнопку
-    } else {
-        rightButton.style.pointerEvents = 'auto'; // Включаем кнопку
-    }
-}
-
-// Инициализация состояния кнопок при загрузке
-updateSlider();
-updateButtonStates();
-
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    // Сопоставляем div-классы с фильтрами
-    const filters = {
-        engimg: 'Английский язык',
-        ruimg: 'Русский язык',
-        informimg: 'Информатика',
-        bioimg: 'Биология',
-        historyimg: 'История',
-        chemistryimg: 'Химия',
-        economyimg: 'Экономика',
-        astroimg: 'Астрономия',
-        germimg: 'Немецкий язык',
-        literimg: 'Литература',
-        geoimg: 'География'
-    };
-
-    // Добавляем клик-обработчики для оверлеев
-    Object.keys(filters).forEach(className => {
-        const overlay = document.querySelector(`.${className} .overlay`);
-        if (overlay) {
-            overlay.addEventListener('click', () => {
-                const filter = filters[className];
-                if (filter) {
-                    window.location.href = `/catalog2?filter=${encodeURIComponent(filter)}`;
-                }
-            });
-        }
-    });
-});
-</script>
-
-<script>
-    // Выбираем navbar
-    const navbar = document.querySelector('.navbarg');
-
-    // Функция для обработки скролла
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) { // Если прокрутили более чем на 50px
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-</script>
-
+<script src="{% static 'main/js/video.js' %}"></script>
+<script src="{% static 'main/js/fadein.js' %}"></script>
+<script src="{% static 'main/js/moveheader.js' %}"></script>
+<script src="{% static 'main/js/slider.js' %}"></script>
+<script src="{% static 'main/js/sliderfilter.js' %}"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const video = document.getElementById("videoloop");
@@ -459,6 +256,5 @@ document.addEventListener("DOMContentLoaded", () => {
         video.play(); // Запускаем воспроизведение
     }
 });
-
 </script>
 {% endblock %}
