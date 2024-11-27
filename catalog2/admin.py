@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Prepods, Subject
+from .models import Prepods, Subject, Review
 from django.utils.html import format_html
 
 
@@ -35,3 +35,12 @@ class PrepodsAdmin(admin.ModelAdmin):
 # Регистрируем модель предметов, чтобы ими можно было управлять через админку
 admin.site.register(Subject)
 admin.site.register(Prepods, PrepodsAdmin)
+
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('reviewer', 'teacher', 'rating', 'created_at')  # Поля, отображаемые в списке
+    list_filter = ('rating', 'created_at')  # Возможность фильтрации
+    search_fields = ('reviewerusername', 'teacherusername', 'text')  # Поля для поиска
+    ordering = ('-created_at',)  # Сортировка по умолчанию (новые отзывы сверху)
+    readonly_fields = ('created_at',)  # Поля только для чтения
+
+admin.site.register(Review, ReviewAdmin)

@@ -103,7 +103,12 @@ body.dark-theme .filterobject button:hover {
     margin: 0; /* Убираем лишние отступы, которые могут растягивать обертку */
     line-height: 1; /* Контролируем высоту строки, чтобы избежать растяжения */
 }
-
+.reviews {
+    z-index: 10000;
+}
+.review {
+    z-index: 10000;
+}
 .upload-image-btn {
     width: 196.0px;
     height: 35.0px;
