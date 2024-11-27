@@ -128,8 +128,7 @@
                         <div class="review">
                             <p><strong>{{ review.reviewer.full_name }}</strong>:</p>
                             <p>{{ review.text }}</p>
-                            <p class="small text-muted">Оценка: {{ review.rating }} - {{ review.created_at|date:"d.m.Y"
-                                }}</p>
+                            <p class="small text-muted">Оценка: {{ review.rating }} - {{ review.created_at|date:"d.m.Y" }}</p>
                         </div>
                         {% empty %}
                         <p>Пока отзывов нет.</p>
