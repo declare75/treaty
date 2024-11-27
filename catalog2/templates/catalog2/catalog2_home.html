@@ -179,7 +179,7 @@
                                         <div class="review-form">
                                             <div class="form-text8">
                                                 {{ form.text }}
-                                                <p id="char-counter8">Осталось символов: 150</p>
+                                                <p id="char-counter8">Осталось символов: 100</p>
                                             </div>
                                             <button type="submit" class="custom-btn-submit">Отправить</button>
                                             <button type="button" class="custom-btn-cancel">Отмена</button>
@@ -203,7 +203,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const textInput = document.querySelector('.form-text8 textarea');
     const charCounter = document.getElementById('char-counter8');
-    const maxChars = 150;
+    const maxChars = 100;
 
     if (textInput) {
         textInput.addEventListener('input', () => {
