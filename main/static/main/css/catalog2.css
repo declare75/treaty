@@ -103,8 +103,22 @@ body.dark-theme .filterobject button:hover {
     margin: 0; /* Убираем лишние отступы, которые могут растягивать обертку */
     line-height: 1; /* Контролируем высоту строки, чтобы избежать растяжения */
 }
+#char-counter8 {
+    font-size: 12px;
+    color: #666;
+    position: absolute;
+    top: 57px;
+    left: 560px;
+}
+
 .reviews {
     z-index: 10000;
+}
+
+.review8 {
+    flex-shrink: 0; /* Предотвращает уменьшение размера отзывов */
+    width: 250px; /* Фиксированная ширина каждого отзыва */
+    position: relative;
 }
 .review {
     z-index: 10000;
@@ -336,34 +350,193 @@ body.dark-theme .oplatatext {
     border-color: #466ee5;
     color: #466ee5;
     position: absolute;
-    top: -20px;
+    top: 170px;
     left: 50px;
-}
-
-.rating-container {
-    display: flex;
-    justify-content: space-between;
-    width: 200px;
+    z-index: 1000; /* Устанавливаем высокий z-index для заголовка */
 }
 
 .star-rating {
     display: flex;
+    font-size: 30px; /* Размер звезд */
+    margin-left: 43px;
+    margin-top: 190px;
 }
 
 .star {
-    width: 30px;
-    height: 30px;
-    border: 2px solid #466ee5;
-    margin-right: 5px;
     cursor: pointer;
-    background-color: transparent;
+    color: #ccc; /* Начальный цвет звезд - серый */
+    padding: 5px; /* Отступы для звезды */
+    transition: color 0.3s ease, border-color 0.3s ease; /* Плавные переходы */
 }
 
-.star:hover {
-    background-color: #466ee5;
+.star:hover,
+.star.selected {
+    color: #466ee5; /* При наведении и при выборе цвет звезды - синий */
+    border-color: #466ee5; /* Смена цвета рамки на синий */
 }
+
+.star.selected {
+    color: #466ee5; /* Цвет для выбранных звезд */
+}
+
+.review-form {
+    opacity: 0; /* Изначально форма скрыта */
+    visibility: hidden; /* Недоступна для кликов */
+    margin-top: 0px;
+    transform: translateY(-20px); /* Сдвигаем форму вверх, чтобы она была скрыта */
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s ease 0.3s; /* Плавная анимация */
+    z-index: 1000; /* Устанавливаем высокий z-index для формы отзыва */
+    margin-left: 50px;
+}
+
+.review-form.show {
+    opacity: 1; /* Форма становится видимой */
+    visibility: visible; /* Форма становится доступной для кликов */
+    transform: translateY(0); /* Форма "выезжает" */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Без задержки */
+}
+
 .custom-modal-content {
     position: absolute;
     top: 60px;
     left: 0px;
+    z-index: 1000; /* Устанавливаем высокий z-index для модального контента */
+}
+
+textarea {
+    width: 700px; /* Ширина на всю доступную ширину */
+    height: 80px;
+    padding: 12px;
+    margin-top: 0px;
+    border-radius: 5px;
+    border: 2px solid #ccc; /* Цвет рамки */
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    resize: none;
+    transition: border-color 0.3s ease;
+}
+
+.custom-btn-submit {
+    width: 100px;
+    height: 35px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #466ee5;
+    color: white;
+    position: absolute;
+    top: 0px;
+    left: 720px;
+
+}
+.custom-btn-cancel {
+    width: 100px;
+    height: 35px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    border-radius: 5px;
+    background-color: transparent;
+    color: black;
+    border: 2px solid #ccc;
+    top: 45px;
+    left: 720px;
+    position: absolute;
+}
+.reviewtext8 {
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    border-color: #466ee5;
+    color: #466ee5;
+    font-size: 1.25rem;
+}
+.reviews8 {
+    position: absolute;
+    top: 80px;
+    left: 50px;
+    display: flex; /* Размещаем элементы в строку */
+    gap: 220px; /* Расстояние между отзывами */
+    transition: transform 0.5s ease; /* Плавный переход */
+}
+
+.review8 {
+    width: 200px; /* Ограничиваем ширину каждого отзыва */
+    flex-shrink: 0; /* Не даем отзывам сжиматься */
+}
+
+.star-filled8 {
+    color: #466ee5; /* Цвет заполненной звезды */
+    font-size: 16px; /* Размер звезд */
+}
+
+.star-empty8 {
+    color: #ccc; /* Цвет незаполненной звезды */
+    font-size: 16px; /* Размер звезд */
+}
+
+.reviewer-name8 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    color: #212121;
+    font-size: 1rem;
+}
+.review-meta8 {
+    font-size: 0.875rem;
+    color: #666;
+    position: absolute;
+    top: 2px; /* Фиксированная позиция сверху */
+    left: 320px; /* Фиксированная позиция справа */
+    display: flex;
+    gap: 5px; /* Расстояние между звездами */
+}
+.review-stars8 {
+    position: absolute;
+    top: 0px; /* Фиксированная позиция сверху */
+    left: 130px; /* Фиксированная позиция справа */
+    display: flex;
+    gap: 5px; /* Расстояние между звездами */
+}
+
+.review-text8 {
+    border-radius: 5px;
+    padding: 5px 5px;
+    border: 2px solid #ccc;
+    width: 45ch;
+    overflow-wrap: break-word; /* Перенос слов */
+    word-wrap: break-word; /* Поддержка старых браузеров */
+    white-space: normal; /* Разрешить переносы */
+    line-height: 1.5; /* Интервал между строками */
+}
+
+.leftimg2 {
+    position: absolute;
+    left: 860px;
+    top: 220px;
+}
+.rightimg2 {
+    position: absolute;
+    left: 900px;
+    top: 220px;
+}
+.borderleft {
+    background-color: white;
+    width: 50px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 100000;
+    height: 500px;
+}
+
+.borderright {
+    background-color: white;
+    width: 50px;
+    position: absolute;
+    left: 930px;
+    top: 0px;
+    z-index: 100000;
+    height: 500px;
 }

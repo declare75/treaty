@@ -18,5 +18,5 @@ class ReviewForm(forms.ModelForm):
         fields = ['text', 'rating']
         widgets = {
             'text': forms.Textarea(attrs={'placeholder': 'Ваш отзыв...', 'rows': 3}),
-            'rating': forms.NumberInput(attrs={'min': 1, 'max': 5}),
+            'rating': forms.HiddenInput()  # Скрытое поле для рейтинга
         }
