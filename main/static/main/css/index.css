@@ -6,8 +6,15 @@
 
 body {
     overflow-x: hidden; /* Убирает горизонтальный скроллбар */
+    user-select: none; /* Современные браузеры */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer */
 }
-
+img, a {
+    -webkit-user-drag: none; /* Safari */
+    user-drag: none; /* Chrome */
+}
 body.dark-theme {
     background-color: #212121 !important;
 }
@@ -110,15 +117,68 @@ body.dark-theme {
 body.dark-theme .huynya {
     background-color: #212121;
 }
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
 .video-container video {
-    width: 100%; /* Масштабируем ширину видео */
-    top: 0px; /* Сдвигаем видео вверх, чтобы обрезать снизу */
+    width: 100%;
+    height: 100%;
     position: absolute;
+    top: 0;
     left: 0;
-    z-index: -1000;
     object-fit: cover;
     filter: brightness(40%);
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
 }
+
+.video-container video.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.video-container video.inactive {
+    z-index: 0;
+}
+
+.video-container video.no-transition {
+    transition: none; /* Убираем анимацию для начальной загрузки */
+    opacity: 1;
+}
+
+/* Индикаторы */
+.indicator-container {
+    position: absolute;
+    top: 800px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    opacity: 35%;
+    border-radius: 50%;
+    transition: all 0.5s ease-in-out;
+}
+
+.indicator.active {
+    width: 40px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: white;
+    opacity: 35%;
+}
+
+
 .navbar-menug__link{
     color: white;
 }
