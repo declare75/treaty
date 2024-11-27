@@ -11,6 +11,7 @@ class PrepodForm(forms.ModelForm):
         }
         subject = forms.ModelChoiceField(queryset=Subject.objects.all(), required=True)
 
+
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review

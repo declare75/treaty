@@ -330,3 +330,40 @@ body.dark-theme .age1 {
 body.dark-theme .oplatatext {
     color: white;
 }
+.custom-modal-title {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    border-color: #466ee5;
+    color: #466ee5;
+    position: absolute;
+    top: -20px;
+    left: 50px;
+}
+
+.rating-container {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+}
+
+.star-rating {
+    display: flex;
+}
+
+.star {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #466ee5;
+    margin-right: 5px;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.star:hover {
+    background-color: #466ee5;
+}
+.custom-modal-content {
+    position: absolute;
+    top: 60px;
+    left: 0px;
+}
