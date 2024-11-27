@@ -110,7 +110,7 @@
                 </div>
                 <p class="desc">{{ el.description }}</p>
                 <p class="age">{{ el.user.get_age }}</p>
-                <p class="rating">{{ el.rating }}</p>
+                <p class="rating">{{ el.user.rating|floatformat:1 }}</p>
                 <img src="{% static 'main/img/ratingEllipse.svg' %}" alt="rating" class="ratingEllipse">
                 {% if el.user.avatar %}
                 <img src="{{ el.user.avatar.url }}" alt="{{ el.user.get_display_name }}"

@@ -44,3 +44,5 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # Время создания
     rating = models.PositiveSmallIntegerField()
 
+    def __str__(self):
+        return f"{self.reviewer} -> {self.teacher} ({self.rating})"
