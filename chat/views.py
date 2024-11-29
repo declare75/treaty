@@ -236,7 +236,14 @@ def chat_view(request, receiver_id):
 
                 # Формируем сообщение с темой занятия и ссылкой
                 topic = lesson.topic if lesson.topic else "Без темы"
-                content = f"Занятие на тему '{topic}' началось. Ссылка для подключения: <a href='{link}' target='_blank'>{link}</a>"
+                content = f"""
+                Занятие на тему '{topic}' началось. 
+                <div>
+                    <a href='{link}' target='_blank' style='padding: 10px 20px; background-color: #466ee5; border: none; border-radius: 4px; color: white; text-decoration: none; display: inline-block; text-align: center;'>
+                        Перейти к занятию
+                    </a>
+                </div>
+                """
 
                 # Создаем сообщение в чате
                 Message.objects.create(
