@@ -1,19 +1,19 @@
-<html>
+{% extends 'main/layout.html' %}
+{% load static %}
 
-<head>
-    <style>
+{% block style %}
         #root {
             width: 100vw;
             height: 100vh;
             }
-    </style>
-</head>
+{% endblock %}
 
 
-<body>
+
+{% block content %}
     <div id="root"></div>
     <h1>Видеозвонок с {{ name }}</h1>
-</body>
+
 <script src="https://unpkg.com/@zegocloud/zego-uikit-prebuilt/zego-uikit-prebuilt.js"></script>
 <script>
 window.onload = function () {
@@ -33,7 +33,7 @@ window.onload = function () {
         // @param 5: Username
     const roomID = getUrlParams(window.location.href)['roomID'] || (Math.floor(Math.random() * 10000) + "");
     const userID = Math.floor(Math.random() * 10000) + "";
-    const userName = "userName" + userID;
+    const userName = "{{ name }}";
     const appID = 1476651376;
     const serverSecret = "c7c7d7ecb0f849fe91bc6f7c1d4a7701";
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID, userID, userName);
@@ -66,4 +66,4 @@ window.onload = function () {
 }
 </script>
 
-</html>
+{% endblock %}
