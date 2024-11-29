@@ -53,7 +53,7 @@
         </div>
 
         {% if lesson.status == 'scheduled' %}
-        <a href="{% url 'meeting' %}">
+        <a href="{% url 'meeting' %}" target="_blank">
             <button class="lessonitem1" type="button">Начать занятие</button>
         </a>
         {% endif %}
@@ -139,7 +139,7 @@
 <script>
     document.querySelector('.submitlesson').addEventListener('click', function(event) {
         // Если нужно предотвратить отправку формы, раскомментируйте следующую строку:
-        // event.preventDefault();
+        event.preventDefault();
 
         var message = document.getElementById('successMessage');
         message.classList.remove('hidden');

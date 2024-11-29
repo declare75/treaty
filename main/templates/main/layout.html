@@ -121,16 +121,9 @@
     </div>
 
 </header>
-<main>
-    {% if messages %}
-    <div id="messages">
-        {% for message in messages %}
-        <div class="warningbox warningbox-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-    </div>
-{% endif %}
-{% block content %}
 
+<main>
+{% block content %}
 {% endblock %}
 </main>
 

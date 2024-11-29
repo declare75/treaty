@@ -1,19 +1,27 @@
-{% extends 'main/layout.html' %}
 {% load static %}
 
 {% block style %}
-        #root {
-            width: 100vw;
-            height: 100vh;
-            }
+<style>
+#root {
+    width: 98vw;
+    height: 98vh;
+    overflow: hidden;
+    box-shadow: none;
+}
+body {
+    background-color: #1C1F2E;
+}
+.D9WLyEQaARfWqCTyVrpU {
+    box-shadow: none !important;
+}
+</style>
+
 {% endblock %}
 
 
 
 {% block content %}
     <div id="root"></div>
-    <h1>Видеозвонок с {{ name }}</h1>
-
 <script src="https://unpkg.com/@zegocloud/zego-uikit-prebuilt/zego-uikit-prebuilt.js"></script>
 <script>
 window.onload = function () {

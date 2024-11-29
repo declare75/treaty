@@ -1149,5 +1149,15 @@ body.dark-theme .topic {
     text-decoration: none;
     cursor: pointer;
 }
-
+.join-button {
+    margin-bottom: 10px;
+    background-color: #466ee5;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+}
 

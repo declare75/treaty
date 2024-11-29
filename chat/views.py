@@ -267,4 +267,4 @@ def chat_view(request, receiver_id):
 
 @login_required
 def videocall(request):
-    return render(request, 'main/videocall.html', {'name': request.chat.chat_user.get_display_name + " " + request.user.last_name})
+    return render(request, 'main/videocall.html', {'name': request.user.first_name + " " + request.user.last_name})
