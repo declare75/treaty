@@ -53,7 +53,10 @@
         </div>
 
         {% if lesson.status == 'scheduled' %}
-        <a href="{% url 'meeting' %}" target="_blank">
+        <a href="{% url 'chat_view' receiver.id %}?start_lesson={{ lesson.id }}" target="_blank" id="start-lesson-link"
+           style="display: none; "></a>
+        <a href="{% url 'meeting' %}?roomID={{ lesson.id }}" target="_blank"
+           onclick="document.getElementById('start-lesson-link').click();">
             <button class="lessonitem1" type="button">Начать занятие</button>
         </a>
         {% endif %}
@@ -120,7 +123,6 @@
 <div id="notification" class="warningbox hidden">
     <span id="notification-text"></span>
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Получаем параметры из текущего URL
@@ -139,7 +141,7 @@
 <script>
     document.querySelector('.submitlesson').addEventListener('click', function(event) {
         // Если нужно предотвратить отправку формы, раскомментируйте следующую строку:
-        event.preventDefault();
+        // event.preventDefault();
 
         var message = document.getElementById('successMessage');
         message.classList.remove('hidden');

@@ -244,6 +244,13 @@
         </div>
     </div>
 </div>
+{% if messages %}
+    <div id="messages">
+        {% for message in messages %}
+        <div class="warningbox warningbox-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
 <script src="{% static 'main/js/video.js' %}"></script>
 <script src="{% static 'main/js/fadein.js' %}"></script>
 <script src="{% static 'main/js/moveheader.js' %}"></script>

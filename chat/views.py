@@ -57,6 +57,13 @@ def chat_list_view(request):
                 return render(request, "main/chat_list.html", {"existing_chats": existing_chats})
 
     return render(request, "main/chat_list.html", {"chat_data": chat_data})
+import random
+
+def generate_room_link(request, lesson_id):
+    room_id = random.randint(1000, 9999)  # Случайный идентификатор комнаты
+    link = f"{request.scheme}://{request.get_host()}/chats/meeting/?roomID={room_id}"
+    return room_id, link
+
 
 @login_required
 def chat_view(request, receiver_id):
@@ -217,22 +224,33 @@ def chat_view(request, receiver_id):
         lesson_id = request.GET.get("start_lesson")
         try:
             lesson = Lesson.objects.get(id=lesson_id)
+
+            # Проверка на то, что текущий пользователь является преподавателем
             if lesson.teacher == request.user and lesson.status == 'scheduled':
+                # Меняем статус занятия
                 lesson.status = 'in_progress'
                 lesson.save()
 
-                # Получаем тему занятия, если она пустая, используем дефолтное значение
-                topic = lesson.topic if lesson.topic else "Без темы"
-                content = f"Занятие на тему '{topic}' началось."
+                # Генерация ссылки для подключения (по аналогии с предыдущим кодом)
+                room_id, link = generate_room_link(request, lesson.id)
 
-                # Создаем сообщение с заданным content
+                # Формируем сообщение с темой занятия и ссылкой
+                topic = lesson.topic if lesson.topic else "Без темы"
+                content = f"Занятие на тему '{topic}' началось. Ссылка для подключения: <a href='{link}' target='_blank'>{link}</a>"
+
+                # Создаем сообщение в чате
                 Message.objects.create(
                     sender=request.user,
                     receiver=lesson.student,
-                    content=content,  # Убедитесь, что content всегда передается
+                    content=content,
                     timestamp=timezone.now(),
                 )
+
+                # Редирект на страницу занятия с параметром roomID
+                return HttpResponseRedirect(reverse('meeting') + f'?roomID={room_id}')
+
         except Lesson.DoesNotExist:
+            # Обработка случая, когда занятие не найдено
             pass
 
     # Обработка нажатия кнопки "Завершить занятие"
