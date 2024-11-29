@@ -49,7 +49,6 @@ def chat_list_view(request):
 
     return render(request, "main/chat_list.html", {"chat_data": chat_data})
 
-
 @login_required
 def chat_view(request, receiver_id):
     try:
@@ -256,3 +255,7 @@ def chat_view(request, receiver_id):
         "start_lesson_button": start_lesson_button,
         "end_lesson_button": end_lesson_button
     })
+
+@login_required
+def videocall(request):
+    return render(request, 'main/videocall.html', {'name': request.chat.chat_user.get_display_name + " " + request.user.last_name})

@@ -1111,3 +1111,43 @@ body.dark-theme .topic {
         max-width: 75%;
     }
 }
+/* Стиль для модального окна */
+.modal7 {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0); /* Черный фон */
+    background-color: rgba(0, 0, 0, 0.4); /* Прозрачный черный фон */
+}
+
+/* Модальное окно */
+.modal-content7 {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+}
+
+/* Кнопка закрытия */
+.close-btn7 {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn7:hover,
+.close-btn7:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+

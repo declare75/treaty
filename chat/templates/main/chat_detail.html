@@ -53,7 +53,7 @@
         </div>
 
         {% if lesson.status == 'scheduled' %}
-        <a href="{% url 'chat_view' receiver.id %}?start_lesson={{ lesson.id }}">
+        <a href="{% url 'meeting' %}">
             <button class="lessonitem1" type="button">Начать занятие</button>
         </a>
         {% endif %}
