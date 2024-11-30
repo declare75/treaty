@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import CustomUserForm
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import AnonymousUser
+from django.http import HttpResponseRedirect
 
 CustomUser = get_user_model()
 
@@ -29,8 +31,14 @@ def help(request):
     return render(request, 'main/help.html')
 
 
-@login_required
 def profile_view(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, 'Чтобы увидеть данную страницу, необходимо авторизоваться.')
+        referer = request.META.get('HTTP_REFERER')
+        if referer:
+            return HttpResponseRedirect(referer)
+        return redirect('home')
+
     required_fields = []
 
     if not request.user.phone:
@@ -45,14 +53,14 @@ def profile_view(request):
 
         if user_form.is_valid():
             user_form.save()
-            # Если все обязательные поля заполнены, показать сообщение об успешном сохранении
+
             if not required_fields:
                 messages.success(request, 'Данные профиля успешно обновлены!')
             return redirect('profile')
     else:
         user_form = CustomUserForm(instance=request.user)
 
-    # Передаем список незаполненных обязательных полей
+
     if required_fields:
         messages.warning(request, f'Пожалуйста, заполните следующие поля: {", ".join(required_fields)}.')
 
@@ -67,40 +75,40 @@ def register_view(request):
         try:
             data = json.loads(request.body)
 
-            # Получаем данные с клиента
+
             last_name = data.get('last_name')
             first_name = data.get('first_name')
             middle_name = data.get('middle_name')
             email = data.get('email')
             password = data.get('password')
 
-            # Проверка на существующего пользователя
+
             if CustomUser.objects.filter(email=email).exists():
                 return JsonResponse({'success': False, 'message': 'Пользователь с таким email уже существует.'})
 
-            # Проверка, что все необходимые поля заполнены
+
             if not all([last_name, first_name, middle_name, email, password]):
                 return JsonResponse({'success': False, 'message': 'Все поля обязательны для заполнения.'})
 
-            # Создаем нового пользователя
+
             user = CustomUser.objects.create_user(
                 email=email,
                 password=password,
                 last_name=last_name,
                 first_name=first_name,
                 middle_name=middle_name,
-                username=email  # Используем email как username
+                username=email
             )
             user.save()
 
-            # Авторизация пользователя после регистрации
+
             login(request, user)
 
-            # Успешная регистрация
+
             return JsonResponse({
                 'success': True,
                 'message': 'Регистрация прошла успешно!',
-                'redirect_url': '/profile/'  # Перенаправление после успешной регистрации
+                'redirect_url': '/profile/'
             })
 
         except json.JSONDecodeError as e:
@@ -116,7 +124,7 @@ def login_view(request):
         email = data.get('email')
         password = data.get('password')
 
-        # Используем кастомную модель для аутентификации
+
         user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)

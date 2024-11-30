@@ -8,13 +8,22 @@ from django.http import JsonResponse
 from django.urls import reverse
 from django.utils.dateparse import parse_duration
 from datetime import timedelta
+from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
 
 
-@login_required
+
 def chat_list_view(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, 'Чтобы увидеть данную страницу, необходимо авторизоваться.')
+        # Возврат на предыдущую страницу
+        referer = request.META.get('HTTP_REFERER')  # Получение предыдущего URL
+        if referer:
+            return HttpResponseRedirect(referer)
+        return redirect('home')
     user = request.user
 
     # Получаем уникальные чаты пользователя, используя кастомную модель
@@ -48,6 +57,12 @@ def chat_list_view(request):
                 return render(request, "main/chat_list.html", {"existing_chats": existing_chats})
 
     return render(request, "main/chat_list.html", {"chat_data": chat_data})
+import random
+
+def generate_room_link(request, lesson_id):
+    room_id = random.randint(1000, 9999)  # Случайный идентификатор комнаты
+    link = f"{request.scheme}://{request.get_host()}/chats/meeting/?roomID={room_id}"
+    return room_id, link
 
 
 @login_required
@@ -209,22 +224,40 @@ def chat_view(request, receiver_id):
         lesson_id = request.GET.get("start_lesson")
         try:
             lesson = Lesson.objects.get(id=lesson_id)
+
+            # Проверка на то, что текущий пользователь является преподавателем
             if lesson.teacher == request.user and lesson.status == 'scheduled':
+                # Меняем статус занятия
                 lesson.status = 'in_progress'
                 lesson.save()
 
-                # Получаем тему занятия, если она пустая, используем дефолтное значение
-                topic = lesson.topic if lesson.topic else "Без темы"
-                content = f"Занятие на тему '{topic}' началось."
+                # Генерация ссылки для подключения (по аналогии с предыдущим кодом)
+                room_id, link = generate_room_link(request, lesson.id)
 
-                # Создаем сообщение с заданным content
+                # Формируем сообщение с темой занятия и ссылкой
+                topic = lesson.topic if lesson.topic else "Без темы"
+                content = f"""
+                Занятие на тему '{topic}' началось. 
+                <div>
+                    <a href='{link}' target='_blank' style='padding: 10px 20px; background-color: #466ee5; border: none; border-radius: 4px; color: white; text-decoration: none; display: inline-block; text-align: center;'>
+                        Перейти к занятию
+                    </a>
+                </div>
+                """
+
+                # Создаем сообщение в чате
                 Message.objects.create(
                     sender=request.user,
                     receiver=lesson.student,
-                    content=content,  # Убедитесь, что content всегда передается
+                    content=content,
                     timestamp=timezone.now(),
                 )
+
+                # Редирект на страницу занятия с параметром roomID
+                return HttpResponseRedirect(reverse('meeting') + f'?roomID={room_id}')
+
         except Lesson.DoesNotExist:
+            # Обработка случая, когда занятие не найдено
             pass
 
     # Обработка нажатия кнопки "Завершить занятие"
@@ -256,3 +289,7 @@ def chat_view(request, receiver_id):
         "start_lesson_button": start_lesson_button,
         "end_lesson_button": end_lesson_button
     })
+
+@login_required
+def videocall(request):
+    return render(request, 'main/videocall.html', {'name': request.user.first_name + " " + request.user.last_name})
