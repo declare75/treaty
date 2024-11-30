@@ -17,35 +17,32 @@
             {% csrf_token %}
             <div class="rectangle">
                 <div class="rectangle-2">
-                    <div class="blue-row">
-                        <div class="avatar" id="avatarContainer" title="Для загрузки аватара нажмите на него"
-                             style="cursor: default;">
-                            {% if user.avatar %}
-                            <img src="{{ user.avatar.url }}" alt="Аватар" class="avatar-img">
-                            {% else %}
-                            <img src="{% static 'main/img/noimageavatar.svg' %}" alt="Аватар" class="avatar-img">
-                            {% endif %}
+                    <div class="avatar" id="avatarContainer" title="Для загрузки аватара нажмите на него" style="cursor: default;">
+                        {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" alt="Аватар" class="avatar-img">
+                        {% else %}
+                        <img src="{% static 'main/img/noimageavatar.svg' %}" alt="Аватар" class="avatar-img">
+                        {% endif %}
+                    </div>
+                    <div class="name">
+                        <div class="display-only">
+                            {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}
                         </div>
-                        <div class="name">
-                            <div class="display-only">
-                                {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}
-                            </div>
 
-                            <div class="edit-mode" style="display: none;">
-                                <input type="text" name="last_name" value="{{ user.last_name }}" required/>
-                                <input type="text" name="first_name" value="{{ user.first_name }}" required/>
-                                <input type="text" name="middle_name" value="{{ user.middle_name }}" required/>
+                        <div class="edit-mode" style="display: none;">
+                            <input type="text" name="last_name" value="{{ user.last_name }}" required/>
+                            <input type="text" name="first_name" value="{{ user.first_name }}" required/>
+                            <input type="text" name="middle_name" value="{{ user.middle_name }}" required/>
 
-                                {% if form.last_name.errors %}
-                                <div class="error" id="lastNameError">{{ form.last_name.errors }}</div>
-                                {% endif %}
-                                {% if form.first_name.errors %}
-                                <div class="error" id="firstNameError">{{ form.first_name.errors }}</div>
-                                {% endif %}
-                                {% if form.middle_name.errors %}
-                                <div class="error" id="middleNameError">{{ form.middle_name.errors }}</div>
-                                {% endif %}
-                            </div>
+                            {% if form.last_name.errors %}
+                            <div class="error" id="lastNameError">{{ form.last_name.errors }}</div>
+                            {% endif %}
+                            {% if form.first_name.errors %}
+                            <div class="error" id="firstNameError">{{ form.first_name.errors }}</div>
+                            {% endif %}
+                            {% if form.middle_name.errors %}
+                            <div class="error" id="middleNameError">{{ form.middle_name.errors }}</div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
