@@ -9,129 +9,134 @@
 {% endblock %}
 
 {% block content %}
-
+// 123
 <div class="profile">
     <div class="profile-container">
         <form method="post" action="." id="profileForm" enctype="multipart/form-data"
               onsubmit="return checkForErrors()">
             {% csrf_token %}
             <div class="rectangle">
-                <div class="rectangle-2">
-                    <div class="blue-row">
-                        <div class="avatar" id="avatarContainer" title="Для загрузки аватара нажмите на него"
-                             style="cursor: default;">
-                            {% if user.avatar %}
-                            <img src="{{ user.avatar.url }}" alt="Аватар" class="avatar-img">
-                            {% else %}
-                            <img src="{% static 'main/img/noimageavatar.svg' %}" alt="Аватар" class="avatar-img">
-                            {% endif %}
-                        </div>
-                        <div class="name">
-                            <div class="display-only">
-                                {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}
-                            </div>
-
-                            <div class="edit-mode" style="display: none;">
-                                <input type="text" name="last_name" value="{{ user.last_name }}" required/>
-                                <input type="text" name="first_name" value="{{ user.first_name }}" required/>
-                                <input type="text" name="middle_name" value="{{ user.middle_name }}" required/>
-
-                                {% if form.last_name.errors %}
-                                <div class="error" id="lastNameError">{{ form.last_name.errors }}</div>
-                                {% endif %}
-                                {% if form.first_name.errors %}
-                                <div class="error" id="firstNameError">{{ form.first_name.errors }}</div>
-                                {% endif %}
-                                {% if form.middle_name.errors %}
-                                <div class="error" id="middleNameError">{{ form.middle_name.errors }}</div>
+                <div class="rectangle-container">
+                    <div class="rectangle-2">
+                        <div class="avatar-row">
+                            <div class="avatar" id="avatarContainer" title="Для загрузки аватара нажмите на него"
+                                 style="cursor: default;">
+                                {% if user.avatar %}
+                                <img src="{{ user.avatar.url }}" alt="Аватар" class="avatar-img">
+                                {% else %}
+                                <img src="{% static 'main/img/noimageavatar.svg' %}" alt="Аватар" class="avatar-img">
                                 {% endif %}
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="rectangle5">
-                    <div class="avatar-upload">
-                        <input type="file" name="avatar" id="avatarInput" style="display: none;">
-                    </div>
-                    <div class="rectangle3">
-                        <div class="top-row">
-                            <div class="title">Профиль</div>
-                            <div class="rectangle-group">
-                                <button type="button" class="edit" onclick="enableEdit()">Редактировать
-                                    <img class="edit" src="{% static 'main/img/editprofile.svg' %}"
-                                         id="editprofileImage"/>
-                                </button>
-                                <button type="submit" class="edit save-button" style="display: none;">Сохранить</button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="email-title">Email</div>
-                            <div class="phone-title">Телефон</div>
-                            <div class="email">
-                                <div class="display-only">{{ user.email }}</div>
-                                <div class="edit-mode" style="display: none;">
-                                    <input type="email" name="email" value="{{ user.email }}"/>
-                                    {% if form.email.errors %}
-                                    <div class="error" id="emailError">{{ form.email.errors }}</div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="phone">
-                                <div class="display-only">{{ user.phone }}</div>
-                                <div class="edit-mode" style="display: none;">
-                                    <input type="tel" name="phone" value="{{ user.phone }}"/>
-                                    {% if form.phone.errors %}
-                                    <div class="error" id="phoneError">{{ form.phone.errors }}</div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="birthday-title">Дата рождения</div>
-                            <div class="contact-title">Связь</div>
-                            <div class="birthday">
+                            <div class="name">
                                 <div class="display-only">
-                                    {% if user.birthday %}
-                                    {{ user.birthday|date:"d.m.Y" }}
-                                    {% else %}
+                                    {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}
+                                </div>
 
-                                    {% endif %}
-                                </div>
                                 <div class="edit-mode" style="display: none;">
-                                    <input type="date" name="birthday" value="{{ user.birthday|date:'Y-m-d' }}"/>
-                                    {% if form.birthday.errors %}
-                                    <div class="error" id="birthdayError">{{ form.birthday.errors }}</div>
+                                    <input type="text" name="last_name" value="{{ user.last_name }}" required/>
+                                    <input type="text" name="first_name" value="{{ user.first_name }}" required/>
+                                    <input type="text" name="middle_name" value="{{ user.middle_name }}" required/>
+
+                                    {% if form.last_name.errors %}
+                                    <div class="error" id="lastNameError">{{ form.last_name.errors }}</div>
                                     {% endif %}
-                                </div>
-                            </div>
-                            <div class="contact">
-                                <div class="display-only">{{ user.contact }}</div>
-                                <div class="edit-mode" style="display: none;">
-                                    <input type="text" name="contact" value="{{ user.contact }}"/>
-                                    {% if form.contact.errors %}
-                                    <div class="error" id="contactError">{{ form.contact.errors }}</div>
+                                    {% if form.first_name.errors %}
+                                    <div class="error" id="firstNameError">{{ form.first_name.errors }}</div>
+                                    {% endif %}
+                                    {% if form.middle_name.errors %}
+                                    <div class="error" id="middleNameError">{{ form.middle_name.errors }}</div>
                                     {% endif %}
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                    </div>
+                    <div class="rectangle5">
+                        <div class="avatar-upload">
+                            <input type="file" name="avatar" id="avatarInput" style="display: none;">
+                        </div>
+                        <div class="rectangle3">
+                            <div class="top-row">
+                                <div class="title">Профиль</div>
+                                <div class="rectangle-group">
+                                    <button type="button" class="edit" onclick="enableEdit()">Редактировать
+                                        <img class="edit" src="{% static 'main/img/editprofile.svg' %}"
+                                             id="editprofileImage"/>
+                                    </button>
+                                    <button type="submit" class="edit save-button" style="display: none;">Сохранить
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="email-title">Email</div>
+                                <div class="phone-title">Телефон</div>
+                                <div class="email">
+                                    <div class="display-only">{{ user.email }}</div>
+                                    <div class="edit-mode" style="display: none;">
+                                        <input type="email" name="email" value="{{ user.email }}"/>
+                                        {% if form.email.errors %}
+                                        <div class="error" id="emailError">{{ form.email.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="phone">
+                                    <div class="display-only">{{ user.phone }}</div>
+                                    <div class="edit-mode" style="display: none;">
+                                        <input type="tel" name="phone" value="{{ user.phone }}"/>
+                                        {% if form.phone.errors %}
+                                        <div class="error" id="phoneError">{{ form.phone.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="birthday-title">Дата рождения</div>
+                                <div class="contact-title">Связь</div>
+                                <div class="birthday">
+                                    <div class="display-only">
+                                        {% if user.birthday %}
+                                        {{ user.birthday|date:"d.m.Y" }}
+                                        {% else %}
+
+                                        {% endif %}
+                                    </div>
+                                    <div class="edit-mode" style="display: none;">
+                                        <input type="date" name="birthday" value="{{ user.birthday|date:'Y-m-d' }}"/>
+                                        {% if form.birthday.errors %}
+                                        <div class="error" id="birthdayError">{{ form.birthday.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="contact">
+                                    <div class="display-only">{{ user.contact }}</div>
+                                    <div class="edit-mode" style="display: none;">
+                                        <input type="text" name="contact" value="{{ user.contact }}"/>
+                                        {% if form.contact.errors %}
+                                        <div class="error" id="contactError">{{ form.contact.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
                             <div class="settings">Настройки</div>
                         </div>
-                    </div>
 
-                    <div class="rectangle4">
-                        <div class="switch-row">
-                            <div class="theme">Тема</div>
-                            <div class="notification">Уведомления</div>
-                            <div class="theme-switch">
-                                <input type="checkbox" id="theme-toggle"/>
-                                <label for="theme-toggle"></label>
-                                <img src="{% static 'main/img/themelight.svg' %}" id="themeImage"/>
-                            </div>
-                            <div class="notification-switch">
-                                <input type="checkbox" id="notification-toggle"/>
-                                <label for="notification-toggle"></label>
-                                <img src="{% static 'main/img/notificationoff.svg' %}" id="notificationImage"/>
+                        <div class="rectangle4">
+                            <div class="switch-row">
+                                <div>
+                                    <div class="theme">Тема</div>
+                                    <div class="theme-switch">
+                                        <input type="checkbox" id="theme-toggle"/>
+                                        <label for="theme-toggle"></label>
+                                        <img src="{% static 'main/img/themelight.svg' %}" id="themeImage"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="notification">Уведомления</div>
+                                    <div class="notification-switch">
+                                        <input type="checkbox" id="notification-toggle"/>
+                                        <label for="notification-toggle"></label>
+                                        <img src="{% static 'main/img/notificationoff.svg' %}" id="notificationImage"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
