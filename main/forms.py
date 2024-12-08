@@ -2,11 +2,20 @@
 from django import forms
 from .models import CustomUser
 
+
 class CustomUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['avatar', 'birthday', 'phone', 'contact', 'email', 'last_name', 'first_name', 'middle_name']
-
+        fields = [
+            'avatar',
+            'birthday',
+            'phone',
+            'contact',
+            'email',
+            'last_name',
+            'first_name',
+            'middle_name',
+        ]
 
     def clean_last_name(self):
         last_name = self.cleaned_data.get('last_name')
@@ -19,5 +28,3 @@ class CustomUserForm(forms.ModelForm):
         if not first_name:
             raise forms.ValidationError('Имя обязательно.')
         return first_name
-
-
