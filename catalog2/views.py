@@ -99,7 +99,8 @@ def add_review(request, teacher_id):
 
     # Проверяем наличие завершенного занятия
     if not Lesson.has_completed_lesson(student=request.user, teacher=teacher):
-        return render(request, "catalog2/error.html", {"message": "Вы можете оставить отзыв только после завершенного занятия."})
+        messages.warning(request, 'Вы можете оставить отзыв только после завершенного занятия с этим преподавателем.')
+        return redirect('catalog2_home')
 
     if request.method == "POST":
         form = ReviewForm(request.POST)

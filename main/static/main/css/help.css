@@ -6,7 +6,6 @@
     font-family: Manrope, sans-serif;
 }
 body {
-    height: 1200px;
 }
 /* Основной контейнер */
 .container6 {
@@ -54,10 +53,9 @@ body.dark-theme .welcome-text {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    margin-top: 50px;
-    margin-left: auto;
+    margin-top: 150px;
+    margin-left: 150px;
     margin-right: auto;
-
 }
 
 /* Элемент вопроса */
