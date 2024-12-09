@@ -3,22 +3,26 @@ from .forms import PrepodForm, ReviewForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
-from django.shortcuts import redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from chat.models import Lesson
 from django.contrib import messages
 
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
 
+# Функция-декоратор для проверки is_staff
+def staff_required(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        if not request.user.is_staff:
+            return JsonResponse({'message': 'Только сотрудники могут выполнять это действие.'}, status=403)
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
 
 def catalog2_home(request):
     if request.method == 'POST':
         form = PrepodForm(request.POST, request.FILES)
         if form.is_valid():
-            if not request.user.is_staff:
-                return JsonResponse({'message': 'Только сотрудники могут добавлять объявления.'}, status=403)
-
             prepod = form.save(commit=False)
             prepod.is_approved = False
             prepod.user = request.user
@@ -32,7 +36,7 @@ def catalog2_home(request):
         return redirect('catalog2_home')
 
     subjects = Subject.objects.all()
-    catalog2 = Prepods.objects.filter(is_approved=True)
+    catalog2 = Prepods.objects.filter(is_approved=True).select_related('user')
     form = ReviewForm()
 
     return render(request, 'catalog2/catalog2_home.html', {
@@ -42,16 +46,13 @@ def catalog2_home(request):
     })
 
 
-
-
 def success_page(request):
     return render(request, 'catalog2/success_page.html')
 
-@login_required
-def add_prepod(request):
-    if not request.user.is_staff:
-        return JsonResponse({'message': 'Только сотрудники могут добавлять объявления.'}, status=403)
 
+@login_required
+@staff_required
+def add_prepod(request):
     if request.method == 'POST':
         form = PrepodForm(request.POST, request.FILES)
         if form.is_valid():
@@ -65,10 +66,12 @@ def add_prepod(request):
     form = PrepodForm()
     return render(request, 'catalog2/catalog2_home.html', {'form': form})
 
+
 @login_required
 def user_prepods(request):
     user_prepods = Prepods.objects.filter(user=request.user)
     return render(request, 'catalog2/posts.html', {'prepods': user_prepods})
+
 
 @login_required
 def edit_prepod(request):
@@ -86,6 +89,7 @@ def edit_prepod(request):
 
     return JsonResponse({'success': False, 'message': 'Неверный метод запроса'}, status=405)
 
+
 def get_subjects(request):
     subjects = Subject.objects.all()
     subjects_data = [{"id": subject.id, "name": subject.name} for subject in subjects]
@@ -94,7 +98,6 @@ def get_subjects(request):
 
 @login_required
 def add_review(request, teacher_id):
-    # Получаем преподавателя
     teacher = get_object_or_404(CustomUser, id=teacher_id, is_staff=True)
 
     # Проверяем наличие завершенного занятия
@@ -105,7 +108,6 @@ def add_review(request, teacher_id):
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():
-            # Сохраняем отзыв
             review = form.save(commit=False)
             review.reviewer = request.user
             review.teacher = teacher
