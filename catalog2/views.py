@@ -6,42 +6,41 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from chat.models import Lesson
+from django.contrib import messages
 
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
 
 
 def catalog2_home(request):
-    # Обрабатываем POST-запрос для добавления нового объявления
     if request.method == 'POST':
         form = PrepodForm(request.POST, request.FILES)
         if form.is_valid():
-            # Добавляем проверку для сотрудников
             if not request.user.is_staff:
                 return JsonResponse({'message': 'Только сотрудники могут добавлять объявления.'}, status=403)
 
             prepod = form.save(commit=False)
-            prepod.is_approved = False  # Объявление идет на модерацию
-            prepod.user = request.user  # Сохраняем пользователя, который создает объявление
+            prepod.is_approved = False
+            prepod.user = request.user
             prepod.save()
             return JsonResponse({'message': 'Объявление успешно отправлено на модерацию!'})
         else:
             return JsonResponse({'message': 'Ошибка в отправленных данных.'}, status=400)
 
-    # Получаем все предметы для отображения в форме
+    if not request.user.is_authenticated and request.GET.get('action') == 'contact':
+        messages.warning(request, 'Чтобы связаться, необходимо войти в аккаунт.')
+        return redirect('catalog2_home')
+
     subjects = Subject.objects.all()
-
-    # Отображаем список одобренных объявлений
     catalog2 = Prepods.objects.filter(is_approved=True)
-
-    # Форма для добавления нового отзыва
-    form = ReviewForm()  # Форма для добавления отзыва
+    form = ReviewForm()
 
     return render(request, 'catalog2/catalog2_home.html', {
         'catalog2': catalog2,
-        'form': form,  # Передаем форму отзыва в шаблон
-        'subjects': subjects  # Передаем предметы в шаблон
+        'form': form,
+        'subjects': subjects,
     })
+
 
 
 

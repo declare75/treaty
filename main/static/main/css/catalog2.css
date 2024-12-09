@@ -174,17 +174,18 @@ body.dark-theme .filterobject button:hover {
 
 /* Кнопка */
 .morebtn {
-    width: 103.0px;
+    width: 118px;
     height: 35.0px;
     flex-shrink: 0;
     border-radius: 15px 0px 15px 0px;
     background: #466EE5;
     position: absolute;
     margin-top: 5px;
-    margin-left: 966px;
+    margin-left: 952px;
     border: none;
     color: white;
     z-index: 2;
+    text-align: center;
     transition: transform 0.3s ease;
     padding: 5px 8px;
 }
@@ -429,6 +430,26 @@ textarea {
     top: 0px;
     left: 720px;
 
+}
+.btn-chat {
+    width: 118px;
+    height: 35px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #466ee5;
+    border-radius: 0px 15px 0px 15px;
+    color: white;
+    text-align: left;
+    position: absolute;
+    top: 12px;
+    left: 968px;
+}
+.chatimg {
+    margin-left: 5px;
+    margin-top: -2px;
 }
 .custom-btn-cancel {
     width: 100px;

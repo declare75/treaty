@@ -102,6 +102,19 @@
         {% for el in catalog2 %}
         <div class="containerPrepods">
             <div class="alert">
+                {% if user.is_authenticated %}
+                <a href="{% url 'chat_view' receiver_id=el.user.id %}" target="_blank">
+                    <button type="submit" class="btn-chat">Связаться
+                        <img src="{% static 'main/img/chatimg.svg' %}" alt="chatimg" class="chatimg">
+                    </button>
+                </a>
+                {% else %}
+                <a href="?action=contact">
+                    <button type="button" class="btn-chat">Связаться
+                        <img src="{% static 'main/img/chatimg.svg' %}" alt="chatimg" class="chatimg">
+                    </button>
+                </a>
+                {% endif %}
                 <div class="divider"></div>
                 <div class="divider2"></div>
                 <h3 class="FIO">{{ el.user.last_name }} {{ el.user.first_name }} {{ el.user.middle_name }}</h3>
