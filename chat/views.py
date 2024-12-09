@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from .models import Message, Lesson
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -15,10 +15,12 @@ from django.contrib import messages
 CustomUser = get_user_model()
 
 
-
 def chat_list_view(request):
     if not request.user.is_authenticated:
-        messages.warning(request, 'Чтобы увидеть данную страницу, необходимо авторизоваться.')
+        messages.warning(
+            request,
+            'Чтобы увидеть данную страницу, необходимо авторизоваться.',
+        )
         # Возврат на предыдущую страницу
         referer = request.META.get('HTTP_REFERER')  # Получение предыдущего URL
         if referer:
@@ -34,30 +36,40 @@ def chat_list_view(request):
     chat_data = []
     for chat_user in existing_chats:
         # Получаем последнее сообщение для каждого чата
-        last_message = Message.objects.filter(
-            Q(sender=user, receiver=chat_user) | Q(sender=chat_user, receiver=user)
-        ).order_by("-timestamp").first()
+        last_message = (
+            Message.objects.filter(
+                Q(sender=user, receiver=chat_user) | Q(sender=chat_user, receiver=user)
+            )
+            .order_by("-timestamp")
+            .first()
+        )
 
-        chat_data.append({
-            'chat_user': chat_user,
-            'last_message': last_message
-        })
+        chat_data.append({'chat_user': chat_user, 'last_message': last_message})
 
     if request.method == "POST":
         email = request.POST.get("email")
         try:
             # Используем кастомную модель для получения пользователя по email
             receiver = CustomUser.objects.get(email=email)
-            return JsonResponse({"redirect_url": reverse("chat_view", args=[receiver.id])})
+            return JsonResponse(
+                {"redirect_url": reverse("chat_view", args=[receiver.id])}
+            )
         except CustomUser.DoesNotExist:
             # Проверка, является ли запрос AJAX-запросом
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return JsonResponse({"error": "Пользователь с таким email не найден."})
             else:
-                return render(request, "main/chat_list.html", {"existing_chats": existing_chats})
+                return render(
+                    request,
+                    "main/chat_list.html",
+                    {"existing_chats": existing_chats},
+                )
 
     return render(request, "main/chat_list.html", {"chat_data": chat_data})
+
+
 import random
+
 
 def generate_room_link(request, lesson_id):
     room_id = random.randint(1000, 9999)  # Случайный идентификатор комнаты
@@ -74,14 +86,18 @@ def chat_view(request, receiver_id):
 
     # Фильтруем сообщения между текущим пользователем и получателем
     messages = Message.objects.filter(
-        (Q(sender=request.user) & Q(receiver=receiver) & ~Q(content__icontains="Для Вас назначено новое занятие!")) |
-        (Q(sender=receiver) & Q(receiver=request.user))
+        (
+            Q(sender=request.user)
+            & Q(receiver=receiver)
+            & ~Q(content__icontains="Для Вас назначено новое занятие!")
+        )
+        | (Q(sender=receiver) & Q(receiver=request.user))
     ).order_by("timestamp")
 
     # Получаем все занятия для текущего пользователя и его чата с выбранным получателем
     lessons = Lesson.objects.filter(
-        Q(teacher=request.user, student=receiver) |
-        Q(teacher=receiver, student=request.user)
+        Q(teacher=request.user, student=receiver)
+        | Q(teacher=receiver, student=request.user)
     ).order_by("date_time")
 
     # Считаем количество занятий между пользователями
@@ -97,16 +113,19 @@ def chat_view(request, receiver_id):
         elif lesson.status == 'in_progress' and lesson.teacher == request.user:
             end_lesson_button = lesson  # Преподаватель может завершить занятие
 
-
     if request.method == "POST":
         # Проверка на создание занятия
         if "schedule_lesson" in request.POST:
             if not request.user.is_staff:  # Проверяем, преподаватель ли пользователь
-                return render(request, "main/chat_detail.html", {
-                    "messages": messages,
-                    "receiver": receiver,
-                    "error": "Только преподаватели могут создавать занятия."
-                })
+                return render(
+                    request,
+                    "main/chat_detail.html",
+                    {
+                        "messages": messages,
+                        "receiver": receiver,
+                        "error": "Только преподаватели могут создавать занятия.",
+                    },
+                )
 
             date_time = request.POST.get("date_time")
             duration = request.POST.get("duration")
@@ -123,11 +142,15 @@ def chat_view(request, receiver_id):
                 student = receiver if request.user != receiver else None
 
                 if student is None:
-                    return render(request, "main/chat_detail.html", {
-                        "messages": messages,
-                        "receiver": receiver,
-                        "error": "Не удалось определить ученика."
-                    })
+                    return render(
+                        request,
+                        "main/chat_detail.html",
+                        {
+                            "messages": messages,
+                            "receiver": receiver,
+                            "error": "Не удалось определить ученика.",
+                        },
+                    )
 
                 # Создаем занятие
                 lesson = Lesson.objects.create(
@@ -138,7 +161,6 @@ def chat_view(request, receiver_id):
                     student=student,
                     status="pending",  # Статус "ожидает подтверждения"
                 )
-
 
                 # Отправляем сообщение в чат для подтверждения занятия
                 Message.objects.create(
@@ -158,15 +180,16 @@ def chat_view(request, receiver_id):
                     timestamp=timezone.now(),
                 )
 
-
-
-
             except (ValueError, AttributeError):
-                return render(request, "main/chat_detail.html", {
-                    "messages": messages,
-                    "receiver": receiver,
-                    "error": "Некорректная длительность."
-                })
+                return render(
+                    request,
+                    "main/chat_detail.html",
+                    {
+                        "messages": messages,
+                        "receiver": receiver,
+                        "error": "Некорректная длительность.",
+                    },
+                )
 
             return redirect("chat_view", receiver_id=receiver.id)
 
@@ -208,7 +231,9 @@ def chat_view(request, receiver_id):
         try:
             lesson = Lesson.objects.get(id=decline_lesson_id)
             if lesson.student == request.user:
-                lesson.status = 'declined'  # Если отклонить, то меняем статус на 'declined'
+                lesson.status = (
+                    'declined'  # Если отклонить, то меняем статус на 'declined'
+                )
                 lesson.save()
                 # Отправляем сообщение, что занятие отклонено
                 Message.objects.create(
@@ -281,15 +306,24 @@ def chat_view(request, receiver_id):
         except Lesson.DoesNotExist:
             pass
 
-    return render(request, "main/chat_detail.html", {
-        "messages": messages,
-        "receiver": receiver,
-        "lessons": lessons,  # Передаем список всех занятий
-        "lessons_count": lessons_count,  # Передаем количество занятий
-        "start_lesson_button": start_lesson_button,
-        "end_lesson_button": end_lesson_button
-    })
+    return render(
+        request,
+        "main/chat_detail.html",
+        {
+            "messages": messages,
+            "receiver": receiver,
+            "lessons": lessons,  # Передаем список всех занятий
+            "lessons_count": lessons_count,  # Передаем количество занятий
+            "start_lesson_button": start_lesson_button,
+            "end_lesson_button": end_lesson_button,
+        },
+    )
+
 
 @login_required
 def videocall(request):
-    return render(request, 'main/videocall.html', {'name': request.user.first_name + " " + request.user.last_name})
+    return render(
+        request,
+        'main/videocall.html',
+        {'name': request.user.first_name + " " + request.user.last_name},
+    )

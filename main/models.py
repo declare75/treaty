@@ -52,6 +52,7 @@ class CustomUser(AbstractUser):
 
     def calculate_rating(self):
         from catalog2.models import Review  # Импорт модели Review
+
         reviews = Review.objects.filter(teacher=self)
         if reviews.exists():
             self.rating = reviews.aggregate(models.Avg('rating'))['rating__avg']
@@ -67,7 +68,8 @@ class CustomUser(AbstractUser):
             today = date.today()
             age = today.year - self.birthday.year
             if today.month < self.birthday.month or (
-                    today.month == self.birthday.month and today.day < self.birthday.day):
+                today.month == self.birthday.month and today.day < self.birthday.day
+            ):
                 age -= 1
 
             if age % 10 == 1 and age % 100 != 11:

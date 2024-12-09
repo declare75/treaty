@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from catalog2.models import Review
 from main.models import CustomUser
 
+
 @receiver(post_save, sender=Review)
 def update_teacher_rating(sender, instance, **kwargs):
     teacher = instance.teacher

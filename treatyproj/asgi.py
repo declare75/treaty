@@ -6,11 +6,13 @@ import chat.routing  # Убедитесь, что путь к chat.routing пр�
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'treatyproj.settings')
 
-application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
-    "websocket": AuthMiddlewareStack(
-        URLRouter(
-            chat.routing.websocket_urlpatterns  # Используется правильный путь
-        )
-    ),
-})
+application = ProtocolTypeRouter(
+    {
+        "http": get_asgi_application(),
+        "websocket": AuthMiddlewareStack(
+            URLRouter(
+                chat.routing.websocket_urlpatterns  # Используется правильный путь
+            )
+        ),
+    }
+)

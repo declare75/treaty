@@ -36,11 +36,22 @@ class PrepodsAdmin(admin.ModelAdmin):
 admin.site.register(Subject)
 admin.site.register(Prepods, PrepodsAdmin)
 
+
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('reviewer', 'teacher', 'rating', 'created_at')  # Поля, отображаемые в списке
+    list_display = (
+        'reviewer',
+        'teacher',
+        'rating',
+        'created_at',
+    )  # Поля, отображаемые в списке
     list_filter = ('rating', 'created_at')  # Возможность фильтрации
-    search_fields = ('reviewerusername', 'teacherusername', 'text')  # Поля для поиска
+    search_fields = (
+        'reviewerusername',
+        'teacherusername',
+        'text',
+    )  # Поля для поиска
     ordering = ('-created_at',)  # Сортировка по умолчанию (новые отзывы сверху)
     readonly_fields = ('created_at',)  # Поля только для чтения
+
 
 admin.site.register(Review, ReviewAdmin)

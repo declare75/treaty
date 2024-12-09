@@ -1,6 +1,7 @@
 from django import forms
 from .models import Prepods, Subject, Review
 
+
 class PrepodForm(forms.ModelForm):
     class Meta:
         model = Prepods
@@ -18,5 +19,5 @@ class ReviewForm(forms.ModelForm):
         fields = ['text', 'rating']
         widgets = {
             'text': forms.Textarea(attrs={'placeholder': 'Ваш отзыв...', 'rows': 3}),
-            'rating': forms.HiddenInput()  # Скрытое поле для рейтинга
+            'rating': forms.HiddenInput(),  # Скрытое поле для рейтинга
         }

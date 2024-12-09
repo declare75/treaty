@@ -5,6 +5,7 @@ from django.conf import settings
 # Используем кастомную модель пользователя
 CustomUser = get_user_model()
 
+
 class Subject(models.Model):
     name = models.CharField('Название предмета', max_length=100)
 
@@ -15,12 +16,20 @@ class Subject(models.Model):
         verbose_name = 'Предмет'
         verbose_name_plural = 'Предметы'
 
+
 class Prepods(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, verbose_name='Предмет')
+    subject = models.ForeignKey(
+        Subject, on_delete=models.SET_NULL, null=True, verbose_name='Предмет'
+    )
     description = models.CharField('Описание', max_length=250)
     created_at = models.DateTimeField(auto_now=True)
     is_approved = models.BooleanField('Одобрено', default=False)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь', related_name='prepods')
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+        related_name='prepods',
+    )
 
     def revoke(self):
         self.is_approved = False
@@ -33,12 +42,17 @@ class Prepods(models.Model):
         verbose_name = 'объявление'
         verbose_name_plural = 'Каталоги'
 
+
 class Review(models.Model):
     reviewer = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reviews_written"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="reviews_written",
     )  # Кто оставил отзыв
     teacher = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reviews_received"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="reviews_received",
     )  # Преподаватель, которому оставили отзыв
     text = models.TextField()  # Текст отзыва
     created_at = models.DateTimeField(auto_now_add=True)  # Время создания
