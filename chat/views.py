@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Message, Lesson
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -10,6 +10,7 @@ from django.utils.dateparse import parse_duration
 from datetime import timedelta
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from django.db import transaction
 
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
@@ -213,17 +214,30 @@ def chat_view(request, receiver_id):
 
     if confirm_lesson_id:
         try:
-            lesson = Lesson.objects.get(id=confirm_lesson_id)
+            lesson = get_object_or_404(Lesson, id=confirm_lesson_id)
             if lesson.student == request.user:
-                lesson.status = 'scheduled'  # Изменяем статус на 'scheduled'
-                lesson.save()
-                # Отправляем сообщение, что занятие подтверждено
-                Message.objects.create(
-                    sender=request.user,
-                    receiver=lesson.teacher,
-                    content=f"<div class='newlessontext'>Занятие на тему {lesson.topic} подтверждено и запланировано</div>",
-                    timestamp=timezone.now(),
-                )
+                with transaction.atomic():
+                    # Проверяем, достаточно ли средств у студента
+                    if lesson.student.balance < lesson.price:
+                        # Можно вернуть ошибку или сообщение
+                        raise ValueError("Недостаточно средств на балансе")
+
+                    # Изменяем статус занятия
+                    lesson.status = 'scheduled'
+                    lesson.save()
+
+                    # Переводим деньги с баланса студента на баланс учителя
+                    success = lesson.student.transfer_balance(lesson.teacher, lesson.price)
+                    if not success:
+                        raise ValueError("Ошибка при переводе средств")
+
+                    # Отправляем сообщение о подтверждении
+                    Message.objects.create(
+                        sender=request.user,
+                        receiver=lesson.teacher,
+                        content=f"<div class='newlessontext'>Занятие на тему {lesson.topic} подтверждено и запланировано</div>",
+                        timestamp=timezone.now(),
+                    )
         except Lesson.DoesNotExist:
             pass
 

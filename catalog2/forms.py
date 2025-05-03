@@ -1,16 +1,20 @@
 from django import forms
-from .models import Prepods, Subject, Review
+from .models import Announcement, Subject, Review
 
 
-class PrepodForm(forms.ModelForm):
+class AnnouncementForm(forms.ModelForm):
     class Meta:
-        model = Prepods
+        model = Announcement
         fields = ['subject', 'description']
         labels = {
             'subject': 'Предмет',
             'description': 'Описание',
         }
-        subject = forms.ModelChoiceField(queryset=Subject.objects.all(), required=True)
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 4}),
+        }
+
+    subject = forms.ModelChoiceField(queryset=Subject.objects.all(), required=True)
 
 
 class ReviewForm(forms.ModelForm):

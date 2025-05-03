@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Prepods, Subject, Review
+from .models import Announcement, Subject, Review
 from django.utils.html import format_html
 
-
-class PrepodsAdmin(admin.ModelAdmin):
+@admin.register(Announcement)
+class AnnouncementAdmin(admin.ModelAdmin):
     # Отображаем сгенерированное поле для ФИО, предмет, одобрение и дату создания
     list_display = ('get_title', 'get_subject', 'is_approved', 'created_at')
     actions = ['approve_selected', 'revoke_selected']
@@ -31,12 +31,12 @@ class PrepodsAdmin(admin.ModelAdmin):
     approve_selected.short_description = "Одобрить выбранные объявления"
     revoke_selected.short_description = "Отозвать выбранные объявления"
 
+@admin.register(Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    list_display = ('name',)  # Предполагается, что у Subject есть поле name
+    search_fields = ('name',)
 
-# Регистрируем модель предметов, чтобы ими можно было управлять через админку
-admin.site.register(Subject)
-admin.site.register(Prepods, PrepodsAdmin)
-
-
+@admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display = (
         'reviewer',
@@ -51,7 +51,4 @@ class ReviewAdmin(admin.ModelAdmin):
         'text',
     )  # Поля для поиска
     ordering = ('-created_at',)  # Сортировка по умолчанию (новые отзывы сверху)
-    readonly_fields = ('created_at',)  # Поля только для чтения
-
-
-admin.site.register(Review, ReviewAdmin)
+    readonly_fields = ('created_at',)

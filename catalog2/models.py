@@ -17,7 +17,7 @@ class Subject(models.Model):
         verbose_name_plural = 'Предметы'
 
 
-class Prepods(models.Model):
+class Announcement(models.Model):
     subject = models.ForeignKey(
         Subject, on_delete=models.SET_NULL, null=True, verbose_name='Предмет'
     )

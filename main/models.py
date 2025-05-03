@@ -5,6 +5,8 @@ from django.dispatch import receiver
 from django.conf import settings
 from datetime import date
 from django.utils import timezone
+from django.db import transaction
+from django.db.models import F
 
 
 class CustomUserManager(BaseUserManager):
@@ -42,11 +44,12 @@ class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=150, blank=False)  # Имя
     middle_name = models.CharField(max_length=150, blank=False)  # Отчество
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
-    is_active = models.BooleanField(default=True)
+    is_teacher = models.BooleanField(default=False)  # Заменили is_active на is_teacher
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
     rating = models.FloatField(default=0.0)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -55,6 +58,23 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} {self.middle_name}"
+
+    def transfer_balance(self, recipient, amount):
+
+        if amount <= 0:
+            raise ValueError("Сумма перевода должна быть положительной")
+
+        if self.balance < amount:
+            return False
+        try:
+            with transaction.atomic():
+                # Списываем деньги с отправителя
+                CustomUser.objects.filter(pk=self.pk).update(balance=F('balance') - amount)
+                # Начисляем деньги получателю
+                CustomUser.objects.filter(pk=recipient.pk).update(balance=F('balance') + amount)
+                return True
+        except Exception as e:
+            raise Exception(f"Ошибка при переводе: {str(e)}")
 
     def calculate_rating(self):
         from catalog2.models import Review  # Импорт модели Review
