@@ -41,6 +41,7 @@ class Lesson(models.Model):
         ],
         default='pending',
     )
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def __str__(self):
         return f"Lesson on {self.topic} at {self.date_time.strftime('%Y-%m-%d %H:%M')}"

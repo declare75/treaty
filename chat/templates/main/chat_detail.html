@@ -4,30 +4,27 @@
 {% block title %}Мессенджер{% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{% static 'main/css/chat.css' %}">
-
 {% endblock %}
 
 {% block content %}
-<div><input type="text" id="searchInput" placeholder="Поиск сообщений..." class="searchM2" onkeyup="filterSearch()">
-</div>
+<div><input type="text" id="searchInput" placeholder="Поиск сообщений..." class="searchM2" onkeyup="filterSearch()"></div>
 <div class="yourchatstext2">чат</div>
 <div class="krujok2"></div>
 <h2 class="username">{{ receiver.email }}</h2>
 <div class="rectangle6"></div>
-<a href="/chats/" class="close-chat-icon">
-    <i class="fa fa-times" style="color: #7396FC; font-size: 20px;"></i> <!-- Иконка крестика -->
+<a href="{% url 'chat_list_view' %}" class="close-chat-icon">
+    <i class="fa fa-times" style="color: #7396FC; font-size: 20px;"></i>
 </a>
-<div id="chat-box">
+<div id="chat-box" data-last-message-id="{{ last_message_id }}">
     {% for message in messages %}
-    <div class="message {% if message.sender == user %}sent{% else %}received{% endif %}">
+    <div class="message {% if message.sender == user %}sent{% else %}received{% endif %}" data-message-id="{{ message.id }}">
         <p>
             <strong class="username2">{{ message.sender.get_display_name }}</strong>
             <small>{{ message.timestamp|date:"j F H:i" }}</small>
         </p>
         <p class="message-content">
-            <!-- Выводим контент сообщения с поддержкой HTML, если есть -->
             {{ message.content|safe }}
-        </p> <!-- Контент сообщения -->
+        </p>
         {% if message.image %}
         <img class="message-image" src="{{ message.image.url }}" alt="image">
         {% endif %}
@@ -40,62 +37,52 @@
     {% endfor %}
 </div>
 
-{% if user.is_staff %}
+{% if user.is_teacher %}
 <div class="lessons-list">
     <div class="plantext">Запланированные занятия</div>
     <div class="backgroundlesson"></div>
     {% for lesson in lessons %}
     {% if lesson.status != 'pending' %}
     <div class="lesson-item">
-        {% for lesson in lessons %}
         <div class="lessonitem">
             <strong>{{ lesson.topic }}</strong> - {{ lesson.date_time|date:"j F, H:i" }}
         </div>
-
         {% if lesson.status == 'scheduled' %}
-        <a href="{% url 'chat_view' receiver.id %}?start_lesson={{ lesson.id }}" target="_blank" id="start-lesson-link"
-           style="display: none; "></a>
+        <a href="{% url 'start_lesson' receiver.id lesson.id %}" target="_blank" id="start-lesson-link-{{ lesson.id }}"
+           style="display: none;"></a>
         <a href="{% url 'meeting' %}?roomID={{ lesson.id }}" target="_blank"
-           onclick="document.getElementById('start-lesson-link').click();">
+           onclick="document.getElementById('start-lesson-link-{{ lesson.id }}').click();">
             <button class="lessonitem1" type="button">Начать занятие</button>
         </a>
         {% endif %}
-
         {% if lesson.status == 'in_progress' %}
-        <a href="{% url 'chat_view' receiver.id %}?end_lesson={{ lesson.id }}">
+        <a href="{% url 'end_lesson' receiver.id lesson.id %}">
             <button class="lessonitem2" type="button">Завершить занятие</button>
         </a>
         {% endif %}
-        {% endfor %}
     </div>
-
     {% endif %}
     {% endfor %}
 </div>
 
 {% if not lesson %}
-<form method="post" action="{% url 'chat_view' receiver.id %}">
+<form method="post" action="{% url 'schedule_lesson' receiver.id %}">
     {% csrf_token %}
     <div class="datetime" for="date_time">Дата и время:</div>
     <input class="datetimeinput" type="datetime-local" name="date_time" required><br>
-
     <div class="dlit" for="duration">Длительность</div>
     <input class="dlitinput" type="time" name="duration" required><br>
-
     <div class="topic" for="topic">Тема</div>
     <input class="topicinput" type="text" name="topic" required><br>
-
     <button class="submitlesson" type="submit" name="schedule_lesson">Запланировать</button>
     <div class="warningbox hidden" id="successMessage">
         Занятие успешно создано, если поля были заполнены верно!
     </div>
-
 </form>
 {% endif %}
 {% endif %}
 
-
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" id="message-form" action="{% url 'chat_view' receiver.id %}">
     {% csrf_token %}
     <div class="recundertextarea"></div>
     <button type="submit" class="startchat2">Отправить</button>
@@ -103,116 +90,120 @@
         <input name="content" required>
     </div>
     <div>
-        <!-- Для изображения -->
         <label for="image-input" style="cursor: pointer; position: absolute; top: 821px; left: 538px;">
-            <i class="fa fa-image" style="color: #7396FC; font-size: 35px;"></i> <!-- Иконка изображения -->
+            <i class="fa fa-image" style="color: #7396FC; font-size: 35px;"></i>
         </label>
-        <input id="image-input" class="message-image-input" type="file" name="image" accept="image/*"
-               style="display: none;">
-
-        <!-- Для видео -->
+        <input id="image-input" class="message-image-input" type="file" name="image" accept="image/*" style="display: none;">
         <label for="video-input" style="cursor: pointer; position: absolute; top: 821px; left: 602px;">
-            <i class="fa fa-film" style="color: #7396FC; font-size: 35px;"></i> <!-- Иконка пленки для видео -->
+            <i class="fa fa-film" style="color: #7396FC; font-size: 35px;"></i>
         </label>
-        <input id="video-input" class="message-video-input" type="file" name="video" accept="video/*"
-               style="display: none;">
+        <input id="video-input" class="message-video-input" type="file" name="video" accept="video/*" style="display: none;">
     </div>
 </form>
-
 
 <div id="notification" class="warningbox hidden">
     <span id="notification-text"></span>
 </div>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Получаем параметры из текущего URL
-        const urlParams = new URLSearchParams(window.location.search);
+document.addEventListener('DOMContentLoaded', function () {
+    const chatBox = document.getElementById('chat-box');
+    const notification = document.getElementById('notification');
+    const notificationText = document.getElementById('notification-text');
 
-        // Проверяем, если есть параметры confirm_lesson или decline_lesson
-        if (urlParams.has('confirm_lesson') || urlParams.has('decline_lesson')) {
-            // Ожидаем 1 секунду
-            setTimeout(function () {
-                // Возвращаемся на предыдущую страницу
-                window.history.back();
-            }, 100);
-        }
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    function fetchMessages() {
+        const lastMessageId = chatBox.dataset.lastMessageId || 0;
+        fetch(`{% url 'get_messages' receiver.id %}?last_id=${lastMessageId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.messages.length > 0) {
+                    data.messages.forEach(message => {
+                        const messageElement = document.createElement('div');
+                        messageElement.classList.add('message', message.sender === '{{ user.email }}' ? 'sent' : 'received');
+                        messageElement.dataset.messageId = message.id;
+                        messageElement.innerHTML = `
+                            <p>
+                                <strong class="username2">${message.sender_name}</strong>
+                                <small>${message.timestamp}</small>
+                            </p>
+                            <p class="message-content">${message.content}</p>
+                            ${message.image ? `<img class="message-image" src="${message.image}" alt="image">` : ''}
+                            ${message.video ? `<video class="message-video" src="${message.video}" controls></video>` : ''}
+                        `;
+                        chatBox.appendChild(messageElement);
+                        chatBox.dataset.lastMessageId = message.id;
+                    });
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            })
+            .catch(error => console.error('Error fetching messages:', error));
+    }
+
+    setInterval(fetchMessages, 5000);
+
+    document.getElementById('message-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Добавляем новое сообщение сразу в чат
+                const message = data.message;
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', 'sent');
+                messageElement.dataset.messageId = message.id;
+                messageElement.innerHTML = `
+                    <p>
+                        <strong class="username2">${message.sender_name}</strong>
+                        <small>${message.timestamp}</small>
+                    </p>
+                    <p class="message-content">${message.content}</p>
+                    ${message.image ? `<img class="message-image" src="${message.image}" alt="image">` : ''}
+                    ${message.video ? `<video class="message-video" src="${message.video}" controls></video>` : ''}
+                `;
+                chatBox.appendChild(messageElement);
+                chatBox.dataset.lastMessageId = message.id;
+                chatBox.scrollTop = chatBox.scrollHeight;
+                this.reset(); // Очищаем форму
+            } else {
+                notificationText.textContent = data.error || 'Ошибка при отправке сообщения';
+                notification.classList.remove('hidden');
+                setTimeout(() => notification.classList.add('hidden'), 5000);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            notificationText.textContent = 'Ошибка сети при отправке сообщения';
+            notification.classList.remove('hidden');
+            setTimeout(() => notification.classList.add('hidden'), 5000);
+        });
     });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('confirm_lesson') || urlParams.has('decline_lesson')) {
+        setTimeout(() => window.history.back(), 100);
+    }
+});
+
+document.querySelector('.submitlesson').addEventListener('click', function(event) {
+    const message = document.getElementById('successMessage');
+    message.classList.remove('hidden');
+    setTimeout(() => message.classList.add('hidden'), 5000);
+});
 </script>
-<script>
-    document.querySelector('.submitlesson').addEventListener('click', function(event) {
-        // Если нужно предотвратить отправку формы, раскомментируйте следующую строку:
-        // event.preventDefault();
-
-        var message = document.getElementById('successMessage');
-        message.classList.remove('hidden');
-
-        // Скрыть уведомление через 3 секунды
-        setTimeout(function() {
-            message.classList.add('hidden');
-        }, 5000);
-    });
-</script>
-<script>
-    // WebSocket для получения сообщений
-    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const chatSocket = new WebSocket(`${protocol}://${window.location.host}/ws/chat/{{ receiver.id }}/`);
-
-    chatSocket.onmessage = function(e) {
-        const data = JSON.parse(e.data);
-
-        // Создаем новый блок для сообщения
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message');
-        messageElement.classList.add(data.sender === '{{ user.email }}' ? 'sent' : 'received');
-
-        // Вставляем имя отправителя и сообщение
-        messageElement.innerHTML = `
-            <p>
-                <strong class="username2">${data.sender}</strong>
-                <small>${data.timestamp}</small>
-            </p>
-            <p class="message-content">${data.content}</p>
-        `;
-
-        // Если есть изображение или видео, добавляем их
-        if (data.image) {
-            const imageElement = document.createElement('img');
-            imageElement.classList.add('message-image');
-            imageElement.src = data.image;
-            messageElement.appendChild(imageElement);
-        }
-
-        if (data.video) {
-            const videoElement = document.createElement('video');
-            videoElement.classList.add('message-video');
-            videoElement.src = data.video;
-            videoElement.controls = true;
-            messageElement.appendChild(videoElement);
-        }
-
-        // Добавляем новое сообщение в чат
-        const chatBox = document.getElementById('chat-box');
-        chatBox.appendChild(messageElement);
-
-        // Прокручиваем чат в самый низ
-        chatBox.scrollTop = chatBox.scrollHeight;
-    };
-
-    chatSocket.onclose = function(e) {
-        console.error('Chat socket closed unexpectedly');
-    };
-
-    chatSocket.onerror = function(e) {
-        console.error('WebSocket error observed:', e);
-    };
-
-    // Прокрутка чата до последнего сообщения
-    document.addEventListener("DOMContentLoaded", function() {
-        const chatBox = document.getElementById("chat-box");
-        chatBox.scrollTop = chatBox.scrollHeight;  // Устанавливаем прокрутку в самый низ
-    });
-</script>
-
 <script src="{% static 'main/js/searchmsg.js' %}"></script>
-
 {% endblock %}

@@ -17,12 +17,13 @@ class CustomUserAdmin(UserAdmin):
         'birthday',
         'phone',
         'contact',
-        'is_active',
+        'is_teacher',
         'is_staff',
+        'balance',
     )
 
     # Поля, которые можно редактировать в списке
-    list_filter = ('is_staff', 'is_active')
+    list_filter = ('is_staff', 'is_teacher')
 
     # Поля для поиска
     search_fields = ('email', 'first_name', 'last_name', 'middle_name')
@@ -41,10 +42,11 @@ class CustomUserAdmin(UserAdmin):
                     'phone',
                     'contact',
                     'avatar',
+                    'balance',
                 )
             },
         ),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        ('Permissions', {'fields': ('is_teacher', 'is_staff', 'is_superuser')}),
         ('Important dates', {'fields': ('last_login',)}),
     )
 
@@ -64,8 +66,9 @@ class CustomUserAdmin(UserAdmin):
                     'birthday',
                     'phone',
                     'contact',
-                    'is_active',
+                    'is_teacher',
                     'is_staff',
+                    'balance',
                 ),
             },
         ),
