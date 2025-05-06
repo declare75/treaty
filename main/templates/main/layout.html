@@ -45,20 +45,26 @@
                     <li class="navbar-menug__item">
                         <a href="{% url 'help' %}" class="navbar-menug__link">Помощь</a>
                     </li>
-                    <li class="navbar-menug__item">
-                        <a href="{% url 'profile' %}" class="navbar-menug__link">Профиль</a>
-                    </li>
-                    <li class="navbar-menug__item">
-                        <a href="{% url 'chat_list_view' %}" class="navbar-menug__link">Чат</a>
-                    </li>
                 </ul>
                 <div class="menu-overlay"></div>
                 <div class="col-4g">
                     <span class="phone-numberg">7 (999) 999-99-99</span>
+
                     {% if user.is_authenticated %}
-                    <button id="logoutBtn" class="logregbtng" onclick="logout()">Выход</button>
+                    <div class="profile-dropdown">
+                        <div class="profilebutton">
+                            <span>{{ user.first_name }}</span>
+                            <img src="{{ user.avatar.url }}" alt="Аватар" class="avatar-img-layout">
+                        </div>
+
+                        <div class="dropdown-content">
+                            <a href="{% url 'profile' %}" class="logregbtng">Профиль</a>
+                            <a href="{% url 'chat_list_view' %}" class="logregbtng">Чат</a>
+                            <button id="logoutBtn" class="logregbtng" onclick="logout()">Выход</button>
+                        </div>
+                    </div>
                     {% else %}
-                    <button id="logregOpenBtn" class="logregbtng" onclick="toggleAuthModal()">Вход</button>
+                    <button id="logregOpenBtn" class="logregbtng1" onclick="toggleAuthModal()">Вход</button>
                     {% endif %}
                 </div>
             </div>
@@ -122,8 +128,8 @@
 
 </header>
 <main>
-{% block content %}
-{% endblock %}
+    {% block content %}
+    {% endblock %}
 </main>
 
 <script src="{% static 'main/js/logreg.js' %}"></script>

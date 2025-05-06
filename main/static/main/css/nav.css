@@ -141,7 +141,7 @@ body.dark-theme .phone-numberg {
     color: white;
 }
 
-.logregbtng {
+.logregbtng1 {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -159,12 +159,40 @@ body.dark-theme .phone-numberg {
     cursor: pointer;
     color: white;
     background-color: #212121;
+}
 
+.logregbtng {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 200px; /* можно задать по желанию */
+    height: 34px;
+    border: none;
+    box-shadow: none;
+    transition: transform 0.3s ease;
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: normal;
+    cursor: pointer;
+    color: #212121;
+    background-color: white;
+    text-decoration: none; /* важно для <a> */
+    text-align: center;
+}
+
+/* Для темной темы (если используется) */
+body.dark-theme .logregbtng {
+    color: white;
+    background-color: #212121;
 }
 
 .logregbtng:hover {
     transform: scale(1.05);
     outline: none;
+    и
 }
 
 @media (max-width: 1200px) {
@@ -332,7 +360,7 @@ body.dark-theme .phone-numberg {
     display: flex;
 }
 
-body.dark-theme .logregbtng {
+body.dark-theme .logregbtng1 {
     background-color: white;
     color: #212121;
 }
@@ -350,4 +378,85 @@ body.dark-theme .logregbtntext2 {
 
 body.dark-theme .navbarg.scrolled {
     background-color: #212121;
+}
+
+.avatar-img-layout {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.profilebutton {
+    width: max-content;
+    height: 35px;
+    background-color: white;
+    font-family: 'Manrope', sans-serif;
+    color: #212121;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 10px;
+    border-radius: 10px;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Небольшая тень */
+}
+
+body.dark-theme .profilebutton {
+    background-color: #212121;
+    color: white;
+}
+
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+body.dark-theme .dropdown-content {
+    background-color: #212121;
+}
+.dropdown-content {
+    position: absolute;
+    top: 85%;
+    left: 0;
+    min-width: 100%;
+    background-color: white;
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    margin-top: 0;
+
+
+    /* Параметры анимации */
+    opacity: 0;
+    transform: translateY(-5px);
+    pointer-events: none; /* чтобы не мешало при анимации */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+
+.dropdown-content button {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 14px;
+    text-align: left;
+    background-color: transparent;
+    color: #212121;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+body.dark-theme .dropdown-content button {
+    color: white;
+}
+
+/* Показываем меню при наведении на весь контейнер */
+.profile-dropdown:hover .dropdown-content,
+.dropdown-content:hover {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }

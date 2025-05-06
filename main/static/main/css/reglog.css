@@ -4,9 +4,11 @@ body {
     background-color: #ffffff !important; /* Добавьте !important для приоритета */
     overflow-x: hidden; /* Убирает горизонтальный скроллбар */
 }
-
 body.dark-theme {
     background-color: #212121 !important;
+}
+body.dark-theme h1 {
+    color: white;
 }
 .container{
     background-color: #fff;
@@ -39,7 +41,9 @@ body.dark-theme .container {
 .container span{
     font-size: 12px;
 }
-
+body.dark-theme .container span {
+    color: white;
+}
 .overlay2 {
     position: fixed;
     display: none;
@@ -103,10 +107,12 @@ body.dark-theme .container form {
     border-radius: 8px;
     width: 100%;
     outline: none;
+    color: black;
 }
 body.dark-theme .container input {
     background-color: #212121;
     border: 1px solid white;
+    color: white;
 }
 
 .form-container{
