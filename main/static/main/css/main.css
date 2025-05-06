@@ -5,6 +5,7 @@ body {
     opacity: 0;
     padding-bottom: 100px;
 }
+
 body.theme-loaded {
     opacity: 1;
 }
@@ -254,14 +255,13 @@ main .features p {
 
 }
 #resultsContainer {
-    max-height: 900px; /* Увеличьте max-height, чтобы вместить все элементы */
+    max-height: 1500px; /* Увеличьте max-height, чтобы вместить все элементы */
     overflow-y: auto;  /* Включает прокрутку, если элементов слишком много */
     max-width: 1450px;
     position: absolute;
     top: 680px;
     left: 335px;
     border-radius: 15px;
-
 }
 
 
@@ -603,10 +603,6 @@ body.dark-theme .divider {
 .input-email {
     border-radius: 50px;
 }
-body.dark-theme .input-email, .input-password, #regEmail, #regLastName, #regFirstName, #regMiddleName, #regPassword, #registerForm {
-    color: white;
-}
-
 .container button.declare {
     background-color: transparent;
     border-color: #fff;

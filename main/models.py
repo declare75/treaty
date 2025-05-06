@@ -49,7 +49,11 @@ class CustomUser(AbstractUser):
     is_superuser = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
     rating = models.FloatField(default=0.0)
-    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    balance = models.DecimalField(
+        max_digits=30,
+        decimal_places=2,
+        default=0.00
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

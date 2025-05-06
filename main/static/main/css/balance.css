@@ -1,0 +1,323 @@
+h2 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: 41px;
+    position: absolute;
+    left: 275px;
+    top: 175px;
+}
+
+.questionkomka {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    color: #747474;
+    position: absolute;
+    left: 275px;
+    top: 246px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: help; /* Меняет курсор */
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 300px;
+    background: #333;
+    color: #fff;
+    text-align: left;
+    border-radius: 8px;
+    padding: 12px;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%; /* Над элементом */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    font-size: 14px;
+    line-height: 1.4;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    white-space: normal;
+}
+
+.questionkomka:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.inputrubles {
+    border-radius: 15px;
+    border: 2px solid #466ee5;
+    width: 440px;
+    height: 51px;
+    position: absolute;
+    left: 275px;
+    top: 299px;
+    padding-left: 15px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 20px;
+    outline: none;
+}
+
+.inputrubles::-webkit-outer-spin-button,
+.inputrubles::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.inputrubles[type=number] {
+    -moz-appearance: textfield;
+}
+
+.rublelogo {
+    position: absolute;
+    left: 669px;
+    top: 308px;
+    z-index: 2;
+}
+
+.popol-options {
+    position: relative;
+}
+
+.popol-option {
+    display: inline-block;
+    position: absolute;
+    top: 249px;
+    width: 150px;
+    height: 80px;
+    background-color: #f4f4f4;
+    font-family: 'Manrope', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    line-height: 80px; /* Центрируем текст по вертикали */
+    cursor: pointer;
+    transition: border 0.3s ease;
+    z-index: 1;
+    user-select: none;
+    border: none;
+}
+
+/* Позиционирование для каждой опции */
+.popol100 {
+    left: 275px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.popol200 {
+    left: 426px;
+}
+
+.popol500 {
+    left: 577px;
+}
+
+.popol1000 {
+    left: 728px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+/* Обводка при наведении */
+.popol-option:hover {
+    border: 2px solid #466ee5;
+}
+
+.confirm-checkbox-container {
+    margin: 20px 0;
+    position: absolute;
+    left: 275px;
+    top: 433px;
+}
+
+.custom-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Скрываем оригинальный чекбокс */
+.custom-checkbox-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Кастомный чекбокс */
+.custom-checkbox {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #466ee5;
+    border-radius: 4px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+/* Эффект при нажатии (галочка) */
+.custom-checkbox-label input[type="checkbox"]:checked ~ .custom-checkbox {
+    background-color: #466ee5;
+    animation: fillCheckbox 0.3s ease forwards;
+}
+
+/* Анимация заполнения */
+@keyframes fillCheckbox {
+    0% { background-color: transparent; }
+    100% { background-color: #466ee5; }
+}
+
+#rechargeButton {
+    position: absolute;
+    left: 275px;
+    top: 490px;
+
+    width: 603px;
+    height: 80px;
+
+    background-color: #f4f4f4;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    color: #000;
+    font-size: 20px;
+    transition: all 0.4s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 32px 0 32px;
+    box-sizing: border-box;
+}
+
+/* Активная кнопка */
+#rechargeButton:enabled {
+    background-color: #466ee5;
+    color: white;
+}
+
+/* Стиль для стрелок */
+#rechargeButton .arrow {
+    font-size: 24px;
+    line-height: 1;
+    transition: transform 0.3s ease;
+}
+
+/* Анимация при наведении на активную кнопку */
+#rechargeButton:enabled:hover {
+    background-color: #3a5fd9;
+}
+
+#rechargeButton:enabled:hover .arrow {
+    transform: translateX(3px);
+}
+
+.payment-methods-container {
+    border: 2px solid #466ee5;
+    border-radius: 15px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    background-color: white;
+    justify-content: center;
+    position: absolute;
+    left: 1014px;
+    top: 305px;
+    width: 523px;
+    height: 266px;
+}
+
+.payment-option {
+    width: 155px;
+    height: 115px;
+    background-color: #dde4fa;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex-direction: column;
+    gap: 5px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.payment-option img {
+    width: 100px;
+    height: auto;
+    pointer-events: none;
+}
+
+.payment-option:hover:not(.disabled) {
+    background-color: #cdd9f7;
+}
+
+.payment-option.selected {
+    background-color: #b6c8f3;
+}
+
+.payment-option.selected::after {
+    content: "✓";
+    position: absolute;
+    top: 25%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background-color: #466ee5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-family: sans-serif; /* Чтобы точно отобразился символ */
+    z-index: 2;
+}
+
+.payment-option.selected::after::before {
+    content: "✓";
+    color: white;
+    font-size: 24px;
+    z-index: 100;
+}
+
+.payment-option.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.soon-badge {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 10px;
+    color: #333;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+.textpayment {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    position: absolute;
+    left: 1014px;
+    top: 250px;
+}

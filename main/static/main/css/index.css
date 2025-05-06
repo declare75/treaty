@@ -208,6 +208,10 @@ body.dark-theme .continuation {
     opacity: 35%;
 }
 
+.profilebutton {
+    background-color: white !important;
+    color: #212121 !important;
+}
 
 .navbar-menug__link{
     color: white;
@@ -237,7 +241,7 @@ body.dark-theme .continuation {
     left: 1015px;
     z-index: -1001;
 }
-.logregbtng {
+.logregbtng1 {
     background-color: white;
     color: black;
 }
@@ -890,3 +894,17 @@ body.dark-theme .rec6header {
 .blockhelp {
     padding: 200px 0px;
 }
+
+.dropdown-content {
+    background-color: white;
+    color: #212121;
+}
+.logregbtng {
+    color: #212121 !important;
+    background-color: white !important;
+}
+
+.dropdown-content button {
+    color: #212121 !important;
+}
+

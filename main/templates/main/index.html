@@ -9,11 +9,9 @@
 {% endblock %}
 
 {% block content %}
-<img src="{% static 'main/img/footer.svg' %}" alt="Футер" class="footer">
 <a href="#" onclick="scrollToTop()">
-    <img src="{% static 'main/img/up.svg' %}" alt="Вверх" class="putup">
+
 </a>
-<a href="https://t.me/TreatySupportBot" class="contact-button2" target="_blank">Связаться с нами</a>
 <div class="background">
     <div class="features52">
         <div class="containerscroll">
@@ -53,17 +51,17 @@
             <img src="{% static 'main/img/people.svg' %}" alt="people">
         </div>
         <div class="video-container">
-            <video id="video1" autoplay muted>
+            <video id="video1" autoplay muted loop>
                 <source src="{% static 'main/img/video2.mp4' %}" type="video/mp4">
                 Видео не поддерживается
             </video>
-            <video id="video2" muted>
+            <video id="video2" muted loop>
                 <source src="{% static 'main/img/video3.mp4' %}" type="video/mp4">
                 Видео не поддерживается
             </video>
             <div class="indicator-container">
-                <div class="indicator active"></div>
-                <div class="indicator"></div>
+                <div class="indicator active" data-video="video1"></div>
+                <div class="indicator" data-video="video2"></div>
             </div>
         </div>
 
@@ -251,6 +249,7 @@
         {% endfor %}
     </div>
 {% endif %}
+
 <script src="{% static 'main/js/video.js' %}"></script>
 <script src="{% static 'main/js/fadein.js' %}"></script>
 <script src="{% static 'main/js/moveheader.js' %}"></script>
