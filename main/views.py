@@ -1,13 +1,17 @@
 from django.contrib.auth import get_user_model
-from .models import CustomUser
 from django.http import JsonResponse
 import json
-from django.contrib import messages
-from django.shortcuts import render, redirect
 from .forms import CustomUserForm
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import CustomUser
+from decimal import Decimal
+from django.db import transaction
+from django.db.models import F
 
 
 CustomUser = get_user_model()
@@ -144,3 +148,21 @@ def login_view(request):
             return JsonResponse(
                 {'success': False, 'message': 'Неверные учетные данные'}
             )
+
+@login_required
+def recharge_balance_view(request):
+    if request.method == 'POST':
+        try:
+            amount = Decimal(request.POST.get('amount', '0'))
+            if amount <= Decimal('0'):
+                raise ValueError("Сумма должна быть больше нуля.")
+
+            user = request.user
+            with transaction.atomic():
+                CustomUser.objects.filter(pk=user.pk).update(balance=F('balance') + amount)
+                messages.success(request, f"Баланс успешно пополнен на {amount} руб.")
+                return redirect('profile')
+        except Exception as e:
+            messages.error(request, f"Ошибка при пополнении: {e}")
+
+    return render(request, 'main/recharge_balance.html')

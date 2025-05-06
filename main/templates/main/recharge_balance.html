@@ -1,0 +1,105 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block title %}Пополнение баланса{% endblock %}
+{% block content %}
+<h2>Пополни баланс для оплаты занятий</h2>
+<link rel="stylesheet" href="{% static 'main/css/balance.css' %}">
+<form method="post">
+    {% csrf_token %}
+    <div class="questionkomka">
+        <img src="{% static 'main/img/questlogo.svg' %}">
+        <div>Откуда берется комиссия?</div>
+        <div class="tooltip-text">
+            При пополнении баланса взимается комиссия банка за предоставление платежных услуг.<br>
+            Все средства напрямую поступают на ваш счёт.<br>
+            Платформа не удерживает собственных сборов от пополнений.
+        </div>
+    </div>
+    <div class="inputrub">
+        <img class="rublelogo" src="{% static 'main/img/rublelogo.svg' %}">
+        <input type="number" id="amount" name="amount" class="inputrubles" step="0.01" min="0.01" required>
+    </div>
+    <div class="popol-options">
+        <div class="popol-option popol100" data-value="100">100₽</div>
+        <div class="popol-option popol200" data-value="200">200₽</div>
+        <div class="popol-option popol500" data-value="500">500₽</div>
+        <div class="popol-option popol1000" data-value="1000">1000₽</div>
+    </div>
+    <div class="confirm-checkbox-container">
+        <label class="custom-checkbox-label">
+            <input type="checkbox" id="confirmCheckbox" required>
+            <span class="custom-checkbox"></span>
+            Я подтверждаю правильность введенной суммы
+        </label>
+    </div>
+
+    <button type="submit" id="rechargeButton" disabled>
+        <span>Пополнить</span>
+        <span class="arrow">>></span>
+    </button>
+    <div class="textpayment">Выбери способ оплаты</div>
+    <div class="payment-methods-container">
+        <div class="payment-option" data-method="sbp">
+            <img src="{% static 'main/img/sbp.svg' %}" alt="SBP">
+        </div>
+        <div class="payment-option" data-method="youmoney">
+            <img src="{% static 'main/img/youmoney.svg' %}" alt="ЮMoney">
+        </div>
+        <div class="payment-option" data-method="sberpay">
+            <img src="{% static 'main/img/sberpay.svg' %}" alt="СберПэй">
+        </div>
+        <div class="payment-option" data-method="card">
+            <img src="{% static 'main/img/card.svg' %}" alt="Карта">
+        </div>
+        <div class="payment-option disabled">
+            <img src="{% static 'main/img/tether.svg' %}" alt="Tether">
+            <span class="soon-badge">СКОРО</span>
+        </div>
+        <div class="payment-option disabled">
+            <img src="{% static 'main/img/eth.svg' %}" alt="Ethereum">
+            <span class="soon-badge">СКОРО</span>
+        </div>
+    </div>
+</form>
+<script>
+    document.querySelectorAll('.popol-option').forEach(option => {
+        option.addEventListener('click', function () {
+            const value = this.getAttribute('data-value');
+            document.getElementById('amount').value = value;
+        });
+    });
+</script>
+<script>
+    // Получаем все нужные элементы
+    const checkbox = document.getElementById('confirmCheckbox');
+    const rechargeButton = document.getElementById('rechargeButton');
+    const paymentOptions = document.querySelectorAll('.payment-option:not(.disabled)');
+    let selectedOption = null;
+
+    // Функция для проверки условий
+    function checkConditions() {
+        const isCheckboxChecked = checkbox.checked;
+        const isPaymentSelected = selectedOption !== null;
+
+        rechargeButton.disabled = !(isCheckboxChecked && isPaymentSelected);
+    }
+
+    // Слушатель на чекбокс
+    checkbox.addEventListener('change', checkConditions);
+
+    // Слушатель на выбор метода оплаты
+    paymentOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            if (selectedOption) {
+                selectedOption.classList.remove('selected');
+            }
+            option.classList.add('selected');
+            selectedOption = option;
+            checkConditions();
+        });
+    });
+
+    // Инициализация состояния кнопки при загрузке
+    window.addEventListener('DOMContentLoaded', checkConditions);
+</script>
+{% endblock %}

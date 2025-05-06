@@ -58,6 +58,7 @@
                         </div>
 
                         <div class="dropdown-content">
+                            <a href="{% url 'recharge_balance' %}" class="logregbtng">{{ user.balance }} ₽</a>
                             <a href="{% url 'profile' %}" class="logregbtng">Профиль</a>
                             <a href="{% url 'chat_list_view' %}" class="logregbtng">Чат</a>
                             <button id="logoutBtn" class="logregbtng" onclick="logout()">Выход</button>
