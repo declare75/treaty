@@ -6,6 +6,9 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from chat.models import Lesson
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
@@ -17,7 +20,6 @@ def teacher_required(view_func):
             return JsonResponse({'message': 'Только сотрудники могут выполнять это действие.'}, status=403)
         return view_func(request, *args, **kwargs)
     return _wrapped_view
-
 
 def catalog2_home(request):
     if request.method == 'POST':
@@ -35,12 +37,23 @@ def catalog2_home(request):
         messages.warning(request, 'Чтобы связаться, необходимо войти в аккаунт.')
         return redirect('catalog2_home')
 
-    subjects = Subject.objects.all()
+    # Кэшируем список предметов
+    subjects_cache_key = 'all_subjects'
+    subjects = cache.get(subjects_cache_key)
+    if not subjects:
+        subjects = Subject.objects.all()
+        cache.set(subjects_cache_key, subjects, 60 * 60)  # Кэш на 1 час
+
+    # Пагинация для объявлений
     catalog2 = Announcement.objects.filter(is_approved=True).select_related('user')
+    paginator = Paginator(catalog2, 10)  # 10 объявлений на страницу
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     form = ReviewForm()
 
     return render(request, 'catalog2/catalog2_home.html', {
-        'catalog2': catalog2,
+        'catalog2': page_obj,  # Передаем объект пагинации
         'form': form,
         'subjects': subjects,
     })
@@ -85,12 +98,11 @@ def edit_announcement(request):
 
     return JsonResponse({'success': False, 'message': 'Неверный метод запроса'}, status=405)
 
-
+@cache_page(60 * 60)  # Кэшируем на 1 час
 def get_subjects(request):
     subjects = Subject.objects.all()
     subjects_data = [{"id": subject.id, "name": subject.name} for subject in subjects]
     return JsonResponse({"subjects": subjects_data})
-
 
 @login_required
 def add_review(request, teacher_id):
@@ -108,7 +120,7 @@ def add_review(request, teacher_id):
             review.reviewer = request.user
             review.teacher = teacher
             review.save()
-            return redirect("catalog2_home")  # Перенаправляем на главную страницу каталога
+            return redirect("catalog2_home")
     else:
         form = ReviewForm()
 

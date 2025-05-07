@@ -9,10 +9,10 @@ urlpatterns = [
     path('catalog2/', include('catalog2.urls')),
     path('secret/admin/', admin.site.urls),
     path('chats/', include('chat.urls')),
+    path('videocall/', include('videocall.urls')),
     path(
         'favicon.ico',
-        RedirectView.as_view(url='/static/main/img/t.svg', permanent=True),
-    ),
+        RedirectView.as_view(url='/static/main/img/t.svg', permanent=True)),
 ]
 
 if settings.DEBUG:

@@ -51,7 +51,7 @@ class CustomUser(AbstractUser):
     date_joined = models.DateTimeField(default=timezone.now)
     rating = models.FloatField(default=0.0)
     balance = models.DecimalField(
-        max_digits=30,
+        max_digits=10,
         decimal_places=2,
         default=0.00
     )
