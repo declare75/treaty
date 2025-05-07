@@ -7,6 +7,7 @@ from datetime import date
 from django.utils import timezone
 from django.db import transaction
 from django.db.models import F
+from decimal import Decimal
 
 
 class CustomUserManager(BaseUserManager):
@@ -64,18 +65,22 @@ class CustomUser(AbstractUser):
         return f"{self.first_name} {self.last_name} {self.middle_name}"
 
     def transfer_balance(self, recipient, amount):
-
         if amount <= 0:
             raise ValueError("Сумма перевода должна быть положительной")
 
         if self.balance < amount:
             return False
+
+        # Рассчитываем комиссию 10%
+        commission = amount * Decimal('0.1')
+        amount_after_commission = amount - commission
+
         try:
             with transaction.atomic():
-                # Списываем деньги с отправителя
+                # Списываем полную сумму с отправителя
                 CustomUser.objects.filter(pk=self.pk).update(balance=F('balance') - amount)
-                # Начисляем деньги получателю
-                CustomUser.objects.filter(pk=recipient.pk).update(balance=F('balance') + amount)
+                # Начисляем сумму за вычетом комиссии получателю
+                CustomUser.objects.filter(pk=recipient.pk).update(balance=F('balance') + amount_after_commission)
                 return True
         except Exception as e:
             raise Exception(f"Ошибка при переводе: {str(e)}")

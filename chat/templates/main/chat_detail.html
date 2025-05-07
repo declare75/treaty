@@ -7,7 +7,8 @@
 {% endblock %}
 
 {% block content %}
-<div><input type="text" id="searchInput" placeholder="Поиск сообщений..." class="searchM2" onkeyup="filterSearch()"></div>
+<div><input type="text" id="searchInput" placeholder="Поиск сообщений..." class="searchM2" onkeyup="filterSearch()">
+</div>
 <div class="yourchatstext2">чат</div>
 <div class="krujok2"></div>
 <h2 class="username">{{ receiver.email }}</h2>
@@ -18,7 +19,8 @@
 </a>
 <div id="chat-box" data-last-message-id="{{ last_message_id }}">
     {% for message in messages %}
-    <div class="message {% if message.sender == user %}sent{% else %}received{% endif %}" data-message-id="{{ message.id }}">
+    <div class="message {% if message.sender == user %}sent{% else %}received{% endif %}"
+         data-message-id="{{ message.id }}">
         <p>
             <strong class="username2">{{ message.sender.get_display_name }}</strong>
             <small>{{ message.timestamp|date:"j F H:i" }}</small>
@@ -55,7 +57,8 @@
                 <strong>{{ lesson.topic }}</strong> - {{ lesson.date_time|date:"j F, H:i" }}
             </div>
             {% if lesson.status == 'scheduled' %}
-            <a href="{% url 'start_lesson' receiver.id lesson.id %}" target="_blank" id="start-lesson-link-{{ lesson.id }}"
+            <a href="{% url 'start_lesson' receiver.id lesson.id %}" target="_blank"
+               id="start-lesson-link-{{ lesson.id }}"
                style="display: none;"></a>
             <a href="{% url 'meeting' %}?roomID={{ lesson.id }}" target="_blank"
                onclick="document.getElementById('start-lesson-link-{{ lesson.id }}').click();">
@@ -73,7 +76,7 @@
     </div>
 
     {% if not lesson %}
-    <form method="post" action="{% url 'schedule_lesson' receiver.id %}">
+    <form method="post" action="{% url 'schedule_lesson' receiver.id %}" id="schedule-lesson-form">
         {% csrf_token %}
         <div class="datetime" for="date_time">Дата и время:</div>
         <input class="datetimeinput" type="datetime-local" name="date_time" required><br>
@@ -81,6 +84,8 @@
         <input class="dlitinput" type="time" name="duration" required><br>
         <div class="topic" for="topic">Тема</div>
         <input class="topicinput" type="text" name="topic" required><br>
+        <div class="price" for="price">Стоимость</div>
+        <input class="priceinput" type="number" name="price" step="0.01" min="0" required><br>
         <button class="submitlesson" type="submit" name="schedule_lesson">Запланировать</button>
         <div class="warningbox hidden" id="successMessage">
             Занятие успешно создано, если поля были заполнены верно!
@@ -101,11 +106,13 @@
         <label for="image-input" style="cursor: pointer; position: absolute; top: 821px; left: 538px;">
             <i class="fa fa-image" style="color: #7396FC; font-size: 35px;"></i>
         </label>
-        <input id="image-input" class="message-image-input" type="file" name="image" accept="image/*" style="display: none;">
+        <input id="image-input" class="message-image-input" type="file" name="image" accept="image/*"
+               style="display: none;">
         <label for="video-input" style="cursor: pointer; position: absolute; top: 821px; left: 602px;">
             <i class="fa fa-film" style="color: #7396FC; font-size: 35px;"></i>
         </label>
-        <input id="video-input" class="message-video-input" type="file" name="video" accept="video/*" style="display: none;">
+        <input id="video-input" class="message-video-input" type="file" name="video" accept="video/*"
+               style="display: none;">
     </div>
 </form>
 
@@ -115,9 +122,15 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    console.log('JavaScript loaded'); // Отладка: проверяем загрузку скрипта
     const chatBox = document.getElementById('chat-box');
     const notification = document.getElementById('notification');
     const notificationText = document.getElementById('notification-text');
+
+    if (!chatBox || !notification || !notificationText) {
+        console.error('Error: Missing DOM elements', { chatBox, notification, notificationText });
+        return;
+    }
 
     chatBox.scrollTop = chatBox.scrollHeight;
 
@@ -169,7 +182,6 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Добавляем новое сообщение сразу в чат
                 const message = data.message;
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message', 'sent');
@@ -186,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 chatBox.appendChild(messageElement);
                 chatBox.dataset.lastMessageId = message.id;
                 chatBox.scrollTop = chatBox.scrollHeight;
-                this.reset(); // Очищаем форму
+                this.reset();
             } else {
                 notificationText.textContent = data.error || 'Ошибка при отправке сообщения';
                 notification.classList.remove('hidden');
@@ -201,17 +213,52 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // Обработка URL-параметров для уведомлений
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('confirm_lesson') || urlParams.has('decline_lesson')) {
-        setTimeout(() => window.history.back(), 100);
+    console.log('URL Parameters:', urlParams.toString()); // Отладка: выводим параметры
+    if (urlParams.has('confirm_lesson')) {
+        console.log('Showing confirm_lesson notification'); // Отладка
+        showMessage('Занятие подтверждено! С вашего баланса списана сумма.');
+    } else if (urlParams.has('decline_lesson')) {
+        console.log('Showing decline_lesson notification'); // Отладка
+        showMessage('Занятие отклонено.');
+    } else if (urlParams.has('error') && urlParams.get('error') === 'balance') {
+        console.log('Showing balance error notification'); // Отладка
+        showMessage('Недостаточно средств для оплаты занятия.');
     }
+
+    // Обработчик для submitlesson
+    document.getElementById('schedule-lesson-form').addEventListener('submit', function(event) {
+        console.log('Schedule lesson form submitted'); // Отладка
+        const message = document.getElementById('successMessage');
+        if (message) {
+            message.classList.remove('hidden');
+            setTimeout(() => message.classList.add('hidden'), 5000);
+        } else {
+            console.error('Error: successMessage element not found');
+        }
+    });
 });
 
-document.querySelector('.submitlesson').addEventListener('click', function(event) {
-    const message = document.getElementById('successMessage');
-    message.classList.remove('hidden');
-    setTimeout(() => message.classList.add('hidden'), 5000);
-});
+// Определяем showMessage
+function showMessage(text) {
+    console.log('showMessage called with text:', text); // Отладка
+    const notification = document.getElementById('notification');
+    const notificationText = document.getElementById('notification-text');
+    console.log('Notification element:', notification); // Отладка
+    console.log('Notification text element:', notificationText); // Отладка
+    if (notification && notificationText) {
+        notificationText.textContent = text;
+        notification.classList.remove('hidden');
+        console.log('Notification should be visible'); // Отладка
+        setTimeout(() => {
+            notification.classList.add('hidden');
+            console.log('Notification hidden after 5 seconds'); // Отладка
+        }, 5000);
+    } else {
+        console.error('Error: Notification elements not found'); // Отладка
+    }
+}
 </script>
 <script>
     const button = document.querySelector('.lessonsbutton');

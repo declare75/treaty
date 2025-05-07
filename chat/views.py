@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.db import transaction
 from datetime import timedelta
 import random
+from decimal import Decimal
 from .models import Message, Lesson, CustomUser
 from django.contrib.auth import get_user_model
 
@@ -167,6 +168,15 @@ def schedule_lesson(request, receiver_id):
     date_time = request.POST.get("date_time")
     duration = request.POST.get("duration")
     topic = request.POST.get("topic")
+    price = request.POST.get("price")
+
+    try:
+        price = Decimal(price)
+    except:
+        return JsonResponse({"success": False, "error": "Введите корректную стоимость"}, status=400)
+
+    if price <= 0:
+        return JsonResponse({"success": False, "error": "Стоимость должна быть больше нуля"}, status=400)
 
     try:
         duration_obj = parse_duration(duration)
@@ -181,6 +191,7 @@ def schedule_lesson(request, receiver_id):
             teacher=request.user,
             student=receiver,
             status="pending",
+            price=price,
         )
 
         Message.objects.create(
@@ -192,6 +203,7 @@ def schedule_lesson(request, receiver_id):
                 f"<div class='newlessontext'>Тема: {lesson.topic}</div>"
                 f"<div class='newlessontext'>Дата: {lesson.date_time.replace('T', ' ').replace('-', '.')}</div>"
                 f"<div class='newlessontext'>Длительность: {lesson.duration}</div>"
+                f"<div class='newlessontext'>Стоимость: {lesson.price} ₽</div>"
                 f"<div class='approvepart'>Подтвердите участие:</div>"
                 f"<a href='{reverse('confirm_lesson', args=[receiver.id, lesson.id])}' class='approvelesson'>Подтвердить </a>"
                 f"<a href='{reverse('decline_lesson', args=[receiver.id, lesson.id])}' class='declinelesson'>Отказаться</a>"
@@ -200,7 +212,7 @@ def schedule_lesson(request, receiver_id):
             timestamp=timezone.now(),
         )
 
-        return JsonResponse({"success": True})
+        return redirect('chat_view', receiver_id=receiver.id)
     except (ValueError, AttributeError) as e:
         return JsonResponse({"success": False, "error": "Некорректная длительность или данные"}, status=400)
 
@@ -213,7 +225,10 @@ def confirm_lesson(request, receiver_id, lesson_id):
     try:
         with transaction.atomic():
             if lesson.student.balance < lesson.price:
-                return JsonResponse({"success": False, "error": "Недостаточно средств"}, status=400)
+                from urllib.parse import urlencode
+                base_url = reverse('chat_view', kwargs={'receiver_id': lesson.teacher.id})
+                query_string = urlencode({'error': 'balance'})
+                return redirect(f'{base_url}?{query_string}')
 
             lesson.status = 'scheduled'
             lesson.save()
@@ -228,7 +243,7 @@ def confirm_lesson(request, receiver_id, lesson_id):
                 content=f"<div class='newlessontext'>Занятие на тему {lesson.topic} подтверждено и запланировано</div>",
                 timestamp=timezone.now(),
             )
-        return redirect('chat_view')
+        return redirect('chat_view', receiver_id=lesson.teacher.id)
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
 
@@ -247,7 +262,7 @@ def decline_lesson(request, receiver_id, lesson_id):
             content=f"Занятие на тему '{lesson.topic}' отклонено.",
             timestamp=timezone.now(),
         )
-        return redirect('chat_view', receiver_id=receiver_id)
+        return redirect('chat_view', receiver_id=lesson.teacher.id)
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
 

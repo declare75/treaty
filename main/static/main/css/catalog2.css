@@ -1,5 +1,5 @@
 body {
-    height: 2550px;
+    height: 2400px;
 }
 
 body.dark-theme .container4,
@@ -257,8 +257,12 @@ body.dark-theme .filterobject button:hover {
     border: 2px solid #D4D4D4;
     position: absolute;
     left: 1484px;
+    cursor: pointer;
 }
-
+.toggle2.active {
+    background-color: #007bff;
+    color: white;
+}
 /* Специфические стили для переключателей */
 .toggle2:nth-child(6) { top: 744px; }
 .toggle2:nth-child(7) { top: 778px; }

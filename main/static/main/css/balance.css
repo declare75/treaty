@@ -321,3 +321,49 @@ h2 {
     left: 1014px;
     top: 250px;
 }
+
+body.dark-theme h2,
+body.dark-theme .inputrubles,
+body.dark-theme .popol100,
+body.dark-theme .popol200,
+body.dark-theme .popol500,
+body.dark-theme .popol1000,
+body.dark-theme .custom-checkbox-label,
+body.dark-theme .textpayment {
+    color: white;
+}
+
+body.dark-theme .inputrubles,
+body.dark-theme .popol100,
+body.dark-theme .popol200,
+body.dark-theme .popol500,
+body.dark-theme .payment-methods-container,
+body.dark-theme .popol1000 {
+    background-color: #2d2d2d;
+}
+
+body.dark-theme #rechargeButton {
+    background-color: #2d2d2d;
+    color: white;
+}
+
+/* Активное состояние (в темной теме) */
+body.dark-theme #rechargeButton:enabled {
+    background-color: #466ee5;
+    color: white;
+}
+
+/* Ховер на активную кнопку в темной теме */
+body.dark-theme #rechargeButton:enabled:hover {
+    background-color: #3a5fd9;
+}
+
+/* Цвет стрелок в темной теме */
+body.dark-theme #rechargeButton .arrow {
+    color: white;
+}
+
+/* Анимация при наведении на активную кнопку в темной теме */
+body.dark-theme #rechargeButton:enabled:hover .arrow {
+    transform: translateX(3px);
+}

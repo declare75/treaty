@@ -6,6 +6,7 @@
     font-family: Manrope, sans-serif;
 }
 body {
+    height: 1000px;
 }
 /* Основной контейнер */
 .container6 {
@@ -287,3 +288,5 @@ body.dark-theme .contact-button {
         font-size: 20px; /* Уменьшаем размер шрифта кнопки */
     }
 }
+
+

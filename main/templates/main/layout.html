@@ -136,7 +136,30 @@
     {% block content %}
     {% endblock %}
 </main>
+<div class="footertreaty">
+    <div class="footerline1"></div>
 
+    <!-- Левый блок -->
+    <div class="left-footer-block">
+        <div class="treatylogon">treaty</div>
+        <div class="allright">© Все права защищены&#10;"Treaty" 2025</div>
+    </div>
+
+    <!-- Центральный блок -->
+    <div class="center-footer-block">
+        <div class="footerline2"></div>
+        <a href="{% url 'catalog2_home' %}" class="footerlinkprepods">Преподаватели</a>
+        <a href="{% url 'help' %}" class="footerlinkhelp">Помощь</a>
+    </div>
+
+    <!-- Правый блок -->
+    <div class="right-footer-block">
+        <div class="footerline3"></div>
+        <a href="https://t.me/TreatySupportBot" target="_blank" rel="noopener noreferrer">
+            <img src="{% static 'main/img/telegram.svg' %}" class="tgbutton" alt="Telegram">
+        </a>
+    </div>
+</div>
 <script src="{% static 'main/js/logreg.js' %}"></script>
 <script src="{% static 'main/js/themeswitch.js' %}"></script>
 <script>
@@ -195,7 +218,46 @@
     });
 </script>
 
+<script>
+    const dropdown = document.querySelector('.profile-dropdown');
+    const dropdownContent = document.querySelector('.dropdown-content');
 
+    let hideTimeout;
+
+    // Когда мышь заходит на .profile-dropdown или само меню — отменяем скрытие
+    dropdown.addEventListener('mouseenter', () => {
+        clearTimeout(hideTimeout);
+        dropdownContent.style.opacity = '1';
+        dropdownContent.style.transform = 'translateY(0)';
+        dropdownContent.style.pointerEvents = 'auto';
+    });
+
+    // Когда мышь уходит с .profile-dropdown или меню — запускаем таймер на скрытие
+    dropdown.addEventListener('mouseleave', () => {
+        hideTimeout = setTimeout(() => {
+            dropdownContent.style.opacity = '0';
+            dropdownContent.style.transform = 'translateY(-5px)';
+            dropdownContent.style.pointerEvents = 'none';
+        }, 1000); // 2000 мс = 2 секунды
+    });
+
+    // Защита, если курсор вышел из меню, но не из контейнера
+    dropdownContent.addEventListener('mouseleave', () => {
+        hideTimeout = setTimeout(() => {
+            dropdownContent.style.opacity = '0';
+            dropdownContent.style.transform = 'translateY(-5px)';
+            dropdownContent.style.pointerEvents = 'none';
+        }, 2000);
+    });
+
+    // Если навели обратно на меню — останавливаем таймер
+    dropdownContent.addEventListener('mouseenter', () => {
+        clearTimeout(hideTimeout);
+        dropdownContent.style.opacity = '1';
+        dropdownContent.style.transform = 'translateY(0)';
+        dropdownContent.style.pointerEvents = 'auto';
+    });
+</script>
 {% block scripts %}
 {% endblock %}
 </body>

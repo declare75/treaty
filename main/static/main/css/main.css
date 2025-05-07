@@ -739,3 +739,121 @@ body.dark-theme .divider {
     bottom: 60px;
     z-index: 100;
 }
+.footertreaty {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1404px;
+    padding: 80px;
+    display: flex;
+    align-items: flex-start; /* Выравнивание по верху */
+    justify-content: space-between;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+.footerline1 {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1404px;
+    height: 3px;
+    background-color: #466ee5;
+    border-radius: 15px;
+}
+
+.footerline2 {
+    width: 3px;
+    height: 116px;
+    background-color: #466ee5;
+    border-radius: 15px;
+    position: absolute;
+    left: 40%;
+    top: 25px;
+}
+.footerline3 {
+    width: 3px;
+    height: 116px;
+    background-color: #466ee5;
+    border-radius: 15px;
+    position: absolute;
+    left: 60%;
+    top: 25px;
+}
+
+/* Левый блок с treaty и allright */
+.left-footer-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.treatylogon {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: Raleway;
+    color: #000;
+    margin-bottom: 10px;
+    position: absolute;
+    top: 35px;
+    left: 30%;
+}
+
+body.dark-theme .treatylogon {
+    color: white;
+}
+
+.allright {
+    color: #878787;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-line;
+    position: absolute;
+    top: 75px;
+    left: 26.5%;
+    text-align: center;
+}
+
+/* Центральный блок со ссылками */
+.center-footer-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 40px;
+}
+
+.footerlinkprepods {
+    text-decoration: none;
+    color: #878787;
+    font-size: 16px;
+    transition: color 0.3s ease;
+    position: absolute;
+    left: 46%;
+    top: 55px;
+}
+.footerlinkhelp {
+    text-decoration: none;
+    color: #878787;
+    font-size: 16px;
+    transition: color 0.3s ease;
+    position: absolute;
+    left: 48%;
+    top: 85px;
+}
+
+.footerlinkprepods:hover,
+.footerlinkhelp:hover {
+    color: #466ee5;
+}
+
+.tgbutton {
+    width: 75px;
+    height: 75px;
+    cursor: pointer;
+    position: absolute;
+    top: 40px;
+    left: 65%
+}

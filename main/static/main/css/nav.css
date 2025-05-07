@@ -419,21 +419,19 @@ body.dark-theme .dropdown-content {
 }
 .dropdown-content {
     position: absolute;
-    top: 85%;
+    top: 120%;
     left: 0;
     min-width: 100%;
     background-color: white;
-    border-radius: 0 0 8px 8px;
+    border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     margin-top: 0;
 
-
-    /* Параметры анимации */
     opacity: 0;
     transform: translateY(-5px);
-    pointer-events: none; /* чтобы не мешало при анимации */
+    pointer-events: none;
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
@@ -453,7 +451,6 @@ body.dark-theme .dropdown-content button {
     color: white;
 }
 
-/* Показываем меню при наведении на весь контейнер */
 .profile-dropdown:hover .dropdown-content,
 .dropdown-content:hover {
     opacity: 1;

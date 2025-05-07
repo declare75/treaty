@@ -28,25 +28,24 @@
         </div>
 
 
-
-<!--        <div class="pen">-->
-<!--            <img src="{% static 'main/img/pen.svg' %}">-->
-<!--        </div>-->
-<!--        <div class="backpack">-->
-<!--            <img src="{% static 'main/img/backpack.svg' %}">-->
-<!--        </div>-->
-<!--        <div class="dnevnik">-->
-<!--            <img src="{% static 'main/img/dnevnik.svg' %}">-->
-<!--        </div>-->
-<!--        <div class="noj">-->
-<!--            <img src="{% static 'main/img/noj.svg' %}">-->
-<!--        </div>-->
-<!--        <div class="lineika">-->
-<!--            <img src="{% static 'main/img/lineika.svg' %}">-->
-<!--        </div>-->
-<!--        <div class="skrepka" id="skrepka">-->
-<!--            <img src="{% static 'main/img/skrepka.svg' %}">-->
-<!--        </div>-->
+        <!--        <div class="pen">-->
+        <!--            <img src="{% static 'main/img/pen.svg' %}">-->
+        <!--        </div>-->
+        <!--        <div class="backpack">-->
+        <!--            <img src="{% static 'main/img/backpack.svg' %}">-->
+        <!--        </div>-->
+        <!--        <div class="dnevnik">-->
+        <!--            <img src="{% static 'main/img/dnevnik.svg' %}">-->
+        <!--        </div>-->
+        <!--        <div class="noj">-->
+        <!--            <img src="{% static 'main/img/noj.svg' %}">-->
+        <!--        </div>-->
+        <!--        <div class="lineika">-->
+        <!--            <img src="{% static 'main/img/lineika.svg' %}">-->
+        <!--        </div>-->
+        <!--        <div class="skrepka" id="skrepka">-->
+        <!--            <img src="{% static 'main/img/skrepka.svg' %}">-->
+        <!--        </div>-->
         <div class="people">
             <img src="{% static 'main/img/people.svg' %}" alt="people">
         </div>
@@ -177,7 +176,6 @@
     </div>
 
 
-
     <h51 class="ustal fade-in">Уставай меньше, узнавай</h51>
     <div class="bolshebox">
         <div class="textinbox2">больше</div>
@@ -190,7 +188,8 @@
             </div>
             <div class="rec1logo fade-in"><img src="{% static 'main/img/rec1logo.svg' %}"></div>
             <div class="rec1header fade-in">Быстрое обучение</div>
-            <div class="rec1text fade-in">Не нужно тратить время на дорогу и подготовку. Наши видеозвонки и мессенджер позволяют
+            <div class="rec1text fade-in">Не нужно тратить время на дорогу и подготовку. Наши видеозвонки и мессенджер
+                позволяют
                 учиться в любое время и месте, ускоряя процесс обучения
             </div>
         </div>
@@ -199,7 +198,8 @@
             </div>
             <div class="rec2logo fade-in"><img src="{% static 'main/img/rec2logo.svg' %}"></div>
             <div class="rec2header fade-in">Доступно везде</div>
-            <div class="rec2text fade-in">Неважно, где вы находитесь — платформа доступна даже в небольших городах и удалённых
+            <div class="rec2text fade-in">Неважно, где вы находитесь — платформа доступна даже в небольших городах и
+                удалённых
                 регионах, позволяя легко найти подходящего репетитора
             </div>
         </div>
@@ -208,7 +208,8 @@
             </div>
             <div class="rec3logo fade-in"><img src="{% static 'main/img/rec3logo.svg' %}"></div>
             <div class="rec3header fade-in">Гибкость расписания</div>
-            <div class="rec3text fade-in">Выберите удобное время для занятий. Онлайн-формат позволяет корректировать расписание
+            <div class="rec3text fade-in">Выберите удобное время для занятий. Онлайн-формат позволяет корректировать
+                расписание
                 под
                 ваш ритм жизни
             </div>
@@ -218,7 +219,8 @@
             </div>
             <div class="rec4logo fade-in"><img src="{% static 'main/img/rec4logo.svg' %}"></div>
             <div class="rec4header fade-in">Простой поиск</div>
-            <div class="rec4text fade-in">Удобный фильтр и рейтинг помогут быстро найти подходящего специалиста по вашей теме и
+            <div class="rec4text fade-in">Удобный фильтр и рейтинг помогут быстро найти подходящего специалиста по вашей
+                теме и
                 уровню подготовки
             </div>
         </div>
@@ -227,7 +229,8 @@
             </div>
             <div class="rec5logo fade-in"><img src="{% static 'main/img/rec5logo.svg' %}"></div>
             <div class="rec5header fade-in">Проверенные специалисты</div>
-            <div class="rec5text fade-in">Каждый репетитор проходит тщательную проверку. Отзывы и рейтинги позволяют объективно
+            <div class="rec5text fade-in">Каждый репетитор проходит тщательную проверку. Отзывы и рейтинги позволяют
+                объективно
                 оценить качество обучения
             </div>
         </div>
@@ -236,19 +239,21 @@
             </div>
             <div class="rec6logo fade-in"><img src="{% static 'main/img/rec6logo.svg' %}"></div>
             <div class="rec6header fade-in">Поддержка платформы</div>
-            <div class="rec6text fade-in">Наша техподдержка всегда на связи, чтобы обеспечить бесперебойную работу и ответить на
+            <div class="rec6text fade-in">Наша техподдержка всегда на связи, чтобы обеспечить бесперебойную работу и
+                ответить на
                 ваши вопросы
             </div>
         </div>
     </div>
 </div>
 {% if messages %}
-    <div id="messages">
-        {% for message in messages %}
-        <div class="warningbox warningbox-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-    </div>
+<div id="messages">
+    {% for message in messages %}
+    <div class="warningbox warningbox-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
 {% endif %}
+
 
 <script src="{% static 'main/js/video.js' %}"></script>
 <script src="{% static 'main/js/fadein.js' %}"></script>
@@ -257,12 +262,12 @@
 <script src="{% static 'main/js/sliderfilter.js' %}"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const video = document.getElementById("videoloop");
-    if (video) {
-        video.load(); // Перезагружаем видео
-        video.play(); // Запускаем воспроизведение
-    }
-});
+    document.addEventListener("DOMContentLoaded", () => {
+        const video = document.getElementById("videoloop");
+        if (video) {
+            video.load(); // Перезагружаем видео
+            video.play(); // Запускаем воспроизведение
+        }
+    });
 </script>
 {% endblock %}
