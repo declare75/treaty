@@ -11,5 +11,4 @@ urlpatterns = [
     path('chat/<int:receiver_id>/decline/<int:lesson_id>/', views.decline_lesson, name='decline_lesson'),
     path('chat/<int:receiver_id>/start/<int:lesson_id>/', views.start_lesson, name='start_lesson'),
     path('chat/<int:receiver_id>/end/<int:lesson_id>/', views.end_lesson, name='end_lesson'),
-    path('chats/meeting/', views.videocall, name='meeting'),
 ]

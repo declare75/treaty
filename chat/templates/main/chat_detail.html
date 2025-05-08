@@ -60,7 +60,7 @@
             <a href="{% url 'start_lesson' receiver.id lesson.id %}" target="_blank"
                id="start-lesson-link-{{ lesson.id }}"
                style="display: none;"></a>
-            <a href="{% url 'meeting' %}?roomID={{ lesson.id }}" target="_blank"
+            <a href="{% url 'videocall:main' %}?roomID={{ lesson.id }}" target="_blank"
                onclick="document.getElementById('start-lesson-link-{{ lesson.id }}').click();">
                 <button class="lessonitem1" type="button">Начать занятие</button>
             </a>

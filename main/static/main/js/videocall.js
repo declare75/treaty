@@ -4,7 +4,7 @@ var usernameInput = document.querySelector('#username');
 var btnJoin = document.querySelector('#btn-join');
 var username;
 var webSocket;
-var isScreenSharing = false; // 🛠️ ADDED: Track screen sharing state
+var isScreenSharing = false;
 
 // Обработка входящих WebSocket-сообщений
 function webSocketOnMessage(event) {
@@ -74,7 +74,9 @@ btnJoin.addEventListener('click', () => {
 
     var loc = window.location;
     var wsStart = (loc.protocol === 'https:') ? 'wss://' : 'ws://';
-    var endPoint = wsStart + loc.host + '/ws/videocall/';
+    // 🛠️ MODIFIED: Include roomID in WebSocket endpoint
+    var roomID = window.roomID || new URLSearchParams(loc.search).get('roomID') || '';
+    var endPoint = wsStart + loc.host + '/ws/videocall/' + roomID + '/';
     console.log('endPoint: ', endPoint);
 
     webSocket = new WebSocket(endPoint);
@@ -501,7 +503,6 @@ function getDataChannels() {
 }
 
 var btnShareScreen = document.querySelector('#btn-share-screen');
-// 🛠️ MODIFIED: Toggle screen sharing on click
 btnShareScreen.addEventListener('click', () => {
     if (isScreenSharing) {
         stopScreenShare();
@@ -524,7 +525,6 @@ function startScreenShare() {
             const localScreenStream = new MediaStream([screenTrack]);
             localScreenVideo.srcObject = localScreenStream;
 
-            // 🛠️ ADDED: Update button and state
             isScreenSharing = true;
             btnShareScreen.textContent = 'Stop Sharing';
 
@@ -554,7 +554,6 @@ function stopScreenShare() {
         removeVideo(localScreenVideo);
     }
 
-    // 🛠️ ADDED: Reset button and state
     isScreenSharing = false;
     btnShareScreen.textContent = 'Share Screen';
 }

@@ -1,9 +1,11 @@
+# videocall/consumers.py
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.room_group_name = 'test_room'
+        self.room_id = self.scope['url_route']['kwargs']['roomID']
+        self.room_group_name = f'videocall_{self.room_id}'  # Уникальная группа для roomID
 
         await self.channel_layer.group_add(
             self.room_group_name,
@@ -16,39 +18,23 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-        print('disconnect')
+        print(f'Disconnected from room {self.room_id}')
 
     async def receive(self, text_data):
         receive_dict = json.loads(text_data)
         message = receive_dict['message']
         action = receive_dict['action']
 
-        # Ensure receiver_channel_name is valid for direct sends
-        if action in ['new-offer', 'new-answer']:
-            receiver_channel_name = message.get('receiver_channel_name')
-            if not isinstance(receiver_channel_name, str) or not receiver_channel_name:
-                print(f"Invalid receiver_channel_name: {receiver_channel_name}")
-                return
-            receive_dict['message']['receiver_channel_name'] = self.channel_name
+        # Обработка всех действий через group_send для комнаты
+        receive_dict['message']['receiver_channel_name'] = self.channel_name
 
-            await self.channel_layer.send(
-                receiver_channel_name,
-                {
-                    'type': 'send.sdp',
-                    'receive_dict': receive_dict
-                }
-            )
-        else:
-            # Use group_send for broadcast actions
-            receive_dict['message']['receiver_channel_name'] = self.channel_name
-
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'send.sdp',
-                    'receive_dict': receive_dict
-                }
-            )
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'send_sdp',
+                'receive_dict': receive_dict
+            }
+        )
 
     async def send_sdp(self, event):
         receive_dict = event['receive_dict']

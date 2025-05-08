@@ -1,6 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
 def main_view(request):
-    context = {}
-    return render(request, 'videocall/main.html', context=context)
+    room_id = request.GET.get('roomID', '')
+    return render(request, 'videocall/main.html', {'room_id': room_id})

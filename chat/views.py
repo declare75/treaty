@@ -12,13 +12,18 @@ import random
 from decimal import Decimal
 from .models import Message, Lesson, CustomUser
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
 
 def generate_room_link(request, lesson_id):
-    room_id = random.randint(1000, 9999)  # Случайный идентификатор комнаты
-    link = f"{request.scheme}://{request.get_host()}/chats/meeting/?roomID={room_id}"
+    while True:
+        room_id = random.randint(1000, 9999)
+        if not cache.get(f"room:{room_id}"):  # Проверяем, не занята ли комната
+            cache.set(f"room:{room_id}", True, timeout=3600)  # Резервируем на 1 час
+            break
+    link = f"{request.scheme}://{request.get_host()}/videocall/?roomID={room_id}"
     return room_id, link
 
 def chat_list_view(request):
@@ -293,7 +298,7 @@ def start_lesson(request, receiver_id, lesson_id):
             timestamp=timezone.now(),
         )
 
-        return HttpResponseRedirect(reverse('meeting') + f'?roomID={room_id}')
+        return HttpResponseRedirect(reverse('videocall:main') + f'?roomID={room_id}')
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
 
@@ -342,10 +347,3 @@ def get_messages(request, receiver_id):
 
     return JsonResponse({'messages': messages_data})
 
-@login_required
-def videocall(request):
-    return render(
-        request,
-        'main/videocall.html',
-        {'name': request.user.first_name + " " + request.user.last_name},
-    )
