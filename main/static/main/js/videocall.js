@@ -10,28 +10,28 @@ var webSocket;
 function webSocketOnMessage(event) {
     var parsedData = JSON.parse(event.data);
 
-    var peersUsername = parsedData['peer'];
+    var peerUsername = parsedData['peer'];
     var action = parsedData['action'];
 
-    if (username == peersUsername) {
+    if (username == peerUsername) {
         return
     }
     var receiver_channel_name = parsedData['message']['receiver_channel_name'];
 
     if (action == 'new-peer') {
-        createOfferer(peersUsername, receiver_channel_name);
+        createOfferer(peerUsername, receiver_channel_name);
         return;
     }
     if (action == 'new-offer') {
         var offer = parsedData['message']['sdp'];
 
-        createAnswerer(offer, peersUsername, receiver_channel_name);
+        createAnswerer(offer, peerUsername, receiver_channel_name);
         return;
     }
     if (action == 'new-answer') {
         var answer = parsedData['message']['sdp'];
 
-        var peer = mapPeers[peersUsername][0];
+        var peer = mapPeers[peerUsername][0];
 
         peer.setRemoteDescription(answer);
 
@@ -62,7 +62,8 @@ btnJoin.addEventListener('click', () => {
     // Подготовка WebSocket-соединения
     var loc = window.location;
     var wsStart = (loc.protocol === 'https:') ? 'wss://' : 'ws://';
-    var endPoint = wsStart + loc.host + '/ws/videocall/';    console.log('endPoint: ', endPoint);
+    var endPoint = wsStart + loc.host + '/ws/videocall/';
+    console.log('endPoint: ', endPoint);
 
     webSocket = new WebSocket(endPoint);
 
@@ -122,27 +123,27 @@ navigator.mediaDevices.enumerateDevices()
     .then(stream => {
         if (!stream) return;
         localStream = stream;
+        console.log('Audio tracks:', stream.getAudioTracks());
         localVideo.srcObject = stream;
-        localVideo.muted = true; // Отключаем локальное эхо
-        btnToggleAudio.addEventListener('click', () => {
-            if (!localStream) return;
+        localVideo.muted = true;
 
-            const audioTrack = localStream.getAudioTracks()[0];
-            if (audioTrack) {
-                audioTrack.enabled = !audioTrack.enabled;
-                btnToggleAudio.textContent = audioTrack.enabled ? 'Audio Mute' : 'Audio Unmute';
-            }
+        const audioTracks = localStream.getAudioTracks();
+        const videoTracks = localStream.getVideoTracks();
+
+        btnToggleAudio.addEventListener('click', () => {
+            if (audioTracks.length === 0) return;
+
+            audioTracks[0].enabled = !audioTracks[0].enabled;
+            btnToggleAudio.innerHTML = audioTracks[0].enabled ? 'Audio Mute' : 'Audio Unmute';
         });
 
         btnToggleVideo.addEventListener('click', () => {
-            if (!localStream) return;
+            if (videoTracks.length === 0) return;
 
-            const videoTrack = localStream.getVideoTracks()[0];
-            if (videoTrack) {
-                videoTrack.enabled = !videoTrack.enabled;
-                btnToggleVideo.textContent = videoTrack.enabled ? 'Video off' : 'Video on';
-            }
+            videoTracks[0].enabled = !videoTracks[0].enabled;
+            btnToggleVideo.innerHTML = videoTracks[0].enabled ? 'Video Mute' : 'Video Unmute';
         });
+
     })
     .catch(error => {
         console.error('Ошибка доступа к устройствам:', error);
@@ -158,7 +159,7 @@ function sendSignal(action, message) {
     webSocket.send(jsonStr);
 }
 
-function createOfferer(peersUsername, receiver_channel_name) {
+function createOfferer(peerUsername, receiver_channel_name) {
     var peer = new RTCPeerConnection(null);
 
     addLocalTracks(peer);
@@ -169,16 +170,16 @@ function createOfferer(peersUsername, receiver_channel_name) {
     })
     dc.addEventListener('message', dcOnMessage);
 
-    var remoteVideo = createVideo(peersUsername);
+    var remoteVideo = createVideo(peerUsername);
     setOnTrack(peer, remoteVideo);
 
-    mapPeers[peersUsername] = [peer, dc];
+    mapPeers[peerUsername] = [peer, dc];
 
-    peer.addEventListener('iceconnectionstatechange', () => {
+    peer.addEventListener('icecandidate', () => {
         var iceConnectionState = peer.iceConnectionState;
 
         if (iceConnectionState === 'failed' || iceConnectionState === 'disconnected' || iceConnectionState === 'closed') {
-            delete mapPeers[peersUsername];
+            delete mapPeers[peerUsername];
 
             if (iceConnectionState != 'closed') {
                 peer.close();
@@ -187,7 +188,7 @@ function createOfferer(peersUsername, receiver_channel_name) {
             removeVideo(remoteVideo);
         }
     });
-    peer.addEventListener('iceconnectionstatechange', (event) => {
+    peer.addEventListener('icecandidate', (event) => {
         if (event.candidate) {
             console.log('New ice candidate', JSON.stringify(peer.localDescription));
 
@@ -222,15 +223,15 @@ function createAnswerer(offer, peerUsername, receiver_channel_name) {
         })
         peer.dc.addEventListener('message', dcOnMessage);
 
-        mapPeers[peersUsername] = [peer, peer.dc];
+        mapPeers[peerUsername] = [peer, peer.dc];
 
     });
 
-    peer.addEventListener('iceconnectionstatechange', () => {
+    peer.addEventListener('icecandidate', () => {
         var iceConnectionState = peer.iceConnectionState;
 
         if (iceConnectionState === 'failed' || iceConnectionState === 'disconnected' || iceConnectionState === 'closed') {
-            delete mapPeers[peersUsername];
+            delete mapPeers[peerUsername];
 
             if (iceConnectionState != 'closed') {
                 peer.close();
@@ -239,7 +240,7 @@ function createAnswerer(offer, peerUsername, receiver_channel_name) {
             removeVideo(remoteVideo);
         }
     });
-    peer.addEventListener('iceconnectionstatechange', (event) => {
+    peer.addEventListener('icecandidate', (event) => {
         if (event.candidate) {
             console.log('New ice candidate', JSON.stringify(peer.localDescription));
 
@@ -267,9 +268,9 @@ function createAnswerer(offer, peerUsername, receiver_channel_name) {
 
 function addLocalTracks(peer) {
     localStream.getTracks().forEach(track => {
+        console.log('Adding track:', track.kind);
         peer.addTrack(track, localStream);
-    })
-    return;
+    });
 }
 
 var messageList = document.querySelector('#message-list');
@@ -300,7 +301,7 @@ function createVideo(peerUsername) {
     return remoteVideo;
 }
 
-function setOntrack(peer, remoteVideo) {
+function setOnTrack(peer, remoteVideo) {
     var remoteStream = new MediaStream();
 
     remoteVideo.srcObject = remoteStream;
