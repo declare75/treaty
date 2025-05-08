@@ -7,17 +7,7 @@
     <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="видеозвонок с демкой">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chat/templates/main/chat_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/chat/templates/main/chat_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat/templates/main/videocall.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/main/js/videocall.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/js/videocall.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/treatyproj/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/treatyproj/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/videocall/consumers.py" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/consumers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/videocall/routing.py" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/routing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/videocall/templates/videocall/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/templates/videocall/main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/videocall/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/videocall/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
