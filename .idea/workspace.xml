@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="123">
+    <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="видеозвонок">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/static/main/css/videocall.css" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/css/videocall.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/static/main/js/videocall.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/js/videocall.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/videocall/consumers.py" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/consumers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/videocall/templates/videocall/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/templates/videocall/main.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -110,7 +112,7 @@
       <workItem from="1746617739167" duration="14550000" />
       <workItem from="1746633050098" duration="148000" />
       <workItem from="1746635515597" duration="5000" />
-      <workItem from="1746711976291" duration="2504000" />
+      <workItem from="1746711976291" duration="20692000" />
     </task>
     <task id="LOCAL-00001" summary="123">
       <option name="closed" value="true" />
@@ -128,7 +130,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746632751760</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="видеозвонок">
+      <option name="closed" value="true" />
+      <created>1746714706745</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1746714706745</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -136,6 +146,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="123" />
-    <option name="LAST_COMMIT_MESSAGE" value="123" />
+    <MESSAGE value="видеозвонок" />
+    <option name="LAST_COMMIT_MESSAGE" value="видеозвонок" />
   </component>
 </project>

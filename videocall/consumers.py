@@ -23,8 +23,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = receive_dict['message']
         action = receive_dict['action']
 
+        # Ensure receiver_channel_name is valid for direct sends
         if action in ['new-offer', 'new-answer']:
-            receiver_channel_name = message['receiver_channel_name']
+            receiver_channel_name = message.get('receiver_channel_name')
+            if not isinstance(receiver_channel_name, str) or not receiver_channel_name:
+                print(f"Invalid receiver_channel_name: {receiver_channel_name}")
+                return
             receive_dict['message']['receiver_channel_name'] = self.channel_name
 
             await self.channel_layer.send(
@@ -35,6 +39,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }
             )
         else:
+            # Use group_send for broadcast actions
             receive_dict['message']['receiver_channel_name'] = self.channel_name
 
             await self.channel_layer.group_send(
@@ -47,5 +52,4 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def send_sdp(self, event):
         receive_dict = event['receive_dict']
-
         await self.send(text_data=json.dumps(receive_dict))

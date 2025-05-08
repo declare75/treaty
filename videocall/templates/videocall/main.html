@@ -2,7 +2,7 @@
 
 <head>
     <title>Videocall</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'main/css/videocall.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/videocall.css' %}">
 </head>
 <body>
 <h3 id="label-username">Username</h3>
@@ -11,20 +11,25 @@
 </div>
 <div class="main-grid-container">
     <div id="video-container">
-        <div><video id="local-video" style="float: left;" autoplay playsinline></video> </div>
+        <div>
+            <video id="local-video" style="float: left;" autoplay playsinline></video>
+        </div>
         <button id="btnToggleAudio">Audio Mute</button>
         <button id="btnToggleVideo">Video off</button>
     </div>
     <div id="chat">
         <h3>Chat</h3>
         <div id="messages">
-            <ul id="messgae-list"></ul>
+            <ul id="message-list"></ul>
         </div>
         <div>
-            <input id="msg"><button id="bts-send-msg">Send Message</button>
+            <input id="msg">
+            <button id="btn-send-msg">Send Message</button>
             <button id="btn-share-screen">Share Screen</button>
         </div>
     </div>
 </div>
+
 <script type="text/javascript" src="{% static 'main/js/videocall.js' %}"></script>
+
 </body>
