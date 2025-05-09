@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     path('chats/', views.chat_list_view, name='chat_list_view'),
     path('chat/<int:receiver_id>/', views.chat_view, name='chat_view'),
-    path('chat/<int:receiver_id>/messages/', views.get_messages, name='get_messages'),
+    path('chat/<int:receiver_id>/sse/', views.sse_messages, name='sse_messages'),  # SSE endpoint
     path('chat/<int:receiver_id>/send/', views.send_message, name='send_message'),
     path('chat/<int:receiver_id>/schedule/', views.schedule_lesson, name='schedule_lesson'),
     path('chat/<int:receiver_id>/confirm/<int:lesson_id>/', views.confirm_lesson, name='confirm_lesson'),
