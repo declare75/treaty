@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Q
@@ -13,6 +13,9 @@ from decimal import Decimal
 from .models import Message, Lesson, CustomUser
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from asgiref.sync import sync_to_async
+import asyncio
+import json
 
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
@@ -323,19 +326,30 @@ def end_lesson(request, receiver_id, lesson_id):
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
 
-@login_required
-def get_messages(request, receiver_id):
-    last_id = request.GET.get('last_id', 0)
-    receiver = get_object_or_404(CustomUser, id=receiver_id)
+
+@sync_to_async
+def check_auth(user):
+    if not user.is_authenticated:
+        raise PermissionDenied("User is not authenticated")
+
+
+@sync_to_async
+def get_receiver(receiver_id):
+    return get_object_or_404(CustomUser, id=receiver_id)
+
+
+@sync_to_async
+def get_new_messages(last_id, user, receiver):
     messages = Message.objects.filter(
         (
-            Q(sender=request.user, receiver=receiver) |
-            Q(sender=receiver, receiver=request.user)
+                Q(sender=user, receiver=receiver) |
+                Q(sender=receiver, receiver=user)
         ),
         id__gt=last_id
-    ).order_by('timestamp')
+    ).order_by('timestamp').select_related('sender')  # Оптимизация: подгружаем sender
 
-    messages_data = [{
+    # Формируем данные в синхронном контексте
+    return [{
         'id': msg.id,
         'sender': msg.sender.email,
         'sender_name': msg.sender.get_display_name(),
@@ -345,5 +359,28 @@ def get_messages(request, receiver_id):
         'video': msg.video.url if msg.video else None,
     } for msg in messages]
 
-    return JsonResponse({'messages': messages_data})
 
+@login_required
+async def sse_messages(request, receiver_id):
+    # Проверяем аутентификацию асинхронно
+    await check_auth(request.user)
+
+    async def event_stream():
+        last_id = request.GET.get('last_id', 0)
+        receiver = await get_receiver(receiver_id)
+
+        while True:
+            messages_data = await get_new_messages(last_id, request.user, receiver)
+
+            for data in messages_data:
+                yield f"data: {json.dumps(data)}\n\n"
+                last_id = data['id']
+
+            await asyncio.sleep(1)
+
+    response = StreamingHttpResponse(
+        event_stream(),
+        content_type='text/event-stream'
+    )
+    response['Cache-Control'] = 'no-cache'
+    return response

@@ -19,6 +19,13 @@ class Message(models.Model):
     def __str__(self):
         return f"Message from {self.sender} to {self.receiver} at {self.timestamp}"
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['sender', 'receiver', 'timestamp']),
+            models.Index(fields=['receiver', 'sender', 'timestamp']),
+            models.Index(fields=['id']),
+        ]
+
 
 class Lesson(models.Model):
     date_time = models.DateTimeField()

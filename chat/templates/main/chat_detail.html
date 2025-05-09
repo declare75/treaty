@@ -118,10 +118,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            console.log('JavaScript loaded'); // Отладка: проверяем загрузку скрипта
+            console.log('JavaScript loaded');
             const chatBox = document.getElementById('chat-box');
             const notification = document.getElementById('notification');
             const notificationText = document.getElementById('notification-text');
+            const receiverId = {{ receiver.id | safe }};
 
             if (!chatBox || !notification || !notificationText) {
                 console.error('Error: Missing DOM elements', {chatBox, notification, notificationText});
@@ -130,41 +131,77 @@
 
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            function fetchMessages() {
-                const lastMessageId = chatBox.dataset.lastMessageId || 0;
-                fetch(`{% url 'get_messages' receiver.id %}?last_id=${lastMessageId}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.messages.length > 0) {
-                            data.messages.forEach(message => {
-                                const messageElement = document.createElement('div');
-                                messageElement.classList.add('message', message.sender === '{{ user.email }}' ? 'sent' : 'received');
-                                messageElement.dataset.messageId = message.id;
-                                messageElement.innerHTML = `
-                            <p>
-                                <strong class="username2">${message.sender_name}</strong>
-                                <small>${message.timestamp}</small>
-                            </p>
-                            <p class="message-content">${message.content}</p>
-                            ${message.image ? `<img class="message-image" src="${message.image}" alt="image">` : ''}
-                            ${message.video ? `<video class="message-video" src="${message.video}" controls></video>` : ''}
-                        `;
-                                chatBox.appendChild(messageElement);
-                                chatBox.dataset.lastMessageId = message.id;
-                            });
-                            chatBox.scrollTop = chatBox.scrollHeight;
-                        }
-                    })
-                    .catch(error => console.error('Error fetching messages:', error));
+            // Функция для создания элемента сообщения
+            function createMessageElement(message, isSent) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', isSent ? 'sent' : 'received');
+                messageElement.dataset.messageId = message.id;
+
+                // Экранируем текст, если он не содержит безопасный HTML
+                const content = message.content.startsWith('<div') ? message.content : escapeHtml(message.content);
+
+                messageElement.innerHTML = `
+                <p>
+                    <strong class="username2">${escapeHtml(message.sender_name)}</strong>
+                    <small>${escapeHtml(message.timestamp)}</small>
+                </p>
+                <p class="message-content">${content}</p>
+                ${message.image ? `<img class="message-image" src="${escapeHtml(message.image)}" alt="image">` : ''}
+                ${message.video ? `<video class="message-video" src="${escapeHtml(message.video)}" controls></video>` : ''}
+            `;
+                return messageElement;
             }
 
-            setInterval(fetchMessages, 5000);
+            // Функция для экранирования HTML
+            function escapeHtml(text) {
+                if (!text) return '';
+                return text
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
 
+            // Настройка SSE
+            function setupSSE() {
+                const lastMessageId = chatBox.dataset.lastMessageId || 0;
+                const source = new EventSource(`/chats/chat/${receiverId}/sse/?last_id=${lastMessageId}`);
+
+                source.onmessage = function (event) {
+                    try {
+                        const message = JSON.parse(event.data);
+                        // Проверяем, нет ли уже сообщения с таким ID в chatBox
+                        if (chatBox.querySelector(`[data-message-id="${message.id}"]`)) {
+                            console.log(`Message ${message.id} already exists, skipping`);
+                            return;
+                        }
+                        const isSent = message.sender === '{{ user.email | safe }}';
+                        const messageElement = createMessageElement(message, isSent);
+                        chatBox.appendChild(messageElement);
+                        chatBox.dataset.lastMessageId = message.id;
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    } catch (e) {
+                        console.error('Error parsing SSE message:', e);
+                    }
+                };
+
+                source.onerror = function () {
+                    console.error('SSE error, reconnecting...');
+                    notificationText.textContent = 'Потеряно соединение, пытаемся переподключиться...';
+                    notification.classList.remove('hidden');
+                    setTimeout(() => notification.classList.add('hidden'), 5000);
+                };
+
+                source.onopen = function () {
+                    console.log('SSE connection opened');
+                    notification.classList.add('hidden');
+                };
+            }
+
+            setupSSE();
+
+            // Обработка отправки сообщения
             document.getElementById('message-form').addEventListener('submit', function (event) {
                 event.preventDefault();
                 const formData = new FormData(this);
@@ -179,18 +216,7 @@
                     .then(data => {
                         if (data.success) {
                             const message = data.message;
-                            const messageElement = document.createElement('div');
-                            messageElement.classList.add('message', 'sent');
-                            messageElement.dataset.messageId = message.id;
-                            messageElement.innerHTML = `
-                    <p>
-                        <strong class="username2">${message.sender_name}</strong>
-                        <small>${message.timestamp}</small>
-                    </p>
-                    <p class="message-content">${message.content}</p>
-                    ${message.image ? `<img class="message-image" src="${message.image}" alt="image">` : ''}
-                    ${message.video ? `<video class="message-video" src="${message.video}" controls></video>` : ''}
-                `;
+                            const messageElement = createMessageElement(message, true);
                             chatBox.appendChild(messageElement);
                             chatBox.dataset.lastMessageId = message.id;
                             chatBox.scrollTop = chatBox.scrollHeight;
@@ -211,48 +237,48 @@
 
             // Обработка URL-параметров для уведомлений
             const urlParams = new URLSearchParams(window.location.search);
-            console.log('URL Parameters:', urlParams.toString()); // Отладка: выводим параметры
+            console.log('URL Parameters:', urlParams.toString());
             if (urlParams.has('confirm_lesson')) {
-                console.log('Showing confirm_lesson notification'); // Отладка
+                console.log('Showing confirm_lesson notification');
                 showMessage('Занятие подтверждено! С вашего баланса списана сумма.');
             } else if (urlParams.has('decline_lesson')) {
-                console.log('Showing decline_lesson notification'); // Отладка
+                console.log('Showing decline_lesson notification');
                 showMessage('Занятие отклонено.');
             } else if (urlParams.has('error') && urlParams.get('error') === 'balance') {
-                console.log('Showing balance error notification'); // Отладка
+                console.log('Showing balance error notification');
                 showMessage('Недостаточно средств для оплаты занятия.');
             }
 
-            // Обработчик для submitlesson
-            document.getElementById('schedule-lesson-form').addEventListener('submit', function (event) {
-                console.log('Schedule lesson form submitted'); // Отладка
-                const message = document.getElementById('successMessage');
-                if (message) {
-                    message.classList.remove('hidden');
-                    setTimeout(() => message.classList.add('hidden'), 5000);
-                } else {
-                    console.error('Error: successMessage element not found');
-                }
-            });
+            // Обработчик для формы планирования урока
+            const scheduleForm = document.getElementById('schedule-lesson-form');
+            if (scheduleForm) {
+                scheduleForm.addEventListener('submit', function (event) {
+                    console.log('Schedule lesson form submitted');
+                    const message = document.getElementById('successMessage');
+                    if (message) {
+                        message.classList.remove('hidden');
+                        setTimeout(() => message.classList.add('hidden'), 5000);
+                    } else {
+                        console.error('Error: successMessage element not found');
+                    }
+                });
+            }
         });
 
-        // Определяем showMessage
         function showMessage(text) {
-            console.log('showMessage called with text:', text); // Отладка
+            console.log('showMessage called with text:', text);
             const notification = document.getElementById('notification');
             const notificationText = document.getElementById('notification-text');
-            console.log('Notification element:', notification); // Отладка
-            console.log('Notification text element:', notificationText); // Отладка
             if (notification && notificationText) {
                 notificationText.textContent = text;
                 notification.classList.remove('hidden');
-                console.log('Notification should be visible'); // Отладка
+                console.log('Notification should be visible');
                 setTimeout(() => {
                     notification.classList.add('hidden');
-                    console.log('Notification hidden after 5 seconds'); // Отладка
+                    console.log('Notification hidden after 5 seconds');
                 }, 5000);
             } else {
-                console.error('Error: Notification elements not found'); // Отладка
+                console.error('Error: Notification elements not found');
             }
         }
     </script>
