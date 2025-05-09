@@ -315,6 +315,7 @@ def end_lesson(request, receiver_id, lesson_id):
 
     try:
         lesson.status = 'completed'
+        lesson.call_link = None
         lesson.save()
 
         content = f"Занятие на тему '{lesson.topic or 'Без темы'}' завершено."

@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="кайф">
+    <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="безопасность">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/main/js/videocall.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/js/videocall.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/videocall/consumers.py" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/consumers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/videocall/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,12 +31,12 @@
     &quot;assignee&quot;: &quot;dinmix&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/declare75/treaty.git",
-    "accountId": "90f77043-600e-4ee4-aa51-2350296477b6"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/declare75/treaty.git&quot;,
+    &quot;accountId&quot;: &quot;90f77043-600e-4ee4-aa51-2350296477b6&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -117,7 +111,8 @@
       <workItem from="1746633050098" duration="148000" />
       <workItem from="1746635515597" duration="5000" />
       <workItem from="1746711976291" duration="23431000" />
-      <workItem from="1746824836285" duration="2476000" />
+      <workItem from="1746824836285" duration="2634000" />
+      <workItem from="1746828221440" duration="159000" />
     </task>
     <task id="LOCAL-00001" summary="123">
       <option name="closed" value="true" />
@@ -167,7 +162,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746820890672</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="безопасность">
+      <option name="closed" value="true" />
+      <created>1746827416956</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1746827416956</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -179,6 +182,7 @@
     <MESSAGE value="видеозвонок с демкой" />
     <MESSAGE value="норм чат" />
     <MESSAGE value="кайф" />
-    <option name="LAST_COMMIT_MESSAGE" value="кайф" />
+    <MESSAGE value="безопасность" />
+    <option name="LAST_COMMIT_MESSAGE" value="безопасность" />
   </component>
 </project>
