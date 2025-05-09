@@ -19,6 +19,16 @@ function webSocketOnMessage(event) {
     }
     var receiver_channel_name = parsedData['message']['receiver_channel_name'];
 
+    if (action == 'connection_rejected') {
+        // Сервер отклонил подключение
+        var reason = parsedData['message']['reason'];
+        alert(reason);
+        if (webSocket) {
+            webSocket.close();
+        }
+        return;
+    }
+
     if (action == 'new-peer') {
         var avatarUrl = parsedData['message']['avatar_url'] || '/static/main/img/noimageavatar.svg';
         mapAvatars[peerUsername] = avatarUrl;
@@ -121,6 +131,11 @@ btnJoin.addEventListener('click', () => {
     webSocket.addEventListener('message', webSocketOnMessage);
     webSocket.addEventListener('close', (e) => {
         console.log('Connection closed!');
+        // Возвращаем интерфейс в исходное состояние
+        usernameInput.disabled = false;
+        usernameInput.style.visibility = 'visible';
+        btnJoin.disabled = false;
+        btnJoin.style.visibility = 'visible';
     });
     webSocket.addEventListener('error', (e) => {
         console.log('Error Occurred!');

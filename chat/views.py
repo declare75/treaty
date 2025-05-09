@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponseRedirect, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
@@ -282,9 +283,10 @@ def start_lesson(request, receiver_id, lesson_id):
 
     try:
         lesson.status = 'in_progress'
+        room_id, link = generate_room_link(request, lesson.id)
+        lesson.call_link = link  # Сохраняем сгенерированную ссылку в модель
         lesson.save()
 
-        room_id, link = generate_room_link(request, lesson.id)
         topic = lesson.topic if lesson.topic else "Без темы"
         content = f"""
         Занятие на тему '{topic}' началось. 
