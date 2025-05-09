@@ -6,6 +6,8 @@ var username;
 var webSocket;
 var isScreenSharing = false;
 var currentCenterVideo = null;
+var mapAvatars = {}; // Хранит URL аватарок для каждого пользователя
+var localScreenStream = null; // Для хранения screenStream
 
 function webSocketOnMessage(event) {
     var parsedData = JSON.parse(event.data);
@@ -18,7 +20,23 @@ function webSocketOnMessage(event) {
     var receiver_channel_name = parsedData['message']['receiver_channel_name'];
 
     if (action == 'new-peer') {
+        var avatarUrl = parsedData['message']['avatar_url'] || '/static/main/img/noimageavatar.svg';
+        mapAvatars[peerUsername] = avatarUrl;
         createOfferer(peerUsername, receiver_channel_name);
+        // Первый пользователь отправляет свою аватарку второму
+        sendSignal('send-avatar', {
+            avatar_url: window.avatarUrl || '/static/main/img/noimageavatar.svg',
+            receiver_channel_name: receiver_channel_name
+        });
+        return;
+    }
+    if (action == 'send-avatar') {
+        var avatarUrl = parsedData['message']['avatar_url'] || '/static/main/img/noimageavatar.svg';
+        mapAvatars[peerUsername] = avatarUrl;
+        var avatarImg = document.getElementById(peerUsername + '-avatar');
+        if (avatarImg) {
+            avatarImg.src = avatarUrl;
+        }
         return;
     }
     if (action == 'new-offer') {
@@ -41,14 +59,29 @@ function webSocketOnMessage(event) {
     }
     if (action == 'new-screen-answer') {
         var answer = parsedData['message']['sdp'];
-        var peer = mapScreenSharePeers[peerUsername][0];
-        peer.setRemoteDescription(answer).catch(error => {
-            console.error(`Failed to set screen share remote description for ${peerUsername}:`, error);
-        });
+        var peerEntry = mapScreenSharePeers[peerUsername];
+        if (peerEntry && peerEntry.senderPeer) {
+            peerEntry.senderPeer.setRemoteDescription(answer).catch(error => {
+                console.error(`Failed to set screen share remote description for ${peerUsername}:`, error);
+            });
+        }
         return;
     }
     if (action == 'screen-share-stopped') {
         stopScreenShareReceiver(peerUsername);
+        return;
+    }
+    if (action == 'video-status') {
+        var videoEnabled = parsedData['message']['video_enabled'];
+        var videoContainer = document.getElementById(peerUsername + '-video-container');
+        if (videoContainer) {
+            var video = videoContainer.querySelector('video');
+            var avatar = videoContainer.querySelector('img.avatar');
+            if (video && avatar) {
+                video.style.display = videoEnabled ? 'block' : 'none';
+                avatar.style.display = videoEnabled ? 'none' : 'block';
+            }
+        }
         return;
     }
 }
@@ -80,7 +113,9 @@ btnJoin.addEventListener('click', () => {
 
     webSocket.addEventListener('open', (e) => {
         console.log('Connection Opened!');
-        sendSignal('new-peer', {});
+        sendSignal('new-peer', {
+            avatar_url: window.avatarUrl || '/static/main/img/noimageavatar.svg'
+        });
     });
 
     webSocket.addEventListener('message', webSocketOnMessage);
@@ -93,10 +128,19 @@ btnJoin.addEventListener('click', () => {
 });
 
 var localStream = new MediaStream();
+const localVideoContainer = document.createElement('div');
+localVideoContainer.id = 'local-video-container';
+localVideoContainer.className = 'video-container';
 const localVideo = document.createElement('video');
 localVideo.id = 'local-video';
 localVideo.autoplay = true;
 localVideo.playsInline = true;
+const localAvatar = document.createElement('img');
+localAvatar.id = 'local-avatar';
+localAvatar.className = 'avatar';
+localAvatar.src = window.avatarUrl || '/static/main/img/noimageavatar.svg';
+localVideoContainer.appendChild(localVideo);
+localVideoContainer.appendChild(localAvatar);
 
 navigator.mediaDevices.enumerateDevices()
     .then(devices => {
@@ -158,15 +202,20 @@ navigator.mediaDevices.enumerateDevices()
         localVideo.muted = true;
 
         const leftBlock = document.querySelector('#left-background-block');
-        leftBlock.appendChild(localVideo);
+        leftBlock.appendChild(localVideoContainer);
 
         const audioTracks = localStream.getAudioTracks();
         const videoTracks = localStream.getVideoTracks();
 
+        // Управляем отображением локального видео/аватарки
+        localVideo.style.display = (videoTracks.length === 0 || !videoTracks[0].enabled) ? 'none' : 'block';
+        localAvatar.style.display = (videoTracks.length === 0 || !videoTracks[0].enabled) ? 'block' : 'none';
+
         if (videoTracks.length > 0) {
-            localVideo.classList.toggle('enabled', videoTracks[0].enabled);
             videoTracks[0].addEventListener('enabledchange', () => {
-                localVideo.classList.toggle('enabled', videoTracks[0].enabled);
+                localVideo.style.display = videoTracks[0].enabled ? 'block' : 'none';
+                localAvatar.style.display = videoTracks[0].enabled ? 'none' : 'block';
+                sendSignal('video-status', { video_enabled: videoTracks[0].enabled });
                 console.log(`Local video enabled: ${videoTracks[0].enabled}`);
             });
         }
@@ -181,11 +230,17 @@ navigator.mediaDevices.enumerateDevices()
             if (videoTracks.length === 0) return;
             videoTracks[0].enabled = !videoTracks[0].enabled;
             btnToggleVideo.classList.toggle('muted', !videoTracks[0].enabled);
-            localVideo.classList.toggle('enabled', videoTracks[0].enabled);
+            localVideo.style.display = videoTracks[0].enabled ? 'block' : 'none';
+            localAvatar.style.display = videoTracks[0].enabled ? 'none' : 'block';
+            sendSignal('video-status', { video_enabled: videoTracks[0].enabled });
         });
     })
     .catch(error => {
         console.error('Ошибка доступа к устройствам:', error);
+        localVideo.style.display = 'none';
+        localAvatar.style.display = 'block';
+        const leftBlock = document.querySelector('#left-background-block');
+        leftBlock.appendChild(localVideoContainer);
     });
 
 var btnSendMsg = document.querySelector('#btn-send-msg');
@@ -237,8 +292,8 @@ function createOfferer(peerUsername, receiver_channel_name) {
     });
     dc.addEventListener('message', dcOnMessage);
 
-    var remoteVideo = createVideo(peerUsername);
-    setOnTrack(peer, remoteVideo);
+    var remoteVideoContainer = createVideo(peerUsername);
+    setOnTrack(peer, remoteVideoContainer.querySelector('video'));
 
     mapPeers[peerUsername] = [peer, dc, receiver_channel_name];
 
@@ -249,7 +304,7 @@ function createOfferer(peerUsername, receiver_channel_name) {
             if (iceConnectionState != 'closed') {
                 peer.close();
             }
-            removeVideo(remoteVideo);
+            removeVideo(remoteVideoContainer);
         }
     });
     peer.addEventListener('icecandidate', (event) => {
@@ -279,8 +334,8 @@ function createAnswerer(offer, peerUsername, receiver_channel_name) {
 
     addLocalTracks(peer);
 
-    var remoteVideo = createVideo(peerUsername);
-    setOnTrack(peer, remoteVideo);
+    var remoteVideoContainer = createVideo(peerUsername);
+    setOnTrack(peer, remoteVideoContainer.querySelector('video'));
 
     peer.addEventListener('datachannel', e => {
         peer.dc = e.channel;
@@ -298,7 +353,7 @@ function createAnswerer(offer, peerUsername, receiver_channel_name) {
             if (iceConnectionState != 'closed') {
                 peer.close();
             }
-            removeVideo(remoteVideo);
+            removeVideo(remoteVideoContainer);
         }
     });
     peer.addEventListener('icecandidate', (event) => {
@@ -349,12 +404,25 @@ function createScreenShareOfferer(peerUsername, receiver_channel_name, screenStr
         }
     });
 
-    mapScreenSharePeers[peerUsername] = [peer, null, receiver_channel_name];
+    // Инициализируем или обновляем запись в mapScreenSharePeers
+    if (!mapScreenSharePeers[peerUsername]) {
+        mapScreenSharePeers[peerUsername] = {
+            senderPeer: null,
+            receiverPeer: null,
+            receiver_channel_name: receiver_channel_name
+        };
+    }
+    mapScreenSharePeers[peerUsername].senderPeer = peer;
 
     peer.addEventListener('iceconnectionstatechange', () => {
         var iceConnectionState = peer.iceConnectionState;
         if (iceConnectionState === 'failed' || iceConnectionState === 'disconnected' || iceConnectionState === 'closed') {
-            delete mapScreenSharePeers[peerUsername];
+            if (mapScreenSharePeers[peerUsername]) {
+                mapScreenSharePeers[peerUsername].senderPeer = null;
+                if (!mapScreenSharePeers[peerUsername].receiverPeer) {
+                    delete mapScreenSharePeers[peerUsername];
+                }
+            }
             if (iceConnectionState != 'closed') {
                 peer.close();
             }
@@ -387,6 +455,12 @@ function createScreenShareOfferer(peerUsername, receiver_channel_name, screenStr
 }
 
 function createScreenShareAnswerer(offer, peerUsername, receiver_channel_name) {
+    // Проверяем, существует ли уже видео для этой демонстрации
+    let remoteScreenVideo = document.getElementById(peerUsername + '-screen-video');
+    if (!remoteScreenVideo) {
+        remoteScreenVideo = createScreenVideo(peerUsername);
+    }
+
     var peer = new RTCPeerConnection(null);
 
     const audioTrack = localStream.getAudioTracks()[0];
@@ -395,19 +469,34 @@ function createScreenShareAnswerer(offer, peerUsername, receiver_channel_name) {
     }
     peer.addTransceiver('video', { direction: 'recvonly' });
 
-    var remoteScreenVideo = createScreenVideo(peerUsername);
-    setOnTrack(peer, remoteScreenVideo);
+    setScreenShareOnTrack(peer, remoteScreenVideo);
 
-    mapScreenSharePeers[peerUsername] = [peer, null, receiver_channel_name];
+    // Инициализируем или обновляем запись в mapScreenSharePeers
+    if (!mapScreenSharePeers[peerUsername]) {
+        mapScreenSharePeers[peerUsername] = {
+            senderPeer: null,
+            receiverPeer: null,
+            receiver_channel_name: receiver_channel_name
+        };
+    }
+    mapScreenSharePeers[peerUsername].receiverPeer = peer;
 
     peer.addEventListener('iceconnectionstatechange', () => {
         var iceConnectionState = peer.iceConnectionState;
         if (iceConnectionState === 'failed' || iceConnectionState === 'disconnected' || iceConnectionState === 'closed') {
-            delete mapScreenSharePeers[peerUsername];
+            if (mapScreenSharePeers[peerUsername]) {
+                mapScreenSharePeers[peerUsername].receiverPeer = null;
+                if (!mapScreenSharePeers[peerUsername].senderPeer) {
+                    delete mapScreenSharePeers[peerUsername];
+                }
+            }
             if (iceConnectionState != 'closed') {
                 peer.close();
             }
-            removeVideo(remoteScreenVideo);
+            const remoteScreenVideo = document.getElementById(peerUsername + '-screen-video');
+            if (remoteScreenVideo) {
+                removeVideo(remoteScreenVideo);
+            }
         }
     });
     peer.addEventListener('icecandidate', (event) => {
@@ -463,17 +552,32 @@ function dcOnMessage(event) {
 
 function createVideo(peerUsername) {
     var leftBlock = document.querySelector('#left-background-block');
+    var videoContainer = document.createElement('div');
+    videoContainer.id = peerUsername + '-video-container';
+    videoContainer.className = 'video-container';
     var remoteVideo = document.createElement('video');
     remoteVideo.id = peerUsername + '-video';
     remoteVideo.autoplay = true;
     remoteVideo.playsInline = true;
-    leftBlock.appendChild(remoteVideo);
+    var remoteAvatar = document.createElement('img');
+    remoteAvatar.id = peerUsername + '-avatar';
+    remoteAvatar.className = 'avatar';
+    remoteAvatar.src = mapAvatars[peerUsername] || '/static/main/img/noimageavatar.svg';
+    // Изначально скрываем видео, пока не получим трек
+    remoteVideo.style.display = 'none';
+    remoteAvatar.style.display = 'block';
+    videoContainer.appendChild(remoteVideo);
+    videoContainer.appendChild(remoteAvatar);
+    leftBlock.appendChild(videoContainer);
 
-    remoteVideo.addEventListener('click', () => {
-        moveToCenter(remoteVideo);
+    // Разрешаем перемещение только если есть видео
+    videoContainer.addEventListener('click', (e) => {
+        if (remoteVideo.style.display !== 'none') {
+            moveToCenter(videoContainer);
+        }
     });
 
-    return remoteVideo;
+    return videoContainer;
 }
 
 function createScreenVideo(peerUsername) {
@@ -501,43 +605,82 @@ function setOnTrack(peer, remoteVideo) {
             remoteStream.addTrack(track);
             console.log(`Added track ${track.kind} to ${remoteVideo.id}`);
             remoteVideo.srcObject = remoteStream;
-            if (track.kind === 'video') {
-                remoteVideo.classList.toggle('enabled', track.enabled);
-                track.addEventListener('enabledchange', () => {
-                    remoteVideo.classList.toggle('enabled', track.enabled);
-                    console.log(`Video track for ${remoteVideo.id} enabled: ${track.enabled}`);
-                });
+
+            // Управляем отображением аватарки только для обычных видеоконтейнеров
+            if (track.kind === 'video' && remoteVideo.id.endsWith('-video')) {
+                const videoContainer = remoteVideo.parentElement;
+                const avatar = videoContainer ? videoContainer.querySelector('img.avatar') : null;
+                if (videoContainer && avatar) {
+                    remoteVideo.style.display = track.enabled ? 'block' : 'none';
+                    avatar.style.display = track.enabled ? 'none' : 'block';
+                    track.addEventListener('enabledchange', () => {
+                        remoteVideo.style.display = track.enabled ? 'block' : 'none';
+                        avatar.style.display = track.enabled ? 'none' : 'block';
+                        console.log(`Video track for ${remoteVideo.id} enabled: ${track.enabled}`);
+                    });
+                }
             }
             remoteVideo.play().catch(e => console.warn(`Failed to play video ${remoteVideo.id}:`, e));
         }
     });
 }
 
-function removeVideo(remoteVideo) {
-    if (remoteVideo && remoteVideo.parentNode && remoteVideo.id !== 'local-video') {
-        if (remoteVideo === currentCenterVideo) {
+function setScreenShareOnTrack(peer, remoteVideo) {
+    let remoteStream = new MediaStream();
+    remoteVideo.srcObject = remoteStream;
+
+    peer.addEventListener('track', (event) => {
+        const track = event.track;
+        if (!remoteStream.getTracks().includes(track)) {
+            remoteStream.addTrack(track);
+            console.log(`Added screen share track ${track.kind} to ${remoteVideo.id}`);
+            remoteVideo.srcObject = remoteStream;
+            remoteVideo.play().catch(e => console.warn(`Failed to play screen video ${remoteVideo.id}:`, e));
+        }
+    });
+}
+
+function removeVideo(element) {
+    if (!element) {
+        return;
+    }
+    // Проверяем, находится ли элемент в DOM
+    if (element.parentNode && element.id !== 'local-video-container') {
+        if (element === currentCenterVideo) {
             currentCenterVideo = null;
         }
-        remoteVideo.parentNode.removeChild(remoteVideo);
+        element.parentNode.removeChild(element);
+    } else if (element === currentCenterVideo) {
+        // Если элемент уже удалён из DOM, но всё ещё является currentCenterVideo, сбрасываем его
+        currentCenterVideo = null;
     }
 }
 
-function moveToCenter(video) {
+function moveToCenter(videoContainer) {
     const centerBlock = document.querySelector('#center-background-block');
     const leftBlock = document.querySelector('#left-background-block');
 
-    if (currentCenterVideo && currentCenterVideo !== video) {
-        leftBlock.appendChild(currentCenterVideo);
-        currentCenterVideo.classList.remove('video-entering');
+    if (currentCenterVideo && currentCenterVideo !== videoContainer) {
+        // Если текущий элемент в центре — демонстрация экрана, перемещаем его в leftBlock
+        if (currentCenterVideo.id && currentCenterVideo.id.endsWith('-screen-video')) {
+            leftBlock.appendChild(currentCenterVideo);
+            currentCenterVideo.classList.remove('video-entering');
+        } else {
+            // Для веб-камер удаляем, как раньше
+            removeVideo(currentCenterVideo);
+        }
     }
 
-    centerBlock.innerHTML = '';
-    video.classList.add('video-entering');
-    centerBlock.appendChild(video);
-    currentCenterVideo = video;
+    // Очищаем центр и добавляем новое видео
+    while (centerBlock.firstChild) {
+        centerBlock.removeChild(centerBlock.firstChild);
+    }
+    videoContainer.classList.add('video-entering');
+    centerBlock.appendChild(videoContainer);
+    currentCenterVideo = videoContainer;
 
     setTimeout(() => {
-        video.classList.remove('video-entering');
+        videoContainer.classList.remove('video-entering');
     }, 50);
 }
 
@@ -562,6 +705,7 @@ btnShareScreen.addEventListener('click', () => {
 function startScreenShare() {
     navigator.mediaDevices.getDisplayMedia({video: true})
         .then(screenStream => {
+            localScreenStream = screenStream; // Сохраняем screenStream
             const screenTrack = screenStream.getVideoTracks()[0];
 
             for (let peerUsername in mapPeers) {
@@ -570,8 +714,9 @@ function startScreenShare() {
             }
 
             const localScreenVideo = createScreenVideo('local');
-            const localScreenStream = new MediaStream([screenTrack]);
-            localScreenVideo.srcObject = localScreenStream;
+            const localScreenMediaStream = new MediaStream([screenTrack]);
+            localScreenVideo.srcObject = localScreenMediaStream;
+            localScreenVideo.play().catch(e => console.warn(`Failed to play local screen video:`, e));
 
             isScreenSharing = true;
             btnShareScreen.classList.add('sharing');
@@ -587,19 +732,29 @@ function startScreenShare() {
 
 function stopScreenShare() {
     for (let peerUsername in mapScreenSharePeers) {
-        const [peer, , receiver_channel_name] = mapScreenSharePeers[peerUsername];
-        peer.close();
-        const remoteScreenVideo = document.getElementById(peerUsername + '-screen-video');
-        if (remoteScreenVideo) {
-            removeVideo(remoteScreenVideo);
+        const peerEntry = mapScreenSharePeers[peerUsername];
+        if (peerEntry && peerEntry.senderPeer) {
+            peerEntry.senderPeer.close();
+            peerEntry.senderPeer = null;
+            sendSignal('screen-share-stopped', { 'receiver_channel_name': peerEntry.receiver_channel_name });
+            if (!peerEntry.receiverPeer) {
+                delete mapScreenSharePeers[peerUsername];
+            }
         }
-        delete mapScreenSharePeers[peerUsername];
-        sendSignal('screen-share-stopped', { 'receiver_channel_name': receiver_channel_name });
     }
 
     const localScreenVideo = document.getElementById('local-screen-video');
     if (localScreenVideo) {
         removeVideo(localScreenVideo);
+    }
+
+    // Завершаем все треки screenStream
+    if (localScreenStream) {
+        localScreenStream.getTracks().forEach(track => {
+            console.log(`Stopping screen share track: ${track.kind}, id: ${track.id}`);
+            track.stop();
+        });
+        localScreenStream = null; // Очищаем переменную
     }
 
     isScreenSharing = false;
@@ -608,13 +763,37 @@ function stopScreenShare() {
 
 function stopScreenShareReceiver(peerUsername) {
     if (mapScreenSharePeers[peerUsername]) {
-        const [peer, ,] = mapScreenSharePeers[peerUsername];
-        peer.close();
-        const remoteScreenVideo = document.getElementById(peerUsername + '-screen-video');
-        if (remoteScreenVideo) {
-            removeVideo(remoteScreenVideo);
+        const peerEntry = mapScreenSharePeers[peerUsername];
+        if (peerEntry.receiverPeer) {
+            peerEntry.receiverPeer.close();
+            peerEntry.receiverPeer = null;
+            // Сначала проверяем, является ли currentCenterVideo нужным видео
+            if (currentCenterVideo && currentCenterVideo.id === peerUsername + '-screen-video') {
+                removeVideo(currentCenterVideo);
+                // Проверяем, есть ли другие демонстрации экрана
+                moveNextScreenShareToCenter();
+            } else {
+                // Если видео не в центре, ищем его в DOM
+                const remoteScreenVideo = document.getElementById(peerUsername + '-screen-video');
+                if (remoteScreenVideo) {
+                    removeVideo(remoteScreenVideo);
+                }
+            }
+            if (!peerEntry.senderPeer) {
+                delete mapScreenSharePeers[peerUsername];
+            }
         }
-        delete mapScreenSharePeers[peerUsername];
+    }
+}
+
+function moveNextScreenShareToCenter() {
+    if (!currentCenterVideo) {
+        const leftBlock = document.querySelector('#left-background-block');
+        const screenVideos = leftBlock.querySelectorAll('video[id$="-screen-video"]');
+        if (screenVideos.length > 0) {
+            const nextVideo = screenVideos[0];
+            moveToCenter(nextVideo);
+        }
     }
 }
 

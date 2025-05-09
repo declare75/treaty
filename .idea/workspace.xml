@@ -7,9 +7,10 @@
     <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="видеозвонок с демкой">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/main/css/videocall.css" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/css/videocall.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/static/main/js/videocall.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/js/videocall.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/videocall/consumers.py" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/consumers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/videocall/templates/videocall/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/templates/videocall/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/videocall/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,12 +36,12 @@
     &quot;assignee&quot;: &quot;dinmix&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/declare75/treaty.git",
-    "accountId": "3b4d01eb-c109-4f96-9c3e-5a60b8920f62"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/declare75/treaty.git&quot;,
+    &quot;accountId&quot;: &quot;3b4d01eb-c109-4f96-9c3e-5a60b8920f62&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>

@@ -47,6 +47,7 @@
 </div>
 <script>
     window.roomID = "{{ room_id|escapejs }}";
+    window.avatarUrl = "{{ user.avatar.url|default:'/static/main/img/noimageavatar.svg'|escapejs }}";
     document.getElementById("btn-join").addEventListener("click", function () {
         const username = document.getElementById("username").value.trim();
         if (username) {
