@@ -6,8 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="видеозвонок с демкой">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat/templates/main/chat_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/chat/templates/main/chat_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/static/main/css/videocall.css" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/css/videocall.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/static/main/js/videocall.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/js/videocall.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/videocall/templates/videocall/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/templates/videocall/main.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,16 +35,19 @@
     &quot;assignee&quot;: &quot;dinmix&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/declare75/treaty.git&quot;,
-    &quot;accountId&quot;: &quot;90f77043-600e-4ee4-aa51-2350296477b6&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/declare75/treaty.git",
+    "accountId": "3b4d01eb-c109-4f96-9c3e-5a60b8920f62"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="2wlYgGoutwwz0Qf7Z7cANKmsuxm" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -93,8 +98,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-PY-243.26053.29" />
-        <option value="bundled-python-sdk-b1dbf8ef85a6-4df51de95216-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.26053.29" />
+        <option value="bundled-python-sdk-fb887030ada0-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.21565.199" />
       </set>
     </attachedChunks>
   </component>

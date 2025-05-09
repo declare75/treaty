@@ -3,36 +3,58 @@
 <head>
     <title>Videocall</title>
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/videocall.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Raleway:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
-<h3 id="label-username">Username</h3>
-<div><input id="username">
-    <button id="btn-join"> Join Room</button>
+<div id="overlay">
+    <div id="username-prompt">
+        <h3 id="label-username">Введите желаемое имя для конференции</h3>
+        <input type="text" id="username" value="{{ user.first_name }}" placeholder="Введите имя">
+        <button id="btn-join">Войти</button>
+    </div>
 </div>
 <div class="main-grid-container">
     <div id="video-container">
-        <div>
-            <video id="local-video" style="float: left;" autoplay playsinline></video>
+        <div class="header-text">
+            <h1 class="treaty-title">treaty</h1>
+            <h1 class="web-platform1">веб-платформа онлайн занятий</h1>
+            <div class="onlinebox">
+                <div class="rectangleinbox"></div>
+                <div class="rectangleinbox2"></div>
+            </div>
         </div>
-        <button id="btnToggleAudio">Audio Mute</button>
-        <button id="btnToggleVideo">Video off</button>
-    </div>
-    <div id="chat">
-        <h3>Chat</h3>
-        <div id="messages">
-            <ul id="message-list"></ul>
+        <div id="background-block"></div>
+        <div id="left-background-block"></div>
+        <div id="center-background-block"></div>
+        <div class="controls">
+            <button id="btnToggleAudio" class="control-btn"><span class="icon-mic"></span></button>
+            <button id="btnToggleVideo" class="control-btn"><span class="icon-cam"></span></button>
+            <button id="btn-share-screen" class="control-btn"><span class="icon-monitor"></span></button>
+            <button id="btnToggleFullscreen" class="control-btn"><span class="icon-fullscreen"></span></button>
         </div>
-        <div>
-            <input id="msg">
-            <button id="btn-send-msg">Send Message</button>
-            <button id="btn-share-screen">Share Screen</button>
+        <div id="right-background-block">
+            <h3>Чат</h3>
+            <div id="messages">
+                <ul id="message-list"></ul>
+            </div>
+            <div class="message-input-container">
+                <input id="msg">
+                <button id="btn-send-msg"><span class="icon-send"></span></button>
+            </div>
         </div>
     </div>
 </div>
 <script>
     window.roomID = "{{ room_id|escapejs }}";
+    document.getElementById("btn-join").addEventListener("click", function () {
+        const username = document.getElementById("username").value.trim();
+        if (username) {
+            document.getElementById("overlay").style.display = "none";
+        } else {
+            alert("Please enter a username.");
+        }
+    });
 </script>
-
 <script type="text/javascript" src="{% static 'main/js/videocall.js' %}"></script>
-
 </body>

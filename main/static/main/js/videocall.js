@@ -5,11 +5,10 @@ var btnJoin = document.querySelector('#btn-join');
 var username;
 var webSocket;
 var isScreenSharing = false;
+var currentCenterVideo = null;
 
-// Обработка входящих WebSocket-сообщений
 function webSocketOnMessage(event) {
     var parsedData = JSON.parse(event.data);
-
     var peerUsername = parsedData['peer'];
     var action = parsedData['action'];
 
@@ -54,7 +53,6 @@ function webSocketOnMessage(event) {
     }
 }
 
-// Подключение по WebSocket при клике на кнопку "Join"
 btnJoin.addEventListener('click', () => {
     username = usernameInput.value;
     console.log('username: ', username);
@@ -74,7 +72,6 @@ btnJoin.addEventListener('click', () => {
 
     var loc = window.location;
     var wsStart = (loc.protocol === 'https:') ? 'wss://' : 'ws://';
-    // 🛠️ MODIFIED: Include roomID in WebSocket endpoint
     var roomID = window.roomID || new URLSearchParams(loc.search).get('roomID') || '';
     var endPoint = wsStart + loc.host + '/ws/videocall/' + roomID + '/';
     console.log('endPoint: ', endPoint);
@@ -95,9 +92,11 @@ btnJoin.addEventListener('click', () => {
     });
 });
 
-// Инициализация локального потока
 var localStream = new MediaStream();
-const localVideo = document.querySelector('#local-video');
+const localVideo = document.createElement('video');
+localVideo.id = 'local-video';
+localVideo.autoplay = true;
+localVideo.playsInline = true;
 
 navigator.mediaDevices.enumerateDevices()
     .then(devices => {
@@ -158,19 +157,31 @@ navigator.mediaDevices.enumerateDevices()
         localVideo.srcObject = localStream;
         localVideo.muted = true;
 
+        const leftBlock = document.querySelector('#left-background-block');
+        leftBlock.appendChild(localVideo);
+
         const audioTracks = localStream.getAudioTracks();
         const videoTracks = localStream.getVideoTracks();
+
+        if (videoTracks.length > 0) {
+            localVideo.classList.toggle('enabled', videoTracks[0].enabled);
+            videoTracks[0].addEventListener('enabledchange', () => {
+                localVideo.classList.toggle('enabled', videoTracks[0].enabled);
+                console.log(`Local video enabled: ${videoTracks[0].enabled}`);
+            });
+        }
 
         btnToggleAudio.addEventListener('click', () => {
             if (audioTracks.length === 0) return;
             audioTracks[0].enabled = !audioTracks[0].enabled;
-            btnToggleAudio.innerHTML = audioTracks[0].enabled ? 'Audio Mute' : 'Audio Unmute';
+            btnToggleAudio.classList.toggle('muted', !audioTracks[0].enabled);
         });
 
         btnToggleVideo.addEventListener('click', () => {
             if (videoTracks.length === 0) return;
             videoTracks[0].enabled = !videoTracks[0].enabled;
-            btnToggleVideo.innerHTML = videoTracks[0].enabled ? 'Video Mute' : 'Video Unmute';
+            btnToggleVideo.classList.toggle('muted', !videoTracks[0].enabled);
+            localVideo.classList.toggle('enabled', videoTracks[0].enabled);
         });
     })
     .catch(error => {
@@ -187,7 +198,8 @@ function sendMsgOnClick() {
     if (!message) return;
 
     var li = document.createElement('li');
-    li.appendChild(document.createTextNode('Me: ' + message));
+    li.classList.add('message-sent');
+    li.appendChild(document.createTextNode('Я: ' + message));
     messageList.appendChild(li);
 
     var dataChannels = getDataChannels();
@@ -197,7 +209,7 @@ function sendMsgOnClick() {
         try {
             dataChannels[index].send(message);
         } catch (error) {
-            console.error('Failed to send message:', error);
+            console.error('Ошибка при отправке сообщения:', error);
         }
     }
     messageInput.value = '';
@@ -444,31 +456,38 @@ function addLocalTracks(peer) {
 function dcOnMessage(event) {
     var message = event.data;
     var li = document.createElement('li');
+    li.classList.add('message-received');
     li.appendChild(document.createTextNode(message));
     messageList.appendChild(li);
 }
 
 function createVideo(peerUsername) {
-    var videoContainer = document.querySelector('#video-container');
+    var leftBlock = document.querySelector('#left-background-block');
     var remoteVideo = document.createElement('video');
     remoteVideo.id = peerUsername + '-video';
     remoteVideo.autoplay = true;
     remoteVideo.playsInline = true;
-    var videoWrapper = document.createElement('div');
-    videoWrapper.appendChild(remoteVideo);
-    videoContainer.appendChild(videoWrapper);
+    leftBlock.appendChild(remoteVideo);
+
+    remoteVideo.addEventListener('click', () => {
+        moveToCenter(remoteVideo);
+    });
+
     return remoteVideo;
 }
 
 function createScreenVideo(peerUsername) {
-    var videoContainer = document.querySelector('#video-container');
+    var leftBlock = document.querySelector('#left-background-block');
     var remoteScreenVideo = document.createElement('video');
     remoteScreenVideo.id = peerUsername + '-screen-video';
     remoteScreenVideo.autoplay = true;
     remoteScreenVideo.playsInline = true;
-    var videoWrapper = document.createElement('div');
-    videoWrapper.appendChild(remoteScreenVideo);
-    videoContainer.appendChild(videoWrapper);
+    leftBlock.appendChild(remoteScreenVideo);
+
+    remoteScreenVideo.addEventListener('click', () => {
+        moveToCenter(remoteScreenVideo);
+    });
+
     return remoteScreenVideo;
 }
 
@@ -482,15 +501,44 @@ function setOnTrack(peer, remoteVideo) {
             remoteStream.addTrack(track);
             console.log(`Added track ${track.kind} to ${remoteVideo.id}`);
             remoteVideo.srcObject = remoteStream;
+            if (track.kind === 'video') {
+                remoteVideo.classList.toggle('enabled', track.enabled);
+                track.addEventListener('enabledchange', () => {
+                    remoteVideo.classList.toggle('enabled', track.enabled);
+                    console.log(`Video track for ${remoteVideo.id} enabled: ${track.enabled}`);
+                });
+            }
             remoteVideo.play().catch(e => console.warn(`Failed to play video ${remoteVideo.id}:`, e));
         }
     });
 }
 
 function removeVideo(remoteVideo) {
-    if (remoteVideo && remoteVideo.parentNode) {
-        remoteVideo.parentNode.remove();
+    if (remoteVideo && remoteVideo.parentNode && remoteVideo.id !== 'local-video') {
+        if (remoteVideo === currentCenterVideo) {
+            currentCenterVideo = null;
+        }
+        remoteVideo.parentNode.removeChild(remoteVideo);
     }
+}
+
+function moveToCenter(video) {
+    const centerBlock = document.querySelector('#center-background-block');
+    const leftBlock = document.querySelector('#left-background-block');
+
+    if (currentCenterVideo && currentCenterVideo !== video) {
+        leftBlock.appendChild(currentCenterVideo);
+        currentCenterVideo.classList.remove('video-entering');
+    }
+
+    centerBlock.innerHTML = '';
+    video.classList.add('video-entering');
+    centerBlock.appendChild(video);
+    currentCenterVideo = video;
+
+    setTimeout(() => {
+        video.classList.remove('video-entering');
+    }, 50);
 }
 
 function getDataChannels() {
@@ -526,7 +574,7 @@ function startScreenShare() {
             localScreenVideo.srcObject = localScreenStream;
 
             isScreenSharing = true;
-            btnShareScreen.textContent = 'Stop Sharing';
+            btnShareScreen.classList.add('sharing');
 
             screenTrack.onended = () => {
                 stopScreenShare();
@@ -555,7 +603,7 @@ function stopScreenShare() {
     }
 
     isScreenSharing = false;
-    btnShareScreen.textContent = 'Share Screen';
+    btnShareScreen.classList.remove('sharing');
 }
 
 function stopScreenShareReceiver(peerUsername) {
@@ -569,3 +617,37 @@ function stopScreenShareReceiver(peerUsername) {
         delete mapScreenSharePeers[peerUsername];
     }
 }
+
+// Fullscreen functionality
+const btnToggleFullscreen = document.querySelector('#btnToggleFullscreen');
+btnToggleFullscreen.addEventListener('click', () => {
+    const centerBlock = document.querySelector('#center-background-block');
+    const video = centerBlock.querySelector('video');
+
+    if (!video) {
+        console.warn('No video in center block to toggle fullscreen.');
+        return;
+    }
+
+    if (!document.fullscreenElement) {
+        video.requestFullscreen().then(() => {
+            btnToggleFullscreen.classList.add('fullscreen');
+        }).catch(error => {
+            console.error('Failed to enter fullscreen:', error);
+        });
+    } else {
+        document.exitFullscreen().then(() => {
+            btnToggleFullscreen.classList.remove('fullscreen');
+        }).catch(error => {
+            console.error('Failed to exit fullscreen:', error);
+        });
+    }
+});
+
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        btnToggleFullscreen.classList.remove('fullscreen');
+    } else {
+        btnToggleFullscreen.classList.add('fullscreen');
+    }
+});

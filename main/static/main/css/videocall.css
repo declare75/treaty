@@ -1,13 +1,451 @@
-.video-grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    background-color: black;
+body {
+    background-color: #212121;
 }
-.main-grid-container{
+
+.main-grid-container {
     display: grid;
-    grid-template-columns: 60% 20%;
+    grid-template-columns: 100%;
+    height: 100vh;
+    overflow: hidden;
 }
+
+#video-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.header-text {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 2;
+    text-align: center;
+}
+
+.treaty-title {
+    font-family: 'Raleway', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: white;
+    margin: 20px 0 10px 0;
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.web-platform1 {
+    height: 68px;
+    color: gray;
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: normal;
+    position: absolute;
+    top: 85px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.onlinebox {
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.rectangleinbox {
+    position: absolute;
+    width: 13px;
+    height: 7px;
+    top: -60px;
+    left: 50px;
+    transform: rotate(-30deg);
+    border-radius: 15px;
+    background: #466EE5;
+}
+
+.rectangleinbox2 {
+    position: absolute;
+    width: 20px;
+    height: 7px;
+    top: -75px;
+    left: 35px;
+    transform: rotate(-60deg);
+    border-radius: 15px;
+    background: #466EE5;
+}
+
 video {
-    border-radius: 25%;
-    background-color: black;
+    object-fit: cover;
+}
+
+#center-background-block video:fullscreen {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+}
+
+#left-background-block video:not(.enabled),
+#center-background-block video:not(.enabled) {
+    background-color: #212121;
+    position: relative;
+}
+
+#left-background-block video:not(.enabled)::after,
+#center-background-block video:not(.enabled)::after {
+    content: "Камера выключена";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-family: Manrope;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    z-index: 2;
+    pointer-events: none;
+}
+
+#center-background-block:empty::after {
+    content: "Выберите изображение слева";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-family: Manrope;
+    font-size: 24px;
+    font-weight: 500;
+    text-align: center;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #252831;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#btn-join {
+    font-family: Manrope;
+}
+
+#username {
+    font-family: Manrope;
+}
+
+#username:focus {
+    border-color: #5a88f2;
+}
+
+#username-prompt {
+    text-align: center;
+    color: white;
+    font-family: Manrope;
+    font-size: 30px;
+}
+
+#username-prompt input {
+    background-color: #252831;
+    border: 2px solid #466EE5;
+    width: 564px;
+    height: 61px;
+    font-size: 21px;
+    color: white;
+    padding: 10px;
+    outline: none;
+    box-shadow: none;
+    transition: border-color 0.3s ease;
+    border-radius: 15px;
+}
+
+#username-prompt button {
+    background-color: #466EE5;
+    width: 178px;
+    height: 61px;
+    font-size: 21px;
+    color: white;
+    padding: 10px;
+    outline: none;
+    box-shadow: none;
+    transition: background-color 0.3s ease;
+    border-radius: 15px;
+    cursor: pointer;
+    border: none;
+}
+
+#username-prompt button:hover {
+    background-color: #5a88f2;
+}
+
+#background-block {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 95%;
+    height: 95%;
+    background-color: #252831;
+    border-radius: 75px;
+    z-index: 0;
+    pointer-events: none;
+}
+
+#left-background-block {
+    position: absolute;
+    top: 50%;
+    left: 13%;
+    transform: translate(-50%, -50%);
+    width: 327px;
+    height: 540px;
+    background-color: #2E3543;
+    border-radius: 15px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#left-background-block video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+#center-background-block {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1024px;
+    height: 600px;
+    background-color: #2E3543;
+    border-radius: 15px;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#center-background-block video {
+    width: 1024px;
+    height: 600px;
+    border-radius: 15px;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#center-background-block video.video-entering {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+.controls {
+    position: absolute;
+    top: calc(50% + 300px + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    z-index: 2;
+}
+
+.control-btn {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background-color: #466EE5;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.control-btn:hover {
+    background-color: #5a88f2;
+}
+
+.control-btn span {
+    font-size: 20px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.control-btn.muted {
+    background-color: #e57373;
+}
+
+.control-btn.sharing {
+    background-color: #81c784;
+}
+
+.icon-mic::before {
+    content: "\f130";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
+.icon-cam::before {
+    content: "\f030";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
+.icon-monitor::before {
+    content: "\f108";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
+.icon-fullscreen::before {
+    content: "\f065";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
+.control-btn.fullscreen::before {
+    content: "\f066";
+}
+
+.icon-send::before {
+    content: "\f1d8";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 20px;
+    color: white;
+}
+
+.control-btn.muted::after {
+    content: "";
+    position: absolute;
+    width: 28px;
+    height: 2px;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    transition: width 0.3s ease;
+}
+
+.control-btn:not(.muted)::after {
+    width: 0;
+}
+
+#right-background-block {
+    position: absolute;
+    top: 50%;
+    left: 87%;
+    transform: translate(-50%, -50%);
+    width: 327px;
+    height: 540px;
+    background-color: #2E3543;
+    border-radius: 15px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    color: white;
+    font-family: Manrope;
+}
+
+#right-background-block h3 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+}
+
+#messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+#message-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#message-list li {
+    font-family: Manrope;
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+#message-list li.message-sent {
+    margin-left: auto;
+    background-color: #466EE5;
+    color: white;
+    border-radius: 10px 10px 0 10px;
+    padding: 8px 12px;
+    max-width: 70%;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+#message-list li.message-received {
+    margin-right: auto;
+    background-color: #3A3F4A;
+    color: white;
+    border-radius: 10px 10px 10px 0;
+    padding: 8px 12px;
+    max-width: 70%;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.message-input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#msg {
+    flex: 1;
+    padding: 8px;
+    border: 2px solid #466EE5;
+    border-radius: 10px;
+    background-color: #252831;
+    color: white;
+    font-family: Manrope;
+    font-size: 16px;
+}
+
+#btn-send-msg {
+    background-color: #466EE5;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#btn-send-msg:hover {
+    background-color: #5a88f2;
 }
