@@ -40,30 +40,30 @@
     {% if user.is_teacher %}
         <img src="{% static 'main/img/lessonsbutton.svg' %}" class="lessonsbutton">
         <div class="lesson-container">
+            <div class="plantext">Запланированные занятия</div>
+                <div class="backgroundlesson"></div>
             <a href="#" class="close-lesson-icon">
                 <i class="fa fa-times" style="color: #7396FC; font-size: 20px;"></i>
             </a>
             <div class="lessons-list" data-last-updated-at="{{ lessons.last.updated_at|date:'c'|default:'' }}">
-                <div class="plantext">Запланированные занятия</div>
-                <div class="backgroundlesson"></div>
                 {% for lesson in lessons %}
                     {% if lesson.status != 'pending' and lesson.status != 'declined' %}
-                        <div class="lesson-item" data-lesson-id="{{ lesson.id }}">
-                            <div class="lessonitem">
-                                <strong>{{ lesson.topic }}</strong> - {{ lesson.date_time|date:"j F, H:i" }}
-                            </div>
-                            {% if lesson.status == 'scheduled' and lesson.teacher == request.user %}
-                                <a href="{% url 'start_lesson' receiver.id lesson.id %}" target="_blank"
-                                   class="start-lesson-btn">
-                                    <button class="lessonitem1" type="button">Начать занятие</button>
-                                </a>
-                            {% endif %}
-                            {% if lesson.status == 'in_progress' and lesson.teacher == request.user %}
-                                <a href="{% url 'end_lesson' receiver.id lesson.id %}" class="end-lesson-btn">
-                                    <button class="lessonitem2" type="button">Завершить занятие</button>
-                                </a>
-                            {% endif %}
+                    <div class="lesson-item" data-lesson-id="{{ lesson.id }}">
+                        <div class="lessonitem">
+                            <strong>{{ lesson.topic }}</strong> - {{ lesson.date_time|date:"j F, H:i" }}
                         </div>
+                        {% if lesson.status == 'scheduled' and lesson.teacher == request.user %}
+                        <a href="{% url 'start_lesson' receiver.id lesson.id %}" target="_blank"
+                           class="start-lesson-btn">
+                            <button class="lessonitem1" type="button">Начать занятие</button>
+                        </a>
+                        {% endif %}
+                        {% if lesson.status == 'in_progress' and lesson.teacher == request.user %}
+                        <a href="{% url 'end_lesson' receiver.id lesson.id %}" class="end-lesson-btn">
+                            <button class="lessonitem2" type="button">Завершить занятие</button>
+                        </a>
+                        {% endif %}
+                    </div>
                     {% endif %}
                 {% endfor %}
             </div>
@@ -101,6 +101,11 @@
                 <i class="fa fa-film" style="color: #7396FC; font-size: 35px;"></i>
             </label>
             <input id="video-input" class="message-video-input" type="file" name="video" accept="video/*"
+                   style="display: none;">
+            <label for="files-input" style="cursor: pointer; position: absolute; top: 821px; left: 1252px;">
+                <i class="fa fa-file" style="color: #7396FC; font-size: 35px;"></i>
+            </label>
+            <input id="files-input" class="message-files-input" type="file" name="file" accept="file/*"
                    style="display: none;">
         </div>
     </form>
@@ -433,5 +438,9 @@
             menu.classList.remove('active');
         });
     </script>
+
+<script>
+
+</script>
     <script src="{% static 'main/js/searchmsg.js' %}"></script>
 {% endblock %}

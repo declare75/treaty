@@ -2,6 +2,14 @@ body {
  overflow-y: hidden;
 
 }
+
+.lesson-item {
+    position: absolute;
+    overflow-y: auto; /* Вертикальная прокрутка при превышении высоты */
+}
+
+
+
 .rectangle {
   position: absolute;
   width: 950px;
@@ -21,8 +29,10 @@ body {
   border-radius: 15px;
   box-shadow: 0px -4px 22px #00000040;
   transition: background-color 0.4s ease, box-shadow 0.4s ease;
-  z-index: 1;
 }
+
+
+
 body.dark-theme .rectangle6 {
   position: absolute;
   width: 950px;
@@ -977,6 +987,11 @@ body.dark-theme .topic {
     line-height: normal;
     color: white;
 }
+
+body.dark-theme .price {
+    color: white;
+}
+
 .topicinput {
     position: absolute;
     left: 1603px;
@@ -1223,4 +1238,15 @@ body.dark-theme .kostyl {
 
 .footertreaty {
     opacity: 0;
+    visibility: none;
+    width: 1px;
+}
+
+.lessons-list {
+    overflow-y: auto;
+    max-height: 300px;
+    position: absolute;
+    left: 1500px;
+    top: 200px;
+    width: 300px;
 }

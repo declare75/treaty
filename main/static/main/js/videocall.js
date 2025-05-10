@@ -676,14 +676,9 @@ function moveToCenter(videoContainer) {
     const leftBlock = document.querySelector('#left-background-block');
 
     if (currentCenterVideo && currentCenterVideo !== videoContainer) {
-        // Если текущий элемент в центре — демонстрация экрана, перемещаем его в leftBlock
-        if (currentCenterVideo.id && currentCenterVideo.id.endsWith('-screen-video')) {
-            leftBlock.appendChild(currentCenterVideo);
-            currentCenterVideo.classList.remove('video-entering');
-        } else {
-            // Для веб-камер удаляем, как раньше
-            removeVideo(currentCenterVideo);
-        }
+        // Перемещаем текущий элемент в центр обратно в leftBlock
+        leftBlock.appendChild(currentCenterVideo);
+        currentCenterVideo.classList.remove('video-entering');
     }
 
     // Очищаем центр и добавляем новое видео
