@@ -6,6 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="безопасность">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/templates/main/chat_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/chat/templates/main/chat_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/static/main/css/chat.css" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/css/chat.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/static/main/css/videocall.css" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/css/videocall.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/treatyproj/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/treatyproj/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,6 +120,7 @@
       <workItem from="1746711976291" duration="23431000" />
       <workItem from="1746824836285" duration="2634000" />
       <workItem from="1746828221440" duration="159000" />
+      <workItem from="1746881951352" duration="6509000" />
     </task>
     <task id="LOCAL-00001" summary="123">
       <option name="closed" value="true" />

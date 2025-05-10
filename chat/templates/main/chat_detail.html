@@ -25,9 +25,7 @@
                     <strong class="username2">{{ message.sender.get_display_name }}</strong>
                     <small>{{ message.timestamp|date:"j F H:i" }}</small>
                 </p>
-                <p class="message-content">
-                    {{ message.content|safe }}
-                </p>
+                <p class="message-content">{{ message.content|safe }}</p>
                 {% if message.image %}
                     <img class="message-image" src="{{ message.image.url }}" alt="image">
                 {% endif %}
@@ -45,24 +43,23 @@
             <a href="#" class="close-lesson-icon">
                 <i class="fa fa-times" style="color: #7396FC; font-size: 20px;"></i>
             </a>
-
-
-            <div class="lessons-list">
+            <div class="lessons-list" data-last-updated-at="{{ lessons.last.updated_at|date:'c'|default:'' }}">
                 <div class="plantext">Запланированные занятия</div>
                 <div class="backgroundlesson"></div>
                 {% for lesson in lessons %}
-                    {% if lesson.status != 'pending' %}
-                        <div class="lesson-item">
+                    {% if lesson.status != 'pending' and lesson.status != 'declined' %}
+                        <div class="lesson-item" data-lesson-id="{{ lesson.id }}">
                             <div class="lessonitem">
                                 <strong>{{ lesson.topic }}</strong> - {{ lesson.date_time|date:"j F, H:i" }}
                             </div>
-                            {% if lesson.status == 'scheduled' %}
-                                <a href="{% url 'start_lesson' receiver.id lesson.id %}" target="_blank">
+                            {% if lesson.status == 'scheduled' and lesson.teacher == request.user %}
+                                <a href="{% url 'start_lesson' receiver.id lesson.id %}" target="_blank"
+                                   class="start-lesson-btn">
                                     <button class="lessonitem1" type="button">Начать занятие</button>
                                 </a>
                             {% endif %}
-                            {% if lesson.status == 'in_progress' %}
-                                <a href="{% url 'end_lesson' receiver.id lesson.id %}">
+                            {% if lesson.status == 'in_progress' and lesson.teacher == request.user %}
+                                <a href="{% url 'end_lesson' receiver.id lesson.id %}" class="end-lesson-btn">
                                     <button class="lessonitem2" type="button">Завершить занятие</button>
                                 </a>
                             {% endif %}
@@ -70,7 +67,6 @@
                     {% endif %}
                 {% endfor %}
             </div>
-
             {% if not lesson %}
                 <form method="post" action="{% url 'schedule_lesson' receiver.id %}" id="schedule-lesson-form">
                     {% csrf_token %}
@@ -88,16 +84,13 @@
                     </div>
                 </form>
             {% endif %}
-
         </div>
     {% endif %}
     <form method="post" enctype="multipart/form-data" id="message-form" action="{% url 'chat_view' receiver.id %}">
         {% csrf_token %}
         <div class="recundertextarea"></div>
         <button type="submit" class="startchat2">Отправить</button>
-        <div class="message-textarea">
-            <input name="content" required>
-        </div>
+        <div class="message-textarea"><input name="content" required></div>
         <div>
             <label for="image-input" style="cursor: pointer; position: absolute; top: 821px; left: 538px;">
                 <i class="fa fa-image" style="color: #7396FC; font-size: 35px;"></i>
@@ -111,18 +104,27 @@
                    style="display: none;">
         </div>
     </form>
-
-    <div id="notification" class="warningbox hidden">
-        <span id="notification-text"></span>
-    </div>
+    <div id="notification" class="warningbox hidden"><span id="notification-text"></span></div>
 
     <script>
+        // Определяем escapeHtml и receiverId в глобальной области видимости
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, '&')
+                .replace(/</g, '<')
+                .replace(/>/g, '>')
+                .replace(/"/g, '"')
+                .replace(/'/g, '');
+        }
+
+        const receiverId = {{ receiver.id | safe }};
+
         document.addEventListener('DOMContentLoaded', function () {
             console.log('JavaScript loaded');
             const chatBox = document.getElementById('chat-box');
             const notification = document.getElementById('notification');
             const notificationText = document.getElementById('notification-text');
-            const receiverId = {{ receiver.id | safe }};
 
             if (!chatBox || !notification || !notificationText) {
                 console.error('Error: Missing DOM elements', {chatBox, notification, notificationText});
@@ -131,14 +133,13 @@
 
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Функция для создания элемента сообщения
             function createMessageElement(message, isSent) {
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message', isSent ? 'sent' : 'received');
                 messageElement.dataset.messageId = message.id;
 
-                // Экранируем текст, если он не содержит безопасный HTML
-                const content = message.content.startsWith('<div') ? message.content : escapeHtml(message.content);
+                const isHtml = message.content.trim().startsWith('<div') || /<[^>]+>/.test(message.content);
+                const content = isHtml ? message.content : escapeHtml(message.content);
 
                 messageElement.innerHTML = `
                 <p>
@@ -152,35 +153,33 @@
                 return messageElement;
             }
 
-            // Функция для экранирования HTML
-            function escapeHtml(text) {
-                if (!text) return '';
-                return text
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;')
-                    .replace(/'/g, '&#039;');
-            }
-
-            // Настройка SSE
             function setupSSE() {
                 const lastMessageId = chatBox.dataset.lastMessageId || 0;
-                const source = new EventSource(`/chats/chat/${receiverId}/sse/?last_id=${lastMessageId}`);
+                const lessonsList = document.querySelector('.lessons-list');
+                let lastUpdatedAt = lessonsList ? lessonsList.dataset.lastUpdatedAt || '' : '';
+
+                const source = new EventSource(`/chats/chat/${receiverId}/sse/?last_id=${lastMessageId}&last_updated_at=${lastUpdatedAt}`);
 
                 source.onmessage = function (event) {
                     try {
-                        const message = JSON.parse(event.data);
-                        // Проверяем, нет ли уже сообщения с таким ID в chatBox
-                        if (chatBox.querySelector(`[data-message-id="${message.id}"]`)) {
-                            console.log(`Message ${message.id} already exists, skipping`);
-                            return;
+                        const data = JSON.parse(event.data);
+                        if (data.type === 'message') {
+                            const message = data.data;
+                            if (chatBox.querySelector(`[data-message-id="${message.id}"]`)) {
+                                console.log(`Message ${message.id} already exists, skipping`);
+                                return;
+                            }
+                            const isSent = message.sender === '{{ user.email | safe }}';
+                            const messageElement = createMessageElement(message, isSent);
+                            chatBox.appendChild(messageElement);
+                            chatBox.dataset.lastMessageId = message.id;
+                            chatBox.scrollTop = chatBox.scrollHeight;
+                        } else if (data.type === 'lesson') {
+                            const lesson = data.data;
+                            console.log('Received lesson data:', lesson);
+                            updateLesson(lesson);
+                            if (lessonsList) lessonsList.dataset.lastUpdatedAt = lesson.updated_at;
                         }
-                        const isSent = message.sender === '{{ user.email | safe }}';
-                        const messageElement = createMessageElement(message, isSent);
-                        chatBox.appendChild(messageElement);
-                        chatBox.dataset.lastMessageId = message.id;
-                        chatBox.scrollTop = chatBox.scrollHeight;
                     } catch (e) {
                         console.error('Error parsing SSE message:', e);
                     }
@@ -201,7 +200,6 @@
 
             setupSSE();
 
-            // Обработка отправки сообщения
             document.getElementById('message-form').addEventListener('submit', function (event) {
                 event.preventDefault();
                 const formData = new FormData(this);
@@ -235,7 +233,6 @@
                     });
             });
 
-            // Обработка URL-параметров для уведомлений
             const urlParams = new URLSearchParams(window.location.search);
             console.log('URL Parameters:', urlParams.toString());
             if (urlParams.has('confirm_lesson')) {
@@ -249,21 +246,159 @@
                 showMessage('Недостаточно средств для оплаты занятия.');
             }
 
-            // Обработчик для формы планирования урока
             const scheduleForm = document.getElementById('schedule-lesson-form');
             if (scheduleForm) {
                 scheduleForm.addEventListener('submit', function (event) {
-                    console.log('Schedule lesson form submitted');
-                    const message = document.getElementById('successMessage');
-                    if (message) {
-                        message.classList.remove('hidden');
-                        setTimeout(() => message.classList.add('hidden'), 5000);
-                    } else {
-                        console.error('Error: successMessage element not found');
-                    }
+                    event.preventDefault(); // Предотвращаем стандартную отправку формы
+                    const formData = new FormData(this);
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            const messageDiv = document.getElementById('successMessage');
+                            if (data.success) {
+                                // Показываем уведомление об успехе
+                                if (messageDiv) {
+                                    messageDiv.textContent = 'Занятие успешно создано!';
+                                    messageDiv.classList.remove('hidden');
+                                    setTimeout(() => messageDiv.classList.add('hidden'), 5000);
+                                }
+                                // Добавляем сообщение в чат
+                                const message = data.message;
+                                const messageElement = createMessageElement(message, true);
+                                chatBox.appendChild(messageElement);
+                                chatBox.dataset.lastMessageId = message.id;
+                                chatBox.scrollTop = chatBox.scrollHeight;
+                                // Сбрасываем форму
+                                this.reset();
+                            } else {
+                                // Показываем ошибку
+                                if (messageDiv) {
+                                    messageDiv.textContent = data.error || 'Ошибка при создании занятия';
+                                    messageDiv.classList.remove('hidden');
+                                    setTimeout(() => messageDiv.classList.add('hidden'), 5000);
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            if (messageDiv) {
+                                messageDiv.textContent = 'Ошибка сети при создании занятия';
+                                messageDiv.classList.remove('hidden');
+                                setTimeout(() => messageDiv.classList.add('hidden'), 5000);
+                            }
+                        });
                 });
             }
         });
+
+        function updateLesson(lesson) {
+            const lessonsList = document.querySelector('.lessons-list');
+            if (!lessonsList) return;
+
+            let lessonItem = lessonsList.querySelector(`[data-lesson-id="${lesson.id}"]`);
+            if (!lessonItem) {
+                lessonItem = document.createElement('div');
+                lessonItem.classList.add('lesson-item');
+                lessonItem.dataset.lessonId = lesson.id;
+                lessonsList.appendChild(lessonItem);
+            }
+
+            lessonItem.innerHTML = '';
+            const lessonContent = document.createElement('div');
+            lessonContent.classList.add('lessonitem');
+            console.log('Updating lesson content:', {
+                topic: lesson.topic,
+                date_time: lesson.date_time
+            });
+            lessonContent.innerHTML = `<strong>${escapeHtml(lesson.topic)}</strong> - ${escapeHtml(lesson.date_time)}`;
+            lessonItem.appendChild(lessonContent);
+
+            console.log('Checking start button condition:', {
+                status: lesson.status,
+                teacher: lesson.teacher,
+                userEmail: '{{ user.email | safe }}',
+                isMatch: lesson.status === 'scheduled' && lesson.teacher === '{{ user.email | safe }}'
+            });
+
+            if (lesson.status === 'scheduled' && lesson.teacher === '{{ user.email | safe }}') {
+                const startButton = document.createElement('a');
+                startButton.href = `/chats/chat/${receiverId}/start/${lesson.id}/`;
+                startButton.className = 'start-lesson-btn';
+                startButton.target = '_blank';
+                startButton.innerHTML = '<button class="lessonitem1" type="button">Начать занятие</button>';
+                lessonItem.appendChild(startButton);
+                console.log('Start button added for lesson:', lesson.id);
+
+                startButton.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    fetch(startButton.href, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                updateLesson(data.lesson);
+                                if (data.room_id) {
+                                    window.open(`/videocall/?roomID=${data.room_id}`, '_blank');
+                                }
+                            } else {
+                                showMessage(data.error || 'Ошибка при начале занятия');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error starting lesson:', error);
+                            showMessage('Ошибка сети при начале занятия');
+                        });
+                });
+            }
+
+            console.log('Checking end button condition:', {
+                status: lesson.status,
+                teacher: lesson.teacher,
+                userEmail: '{{ user.email | safe }}',
+                isMatch: lesson.status === 'in_progress' && lesson.teacher === '{{ user.email | safe }}'
+            });
+
+            if (lesson.status === 'in_progress' && lesson.teacher === '{{ user.email | safe }}') {
+                const endButton = document.createElement('a');
+                endButton.href = `/chats/chat/${receiverId}/end/${lesson.id}/`;
+                endButton.className = 'end-lesson-btn';
+                endButton.innerHTML = '<button class="lessonitem2" type="button">Завершить занятие</button>';
+                lessonItem.appendChild(endButton);
+                console.log('End button added for lesson:', lesson.id);
+
+                endButton.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    fetch(endButton.href, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                updateLesson(data.lesson);
+                            } else {
+                                showMessage(data.error || 'Ошибка при завершении занятия');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error ending lesson:', error);
+                            showMessage('Ошибка сети при завершении занятия');
+                        });
+                });
+            }
+        }
 
         function showMessage(text) {
             console.log('showMessage called with text:', text);
@@ -287,15 +422,13 @@
         const menu = document.querySelector('.lesson-container');
         const closeBtn = document.querySelector('.close-lesson-icon');
 
-        // Открытие/закрытие по клику на кнопку
         button.addEventListener('click', function () {
             button.classList.toggle('active');
             menu.classList.toggle('active');
         });
 
-        // Закрытие по клику на крестик
         closeBtn.addEventListener('click', function (e) {
-            e.preventDefault(); // Предотвращаем переход по ссылке
+            e.preventDefault();
             button.classList.remove('active');
             menu.classList.remove('active');
         });

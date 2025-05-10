@@ -783,67 +783,49 @@ body.dark-theme .plantext {
 }
 
 .lesson-item {
-    position: absolute;
-    top: 200px;
-    right: 20px;
-    bottom: 20px;
-    left: 1495px;
-    height: 300px; /* Увеличьте max-height, чтобы вместить все элементы */
-    width: 300px;
-    overflow-y: auto;  /* Включает прокрутку, если элементов слишком много */
+    position: relative; /* Убираем абсолютное позиционирование */
+    width: 100%; /* Занимает всю доступную ширину контейнера */
+    max-width: 300px; /* Ограничиваем ширину, если нужно */
+    margin-bottom: 15px; /* Отступ между элементами */
     padding: 10px;
     background-color: white;
     border: 1px solid #466ee5;
-    border-color: #466ee5;
     border-radius: 5px;
 }
 body.dark-theme .lesson-item {
-    position: absolute;
-    top: 200px;
-    right: 20px;
-    bottom: 20px;
-    left: 1495px;
-    max-height: 300px; /* Увеличьте max-height, чтобы вместить все элементы */
-    max-width: 300px;
-    overflow-y: auto;  /* Включает прокрутку, если элементов слишком много */
-    padding: 10px;
     background-color: #212121;
     border: 1px solid #ccc;
     border-radius: 5px;
-    border: none;
+    color: white;
 }
 
 .lesson-item::-webkit-scrollbar {
-    width: 10px; /* Ширина скроллбара */
+    width: 10px;
 }
-
 .lesson-item::-webkit-scrollbar-thumb {
-    background-color: #7396FC; /* Цвет "ползунка" скроллбара */
-    border-radius: 5px; /* Скругленные углы "ползунка" */
+    background-color: #7396FC;
+    border-radius: 5px;
 }
 
 .lesson-item::-webkit-scrollbar-track {
-    background-color: #e0e0e0; /* Цвет фона области прокрутки */
-    border-radius: 5px; /* Скругленные углы области */
+    background-color: #e0e0e0;
+    border-radius: 5px;
 }
-
 .lessonitem {
-    margin-bottom: 10px;  /* Отступы между элементами */
+    margin-bottom: 10px;
     padding: 5px;
     background-color: white;
     border: 1px solid #466ee5;
     border-radius: 4px;
 }
 body.dark-theme .lessonitem {
-    margin-bottom: 10px;  /* Отступы между элементами */
-    padding: 5px;
     background-color: #212121;
     border: 1px solid #466ee5;
     border-radius: 4px;
     color: white;
 }
 .lessonitem1 {
-    margin-bottom: 10px;  /* Отступы между элементами */
+    margin-bottom: 10px;
     padding: 5px;
     background-color: #466ee5;
     border: none;
@@ -851,7 +833,7 @@ body.dark-theme .lessonitem {
     color: white;
 }
 .lessonitem2 {
-    margin-bottom: 10px;  /* Отступы между элементами */
+    margin-bottom: 10px;
     padding: 5px;
     background-color: black;
     border: none;

@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils.dateparse import parse_duration
 from django.contrib import messages
 from django.db import transaction
-from datetime import timedelta
+from datetime import timedelta, datetime
 import random
 from decimal import Decimal
 from .models import Message, Lesson, CustomUser
@@ -17,9 +17,11 @@ from django.core.cache import cache
 from asgiref.sync import sync_to_async
 import asyncio
 import json
+from django.utils import formats  # Для локализованного форматирования
 
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
+
 
 def generate_room_link(request, lesson_id):
     while True:
@@ -29,6 +31,7 @@ def generate_room_link(request, lesson_id):
             break
     link = f"{request.scheme}://{request.get_host()}/videocall/?roomID={room_id}"
     return room_id, link
+
 
 def chat_list_view(request):
     if not request.user.is_authenticated:
@@ -76,6 +79,7 @@ def chat_list_view(request):
 
     return render(request, "main/chat_list.html", {"chat_data": chat_data})
 
+
 @login_required
 def chat_view(request, receiver_id):
     receiver = get_object_or_404(CustomUser, id=receiver_id)
@@ -83,9 +87,9 @@ def chat_view(request, receiver_id):
     # Фильтруем сообщения между текущим пользователем и получателем
     messages = Message.objects.filter(
         (
-            Q(sender=request.user)
-            & Q(receiver=receiver)
-            & ~Q(content__icontains="Для Вас назначено новое занятие!")
+                Q(sender=request.user)
+                & Q(receiver=receiver)
+                & ~Q(content__icontains="Для Вас назначено новое занятие!")
         )
         | (Q(sender=receiver) & Q(receiver=request.user))
     ).order_by("timestamp")
@@ -127,6 +131,7 @@ def chat_view(request, receiver_id):
         },
     )
 
+
 @login_required
 def send_message(request, receiver_id):
     if request.method != "POST":
@@ -165,6 +170,30 @@ def send_message(request, receiver_id):
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
 
+
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse, HttpResponseRedirect, StreamingHttpResponse
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.db.models import Q
+from django.urls import reverse
+from django.utils.dateparse import parse_duration
+from django.contrib import messages
+from django.db import transaction
+from datetime import datetime, timedelta
+import random
+from decimal import Decimal
+from .models import Message, Lesson, CustomUser
+from django.contrib.auth import get_user_model
+from django.core.cache import cache
+from asgiref.sync import sync_to_async
+import asyncio
+import json
+
+# Получаем кастомную модель пользователя
+CustomUser = get_user_model()
+
 @login_required
 def schedule_lesson(request, receiver_id):
     if request.method != "POST":
@@ -179,22 +208,35 @@ def schedule_lesson(request, receiver_id):
     topic = request.POST.get("topic")
     price = request.POST.get("price")
 
+    # Очищаем price от лишних символов (например, "₽")
     try:
+        price = price.replace(" ₽", "").strip()  # Удаляем "₽" и пробелы
         price = Decimal(price)
-    except:
+    except (ValueError, AttributeError):
         return JsonResponse({"success": False, "error": "Введите корректную стоимость"}, status=400)
 
     if price <= 0:
         return JsonResponse({"success": False, "error": "Стоимость должна быть больше нуля"}, status=400)
 
     try:
+        # Преобразуем date_time в объект datetime
+        # Формат для datetime-local: 'YYYY-MM-DDThh:mm'
+        date_time_obj = datetime.strptime(date_time, '%Y-%m-%dT%H:%M')
+        # Устанавливаем временную зону
+        date_time_obj = timezone.make_aware(date_time_obj, timezone.get_current_timezone())
+
+        # Обрабатываем duration
         duration_obj = parse_duration(duration)
         if not duration_obj:
-            hours, minutes = map(int, duration.split(":"))
+            # parse_duration может не распознать "0:12:03", поэтому обрабатываем вручную
+            time_parts = duration.split(":")
+            if len(time_parts) != 2:  # Ожидаем формат "HH:MM"
+                raise ValueError("Некорректный формат длительности. Ожидается HH:MM")
+            hours, minutes = map(int, time_parts)
             duration_obj = timedelta(hours=hours, minutes=minutes)
 
         lesson = Lesson.objects.create(
-            date_time=date_time,
+            date_time=date_time_obj,  # Передаем объект datetime
             duration=duration_obj,
             topic=topic,
             teacher=request.user,
@@ -203,14 +245,14 @@ def schedule_lesson(request, receiver_id):
             price=price,
         )
 
-        Message.objects.create(
+        message = Message.objects.create(
             sender=request.user,
             receiver=receiver,
             content=(
                 f"<div class='contentzone'>"
                 f"<div class='newlessontext'>Для Вас назначено новое занятие!</div>"
                 f"<div class='newlessontext'>Тема: {lesson.topic}</div>"
-                f"<div class='newlessontext'>Дата: {lesson.date_time.replace('T', ' ').replace('-', '.')}</div>"
+                f"<div class='newlessontext'>Дата: {lesson.date_time.strftime('%Y.%m.%d %H:%M')}</div>"
                 f"<div class='newlessontext'>Длительность: {lesson.duration}</div>"
                 f"<div class='newlessontext'>Стоимость: {lesson.price} ₽</div>"
                 f"<div class='approvepart'>Подтвердите участие:</div>"
@@ -221,9 +263,27 @@ def schedule_lesson(request, receiver_id):
             timestamp=timezone.now(),
         )
 
-        return redirect('chat_view', receiver_id=receiver.id)
+        return JsonResponse({
+            "success": True,
+            "message": {
+                "id": message.id,
+                "sender": message.sender.email,
+                "sender_name": message.sender.get_display_name(),
+                "content": message.content,
+                "timestamp": message.timestamp.strftime('%d %B %H:%M'),
+            },
+            "lesson": {
+                "id": lesson.id,
+                "topic": lesson.topic,
+                "date_time": lesson.date_time.strftime('%d %B %H:%M'),
+                "status": lesson.status,
+                "teacher": lesson.teacher.email,
+                "student": lesson.student.email,
+            }
+        })
     except (ValueError, AttributeError) as e:
-        return JsonResponse({"success": False, "error": "Некорректная длительность или данные"}, status=400)
+        return JsonResponse({"success": False, "error": f"Ошибка: {str(e)}"}, status=400)
+
 
 @login_required
 def confirm_lesson(request, receiver_id, lesson_id):
@@ -256,6 +316,7 @@ def confirm_lesson(request, receiver_id, lesson_id):
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
 
+
 @login_required
 def decline_lesson(request, receiver_id, lesson_id):
     lesson = get_object_or_404(Lesson, id=lesson_id)
@@ -275,6 +336,7 @@ def decline_lesson(request, receiver_id, lesson_id):
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
 
+
 @login_required
 def start_lesson(request, receiver_id, lesson_id):
     lesson = get_object_or_404(Lesson, id=lesson_id)
@@ -284,18 +346,16 @@ def start_lesson(request, receiver_id, lesson_id):
     try:
         lesson.status = 'in_progress'
         room_id, link = generate_room_link(request, lesson.id)
-        lesson.call_link = link  # Сохраняем сгенерированную ссылку в модель
+        lesson.call_link = link
         lesson.save()
 
         topic = lesson.topic if lesson.topic else "Без темы"
-        content = f"""
-        Занятие на тему '{topic}' началось. 
-        <div>
-            <a href='{link}' target='_blank' style='padding: 10px 20px; background-color: #466ee5; border: none; border-radius: 4px; color: white; text-decoration: none; display: inline-block; text-align: center;'>
-                Перейти к занятию
-            </a>
-        </div>"""
-
+        content = (
+            f"Занятие на тему '{topic}' началось. "
+            f'<div><a href="{link}" target="_blank" style="padding: 10px 20px; background-color: #466ee5; '
+            f'border: none; border-radius: 4px; color: white; text-decoration: none; display: inline-block; '
+            f'text-align: center;">Перейти к занятию</a></div>'
+        )
         Message.objects.create(
             sender=request.user,
             receiver=lesson.student,
@@ -303,9 +363,24 @@ def start_lesson(request, receiver_id, lesson_id):
             timestamp=timezone.now(),
         )
 
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({
+                "success": True,
+                "lesson": {
+                    "id": lesson.id,
+                    "status": lesson.status,
+                    "topic": lesson.topic,
+                    "date_time": formats.date_format(lesson.date_time, "j F, H:i"),
+                    "teacher": lesson.teacher.email,
+                    "student": lesson.student.email,
+                    "updated_at": lesson.updated_at.isoformat(),
+                },
+                "room_id": room_id
+            })
         return HttpResponseRedirect(reverse('videocall:main') + f'?roomID={room_id}')
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
+
 
 @login_required
 def end_lesson(request, receiver_id, lesson_id):
@@ -325,6 +400,20 @@ def end_lesson(request, receiver_id, lesson_id):
             content=content,
             timestamp=timezone.now(),
         )
+
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({
+                "success": True,
+                "lesson": {
+                    "id": lesson.id,
+                    "status": lesson.status,
+                    "topic": lesson.topic,
+                    "date_time": formats.date_format(lesson.date_time, "j F, H:i"),
+                    "teacher": lesson.teacher.email,
+                    "student": lesson.student.email,
+                    "updated_at": lesson.updated_at.isoformat(),
+                }
+            })
         return redirect('chat_view', receiver_id=receiver_id)
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
@@ -349,9 +438,8 @@ def get_new_messages(last_id, user, receiver):
                 Q(sender=receiver, receiver=user)
         ),
         id__gt=last_id
-    ).order_by('timestamp').select_related('sender')  # Оптимизация: подгружаем sender
+    ).order_by('timestamp').select_related('sender')
 
-    # Формируем данные в синхронном контексте
     return [{
         'id': msg.id,
         'sender': msg.sender.email,
@@ -365,19 +453,25 @@ def get_new_messages(last_id, user, receiver):
 
 @login_required
 async def sse_messages(request, receiver_id):
-    # Проверяем аутентификацию асинхронно
     await check_auth(request.user)
 
     async def event_stream():
-        last_id = request.GET.get('last_id', 0)
+        last_message_id = request.GET.get('last_id', 0)
+        last_updated_at = request.GET.get('last_updated_at', None)
         receiver = await get_receiver(receiver_id)
 
         while True:
-            messages_data = await get_new_messages(last_id, request.user, receiver)
-
+            # Получаем новые сообщения
+            messages_data = await get_new_messages(last_message_id, request.user, receiver)
             for data in messages_data:
-                yield f"data: {json.dumps(data)}\n\n"
-                last_id = data['id']
+                yield f"data: {json.dumps({'type': 'message', 'data': data})}\n\n"
+                last_message_id = data['id']
+
+            # Получаем обновления уроков
+            lessons_data = await get_lesson_updates(last_updated_at, request.user, receiver)
+            for data in lessons_data:
+                yield f"data: {json.dumps({'type': 'lesson', 'data': data})}\n\n"
+                last_updated_at = data['updated_at']
 
             await asyncio.sleep(1)
 
@@ -387,3 +481,28 @@ async def sse_messages(request, receiver_id):
     )
     response['Cache-Control'] = 'no-cache'
     return response
+
+
+@sync_to_async
+def get_lesson_updates(last_updated_at, user, receiver):
+    from zoneinfo import ZoneInfo
+    try:
+        last_updated_at = timezone.datetime.fromisoformat(
+            last_updated_at) if last_updated_at else timezone.datetime.min.replace(tzinfo=ZoneInfo('UTC'))
+    except ValueError:
+        last_updated_at = timezone.datetime.min.replace(tzinfo=ZoneInfo('UTC'))
+
+    lessons = Lesson.objects.filter(
+        Q(teacher=user, student=receiver) | Q(teacher=receiver, student=user),
+        updated_at__gt=last_updated_at
+    ).exclude(status__in=['pending', 'declined']).order_by("date_time").select_related('teacher', 'student')
+
+    return [{
+        'id': lesson.id,
+        'topic': lesson.topic,
+        'status': lesson.status,
+        'date_time': formats.date_format(lesson.date_time, "j F, H:i"),
+        'teacher': lesson.teacher.email,
+        'student': lesson.student.email,
+        'updated_at': lesson.updated_at.isoformat(),
+    } for lesson in lessons]
