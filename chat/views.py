@@ -20,6 +20,7 @@ import json
 from django.utils import formats
 import os
 
+
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
 
