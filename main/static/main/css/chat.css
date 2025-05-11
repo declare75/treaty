@@ -1250,3 +1250,9 @@ body.dark-theme .kostyl {
     top: 200px;
     width: 300px;
 }
+
+.message-file {
+    font-weight: 600;
+    color: #466ee5;
+    font-family: Manrope;
+}

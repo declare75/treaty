@@ -149,7 +149,7 @@
                     } else if (['.mp4', 'webm', '.ogg'].includes(fileExtension)) {
                         fileHtml = `<video class="message-video" src="${fileUrl}" controls></video>`;
                     } else {
-                        fileHtml = `<a href="${fileUrl}" download class="message-file">Скачать файл</a>`;
+                        fileHtml = `<a href="${fileUrl}" download class="message-file">Скачать файл: ${fileUrl.split('/').pop()}</a>`;
                     }
                 }
 

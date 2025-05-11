@@ -379,9 +379,24 @@ video {
     font-family: Manrope;
 }
 
-#right-background-block h3 {
+.chattext {
     margin: 0 0 10px 0;
     font-size: 24px;
+    position: absolute;
+    top: 150px;
+    left: 1620px;
+    color: white;
+    font-family: Manrope;
+}
+
+.userstext {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    position: absolute;
+    top: 150px;
+    left: 180px;
+    color: white;
+    font-family: Manrope;
 }
 
 #messages {
