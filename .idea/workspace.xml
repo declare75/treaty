@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="финал хуйня (вроде) (наверное) (ну мейби, пока хз) (а может проебали)" />
+    <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="new db">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -53,7 +56,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Максим/PycharmProjects/treaty&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/treatyp&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -65,7 +68,6 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Максим\PycharmProjects\treaty" />
       <recent name="D:\treatyp" />
     </key>
   </component>
@@ -155,7 +157,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746902023944</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="new db">
+      <option name="closed" value="true" />
+      <created>1746978678658</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1746978678658</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -166,6 +176,7 @@
     <MESSAGE value="видеозвонок" />
     <MESSAGE value="видеозвонок с демкой" />
     <MESSAGE value="финал хуйня (вроде) (наверное) (ну мейби, пока хз) (а может проебали)" />
-    <option name="LAST_COMMIT_MESSAGE" value="финал хуйня (вроде) (наверное) (ну мейби, пока хз) (а может проебали)" />
+    <MESSAGE value="new db" />
+    <option name="LAST_COMMIT_MESSAGE" value="new db" />
   </component>
 </project>
