@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="видеозвонок с демкой">
+    <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="финал хуйня (вроде) (наверное) (ну мейби, пока хз) (а может проебали)">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/treaty.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/treaty.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalog2/templates/catalog2/catalog2_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/catalog2/templates/catalog2/catalog2_home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chat/templates/main/chat_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/chat/templates/main/chat_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/main/css/chat.css" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/css/chat.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/main/css/videocall.css" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/css/videocall.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/main/js/videocall.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/js/videocall.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/videocall/templates/videocall/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/videocall/templates/videocall/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/static/main/css/catalog2.css" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/css/catalog2.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,23 +53,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/treatyp",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.intellij.pycharm.community.ide.impl.configuration.PythonContentEntriesConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/treatyp&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.pycharm.community.ide.impl.configuration.PythonContentEntriesConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\treatyp" />
@@ -154,7 +153,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746735209626</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="финал хуйня (вроде) (наверное) (ну мейби, пока хз) (а может проебали)">
+      <option name="closed" value="true" />
+      <created>1746902023944</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1746902023944</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -164,6 +171,7 @@
     <MESSAGE value="123" />
     <MESSAGE value="видеозвонок" />
     <MESSAGE value="видеозвонок с демкой" />
-    <option name="LAST_COMMIT_MESSAGE" value="видеозвонок с демкой" />
+    <MESSAGE value="финал хуйня (вроде) (наверное) (ну мейби, пока хз) (а может проебали)" />
+    <option name="LAST_COMMIT_MESSAGE" value="финал хуйня (вроде) (наверное) (ну мейби, пока хз) (а может проебали)" />
   </component>
 </project>

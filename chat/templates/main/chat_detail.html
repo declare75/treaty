@@ -79,30 +79,20 @@
                     <div class="price" for="price">Стоимость</div>
                     <input class="priceinput" type="number" name="price" step="0.01" min="0" required><br>
                     <button class="submitlesson" type="submit" name="schedule_lesson">Запланировать</button>
-                    <div class="warningbox hidden" id="successMessage">
-                        Занятие успешно создано, если поля были заполнены верно!
-                    </div>
                 </form>
             {% endif %}
         </div>
     {% endif %}
+<div class="warningbox hidden" id="successMessage">
+    Занятие успешно создано, если поля были заполнены верно!
+</div>
     <form method="post" enctype="multipart/form-data" id="message-form" action="{% url 'chat_view' receiver.id %}">
         {% csrf_token %}
         <div class="recundertextarea"></div>
         <button type="submit" class="startchat2">Отправить</button>
         <div class="message-textarea"><input name="content" required></div>
         <div>
-            <label for="image-input" style="cursor: pointer; position: absolute; top: 821px; left: 538px;">
-                <i class="fa fa-image" style="color: #7396FC; font-size: 35px;"></i>
-            </label>
-            <input id="image-input" class="message-image-input" type="file" name="image" accept="image/*"
-                   style="display: none;">
-            <label for="video-input" style="cursor: pointer; position: absolute; top: 821px; left: 602px;">
-                <i class="fa fa-film" style="color: #7396FC; font-size: 35px;"></i>
-            </label>
-            <input id="video-input" class="message-video-input" type="file" name="video" accept="video/*"
-                   style="display: none;">
-            <label for="files-input" style="cursor: pointer; position: absolute; top: 821px; left: 1252px;">
+            <label for="files-input" style="cursor: pointer; position: absolute; top: 821px; left: 638px;">
                 <i class="fa fa-file" style="color: #7396FC; font-size: 35px;"></i>
             </label>
             <input id="files-input" class="message-files-input" type="file" name="file" accept="file/*"
