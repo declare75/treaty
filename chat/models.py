@@ -13,8 +13,7 @@ class Message(models.Model):
     )
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to="message_images/", null=True, blank=True)
-    video = models.FileField(upload_to="message_videos/", null=True, blank=True)
+    file = models.FileField(upload_to="message_files/", null=True, blank=True)
 
     def __str__(self):
         return f"Message from {self.sender} to {self.receiver} at {self.timestamp}"

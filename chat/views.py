@@ -17,7 +17,8 @@ from django.core.cache import cache
 from asgiref.sync import sync_to_async
 import asyncio
 import json
-from django.utils import formats  # Для локализованного форматирования
+from django.utils import formats
+import os
 
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
@@ -87,9 +88,9 @@ def chat_view(request, receiver_id):
     # Фильтруем сообщения между текущим пользователем и получателем
     messages = Message.objects.filter(
         (
-                Q(sender=request.user)
-                & Q(receiver=receiver)
-                & ~Q(content__icontains="Для Вас назначено новое занятие!")
+            Q(sender=request.user)
+            & Q(receiver=receiver)
+            & ~Q(content__icontains="Для Вас назначено новое занятие!")
         )
         | (Q(sender=receiver) & Q(receiver=request.user))
     ).order_by("timestamp")
@@ -114,7 +115,7 @@ def chat_view(request, receiver_id):
             end_lesson_button = lesson
 
     # Обработка отправки сообщений через AJAX
-    if request.method == "POST" and ('content' in request.POST or 'image' in request.FILES or 'video' in request.FILES):
+    if request.method == "POST" and ('content' in request.POST or 'file' in request.FILES):
         return send_message(request, receiver_id)
 
     return render(
@@ -139,19 +140,26 @@ def send_message(request, receiver_id):
 
     receiver = get_object_or_404(CustomUser, id=receiver_id)
     content = request.POST.get("content")
-    image = request.FILES.get("image")
-    video = request.FILES.get("video")
+    file = request.FILES.get("file")  # Изменено с image и video на file
 
-    if not (content or image or video):
+    if not (content or file):
         return JsonResponse({"success": False, "error": "Сообщение пустое"}, status=400)
+
+    # Опциональная валидация типов файлов
+    if file:
+        allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'webm', 'ogg', 'txt', 'docx', 'doc', 'pdf']
+        extension = os.path.splitext(file.name)[1][1:].lower()  # Извлекаем расширение без точки
+        if extension not in allowed_extensions:
+            return JsonResponse({"success": False, "error": "Недопустимый тип файла"}, status=400)
+        if file and file.size > 10 * 1024 * 1024:  # 10MB
+            return JsonResponse({"success": False, "error": "Файл слишком большой"}, status=400)
 
     try:
         message = Message.objects.create(
             sender=request.user,
             receiver=receiver,
-            content=content,
-            image=image,
-            video=video,
+            content=content or '',  # Если content пустой, сохраняем пустую строку
+            file=file,  # Сохраняем файл в поле file
             timestamp=timezone.now(),
         )
         # Возвращаем данные о новом сообщении для немедленного отображения
@@ -163,33 +171,13 @@ def send_message(request, receiver_id):
                 "sender_name": message.sender.get_display_name(),
                 "content": message.content,
                 "timestamp": message.timestamp.strftime('%d %B %H:%M'),
-                "image": message.image.url if message.image else None,
-                "video": message.video.url if message.video else None,
+                "file": message.file.url if message.file else None,  # Возвращаем URL файла
             }
         })
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
 
 
-from django.core.exceptions import PermissionDenied
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse, HttpResponseRedirect, StreamingHttpResponse
-from django.contrib.auth.decorators import login_required
-from django.utils import timezone
-from django.db.models import Q
-from django.urls import reverse
-from django.utils.dateparse import parse_duration
-from django.contrib import messages
-from django.db import transaction
-from datetime import datetime, timedelta
-import random
-from decimal import Decimal
-from .models import Message, Lesson, CustomUser
-from django.contrib.auth import get_user_model
-from django.core.cache import cache
-from asgiref.sync import sync_to_async
-import asyncio
-import json
 
 # Получаем кастомную модель пользователя
 CustomUser = get_user_model()
@@ -434,8 +422,8 @@ def get_receiver(receiver_id):
 def get_new_messages(last_id, user, receiver):
     messages = Message.objects.filter(
         (
-                Q(sender=user, receiver=receiver) |
-                Q(sender=receiver, receiver=user)
+            Q(sender=user, receiver=receiver) |
+            Q(sender=receiver, receiver=user)
         ),
         id__gt=last_id
     ).order_by('timestamp').select_related('sender')
@@ -446,8 +434,7 @@ def get_new_messages(last_id, user, receiver):
         'sender_name': msg.sender.get_display_name(),
         'content': msg.content,
         'timestamp': msg.timestamp.strftime('%d %B %H:%M'),
-        'image': msg.image.url if msg.image else None,
-        'video': msg.video.url if msg.video else None,
+        'file': msg.file.url if msg.file else None,  # Заменили image и video на file
     } for msg in messages]
 
 

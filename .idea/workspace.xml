@@ -8,9 +8,21 @@
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/treaty.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/treaty.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/catalog2/templates/catalog2/catalog2_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/catalog2/templates/catalog2/catalog2_home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/migrations/0002_lesson.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/migrations/0003_lesson_status.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/migrations/0004_alter_lesson_status.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/migrations/0005_feedback.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/migrations/0006_delete_feedback.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/migrations/0007_review.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/migrations/0008_delete_review.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/migrations/0009_lesson_price.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chat/templates/main/chat_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/chat/templates/main/chat_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/main/css/catalog2.css" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/css/catalog2.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/templates/main/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/profile.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,25 +65,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/treatyp&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.pycharm.community.ide.impl.configuration.PythonContentEntriesConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/Максим/PycharmProjects/treaty",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.intellij.pycharm.community.ide.impl.configuration.PythonContentEntriesConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Максим\PycharmProjects\treaty" />
       <recent name="D:\treatyp" />
     </key>
   </component>
