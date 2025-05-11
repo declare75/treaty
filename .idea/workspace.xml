@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="финал хуйня (вроде) (наверное) (ну мейби, пока хз) (а может проебали)">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/treaty.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/treaty.iml" afterDir="false" />
+    <list default="true" id="7d161af1-32d3-4d2f-8870-cd2bd63f141a" name="Changes" comment="new db">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/catalog2/templates/catalog2/catalog2_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/catalog2/templates/catalog2/catalog2_home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat/templates/main/chat_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/chat/templates/main/chat_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/static/main/css/catalog2.css" beforeDir="false" afterPath="$PROJECT_DIR$/main/static/main/css/catalog2.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,7 +157,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746902023944</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="new db">
+      <option name="closed" value="true" />
+      <created>1746978678658</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1746978678658</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -172,6 +176,7 @@
     <MESSAGE value="видеозвонок" />
     <MESSAGE value="видеозвонок с демкой" />
     <MESSAGE value="финал хуйня (вроде) (наверное) (ну мейби, пока хз) (а может проебали)" />
-    <option name="LAST_COMMIT_MESSAGE" value="финал хуйня (вроде) (наверное) (ну мейби, пока хз) (а может проебали)" />
+    <MESSAGE value="new db" />
+    <option name="LAST_COMMIT_MESSAGE" value="new db" />
   </component>
 </project>
