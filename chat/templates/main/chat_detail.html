@@ -94,7 +94,10 @@
         {% csrf_token %}
         <div class="recundertextarea"></div>
         <button type="submit" class="startchat2">Отправить</button>
-        <div class="message-textarea"><input name="content" required></div>
+        <div class="message-textarea">
+            <div contenteditable="true" id="editable-input" class="editable-input" required></div>
+            <input type="hidden" name="content" id="hidden-input">
+        </div>
         <div>
             <label for="files-input" style="cursor: pointer; position: absolute; top: 821px; left: 638px;">
                 <i class="fa fa-file" style="color: #7396FC; font-size: 35px;"></i>
@@ -106,7 +109,68 @@
     <div id="notification" class="warningbox hidden"><span id="notification-text"></span></div>
 
     <script>
-        // Определяем escapeHtml и receiverId в глобальной области видимости
+        document.addEventListener('DOMContentLoaded', function () {
+            const editableInput = document.getElementById('editable-input');
+            const hiddenInput = document.getElementById('hidden-input');
+            const form = document.getElementById('message-form');
+
+            if (editableInput && hiddenInput && form) {
+
+                editableInput.addEventListener('input', function () {
+                    hiddenInput.value = editableInput.textContent.trim();
+                });
+
+
+                editableInput.addEventListener('focus', function () {
+                    if (!editableInput.dataset.userInput) {
+                        editableInput.textContent = '';
+                    }
+                });
+
+
+                editableInput.addEventListener('input', function () {
+                    editableInput.dataset.userInput = 'true';
+                });
+
+
+                form.addEventListener('submit', function (event) {
+                    if (!hiddenInput.value.trim()) {
+                        event.preventDefault();
+                        const notification = document.getElementById('notification');
+                        const notificationText = document.getElementById('notification-text');
+                        notificationText.textContent = 'Введите сообщение!';
+                        notification.classList.remove('hidden');
+                        setTimeout(() => notification.classList.add('hidden'), 5000);
+                        return;
+                    }
+
+                    hiddenInput.value = editableInput.textContent.trim();
+                });
+
+
+                editableInput.addEventListener('keydown', function (event) {
+                    if (event.key === 'Enter' && !event.shiftKey) {
+                        event.preventDefault();
+                        form.dispatchEvent(new Event('submit'));
+                    } else if (event.key === 'Enter' && event.shiftKey) {
+
+                        const selection = window.getSelection();
+                        const range = selection.getRangeAt(0);
+                        const br = document.createElement('br');
+                        range.deleteContents();
+                        range.insertNode(br);
+                        range.setStartAfter(br);
+                        range.setEndAfter(br);
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+                        hiddenInput.value = editableInput.textContent.trim();
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
+
         function escapeHtml(text) {
             if (!text) return '';
             return text
@@ -230,6 +294,15 @@
                             chatBox.dataset.lastMessageId = message.id;
                             chatBox.scrollTop = chatBox.scrollHeight;
                             this.reset();
+                            const editableInput = document.getElementById('editable-input');
+                            const hiddenInput = document.getElementById('hidden-input');
+                            if (editableInput && hiddenInput) {
+                                editableInput.textContent = '';
+                                hiddenInput.value = '';
+                                editableInput.dataset.userInput = '';
+                            }
+
+
                         } else {
                             notificationText.textContent = data.error || 'Ошибка при отправке сообщения';
                             notification.classList.remove('hidden');
@@ -260,7 +333,7 @@
             const scheduleForm = document.getElementById('schedule-lesson-form');
             if (scheduleForm) {
                 scheduleForm.addEventListener('submit', function (event) {
-                    event.preventDefault(); // Предотвращаем стандартную отправку формы
+                    event.preventDefault();
                     const formData = new FormData(this);
                     fetch(this.action, {
                         method: 'POST',
@@ -273,22 +346,22 @@
                         .then(data => {
                             const messageDiv = document.getElementById('successMessage');
                             if (data.success) {
-                                // Показываем уведомление об успехе
+
                                 if (messageDiv) {
                                     messageDiv.textContent = 'Занятие успешно создано!';
                                     messageDiv.classList.remove('hidden');
                                     setTimeout(() => messageDiv.classList.add('hidden'), 5000);
                                 }
-                                // Добавляем сообщение в чат
+
                                 const message = data.message;
                                 const messageElement = createMessageElement(message, true);
                                 chatBox.appendChild(messageElement);
                                 chatBox.dataset.lastMessageId = message.id;
                                 chatBox.scrollTop = chatBox.scrollHeight;
-                                // Сбрасываем форму
+
                                 this.reset();
                             } else {
-                                // Показываем ошибку
+
                                 if (messageDiv) {
                                     messageDiv.textContent = data.error || 'Ошибка при создании занятия';
                                     messageDiv.classList.remove('hidden');

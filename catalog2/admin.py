@@ -4,18 +4,18 @@ from django.utils.html import format_html
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
-    # Отображаем сгенерированное поле для ФИО, предмет, одобрение и дату создания
+
     list_display = ('get_title', 'get_subject', 'is_approved', 'created_at')
     actions = ['approve_selected', 'revoke_selected']
 
     def get_title(self, obj):
-        # Формируем ФИО преподавателя из связанных полей пользователя
+
         return f"{obj.user.last_name} {obj.user.first_name} {obj.user.middle_name}"
 
     get_title.short_description = 'ФИО преподавателя'
 
     def get_subject(self, obj):
-        # Отображаем название предмета, связанного с объявлением
+
         return obj.subject.name if obj.subject else "Не указан"
 
     get_subject.short_description = 'Предмет'
@@ -33,7 +33,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ('name',)  # Предполагается, что у Subject есть поле name
+    list_display = ('name',)
     search_fields = ('name',)
 
 @admin.register(Review)
@@ -43,12 +43,12 @@ class ReviewAdmin(admin.ModelAdmin):
         'teacher',
         'rating',
         'created_at',
-    )  # Поля, отображаемые в списке
-    list_filter = ('rating', 'created_at')  # Возможность фильтрации
+    )
+    list_filter = ('rating', 'created_at')
     search_fields = (
         'reviewerusername',
         'teacherusername',
         'text',
     )  # Поля для поиска
-    ordering = ('-created_at',)  # Сортировка по умолчанию (новые отзывы сверху)
+    ordering = ('-created_at',)
     readonly_fields = ('created_at',)

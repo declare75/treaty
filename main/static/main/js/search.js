@@ -47,7 +47,7 @@ function filterBySubject(subject) {
     filterButtonContainer.appendChild(filterButton);
 
     setTimeout(() => {
-        filterButton.classList.add('show'); // Добавляем класс для анимации появления
+        filterButton.classList.add('show');
     }, 10);
 
     filterSearch();
@@ -61,13 +61,13 @@ function clearFilter() {
     const filterButton = document.querySelector('.filter-button');
     if (filterButton) {
         filterButton.classList.remove('show');
-        filterButton.classList.add('hide'); // Добавляем класс для анимации исчезновения
+        filterButton.classList.add('hide');
 
-        // Удаляем кнопку после завершения анимации
+
         setTimeout(() => {
             const filterButtonContainer = document.getElementById('filterButtonContainer');
             filterButtonContainer.innerHTML = '';
-        }, 300); // Задержка совпадает с длительностью transition
+        }, 300);
     }
 
     filterSearch();

@@ -10,10 +10,10 @@ from django.core.paginator import Paginator
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 
-# Получаем кастомную модель пользователя
+
 CustomUser = get_user_model()
 
-# Функция-декоратор для проверки is_teacher
+
 def teacher_required(view_func):
     def _wrapped_view(request, *args, **kwargs):
         if not request.user.is_teacher:
@@ -37,23 +37,23 @@ def catalog2_home(request):
         messages.warning(request, 'Чтобы связаться, необходимо войти в аккаунт.')
         return redirect('catalog2_home')
 
-    # Кэшируем список предметов
+
     subjects_cache_key = 'all_subjects'
     subjects = cache.get(subjects_cache_key)
     if not subjects:
         subjects = Subject.objects.all()
-        cache.set(subjects_cache_key, subjects, 60 * 60)  # Кэш на 1 час
+        cache.set(subjects_cache_key, subjects, 60 * 60)
 
-    # Пагинация для объявлений
+
     catalog2 = Announcement.objects.filter(is_approved=True).select_related('user')
-    paginator = Paginator(catalog2, 10)  # 10 объявлений на страницу
+    paginator = Paginator(catalog2, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     form = ReviewForm()
 
     return render(request, 'catalog2/catalog2_home.html', {
-        'catalog2': page_obj,  # Передаем объект пагинации
+        'catalog2': page_obj,
         'form': form,
         'subjects': subjects,
     })
@@ -98,7 +98,7 @@ def edit_announcement(request):
 
     return JsonResponse({'success': False, 'message': 'Неверный метод запроса'}, status=405)
 
-@cache_page(60 * 60)  # Кэшируем на 1 час
+@cache_page(60 * 60)
 def get_subjects(request):
     subjects = Subject.objects.all()
     subjects_data = [{"id": subject.id, "name": subject.name} for subject in subjects]
@@ -108,7 +108,7 @@ def get_subjects(request):
 def add_review(request, teacher_id):
     teacher = get_object_or_404(CustomUser, id=teacher_id, is_staff=True)
 
-    # Проверяем наличие завершенного занятия
+
     if not Lesson.has_completed_lesson(student=request.user, teacher=teacher):
         messages.warning(request, 'Вы можете оставить отзыв только после завершенного занятия с этим преподавателем.')
         return redirect('catalog2_home')

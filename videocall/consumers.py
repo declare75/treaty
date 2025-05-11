@@ -17,7 +17,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.close()
             return
 
-        # Добавляем пользователя в группу комнаты
+
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
@@ -37,7 +37,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         action = receive_dict['action']
         peer = receive_dict.get('peer', '')
 
-        # Добавляем URL аватарки в сообщение new-peer
+
         if action == 'new-peer':
             user = self.scope['user']
             avatar_url = user.avatar.url if user.is_authenticated and user.avatar else '/static/main/img/noimageavatar.svg'
@@ -59,15 +59,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def is_user_participant(self):
-        # Переносим импорт внутрь метода
+
         from django.contrib.auth import get_user_model
         from chat.models import Lesson
 
         CustomUser = get_user_model()
         try:
-            # Ищем занятие по room_id, который содержится в call_link
+
             lesson = Lesson.objects.get(call_link__contains=self.room_id)
-            # Проверяем, является ли текущий пользователь студентом или учителем
+
             return self.user == lesson.student or self.user == lesson.teacher
         except Lesson.DoesNotExist:
             return False

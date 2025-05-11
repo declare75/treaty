@@ -161,10 +161,10 @@
         const warningboxes = document.querySelectorAll('.warningbox');
 
         warningboxes.forEach(function(warningbox) {
-            // Убираем класс hidden через 5 секунд
+
             setTimeout(function() {
                 warningbox.classList.add('hidden');
-            }, 5000); // Уведомление будет скрываться через 5 секунд
+            }, 5000);
         });
     });
 </script>
@@ -176,10 +176,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const warningboxes = document.querySelectorAll('.warningbox');
 
     warningboxes.forEach(function(warningbox) {
-        // Убираем класс hidden через 5 секунд
+
         setTimeout(function() {
             warningbox.classList.add('hidden');
-        }, 5000); // Уведомление будет скрываться через 5 секунд
+        }, 5000);
     });
 });
 </script>
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleNavbarLinks(hasError);
     }
 
-    // Функция для блокировки или разблокировки кнопок навигации
+
     function toggleNavbarLinks(hasError) {
         const navbarButtons = document.querySelectorAll('.textprepod, .texthelp, .textfaq, .headlogo, .col-2, .textchats');
 
@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Функция для включения режима редактирования
+
     function enableEdit() {
         document.querySelectorAll('.display-only').forEach(el => el.style.display = 'none');
         document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'block');
@@ -230,18 +230,18 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.edit').style.display = 'none';
 
         const avatarContainer = document.getElementById('avatarContainer');
-        avatarContainer.style.cursor = 'pointer'; // Курсор указывает на кликабельность
+        avatarContainer.style.cursor = 'pointer';
         avatarContainer.onclick = () => document.getElementById('avatarInput').click();
     }
 
-    // Функция для скрытия кнопки загрузки аватара при сохранении
+
     function disableEdit() {
         const avatarContainer = document.getElementById('avatarContainer');
-        avatarContainer.style.cursor = 'default'; // Убираем указатель клика
-        avatarContainer.onclick = null; // Убираем обработчик клика
+        avatarContainer.style.cursor = 'default';
+        avatarContainer.onclick = null;
     }
 
-    // Обработчик события для загрузки нового аватара
+
     document.getElementById('avatarInput').addEventListener('change', function() {
         const file = this.files[0];
         if (file) {
@@ -256,22 +256,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 avatarImage.style.borderRadius = "50%";
 
                 const avatarContainer = document.getElementById('avatarContainer');
-                avatarContainer.innerHTML = ""; // Очищаем контейнер перед добавлением нового изображения
+                avatarContainer.innerHTML = "";
                 avatarContainer.appendChild(avatarImage);
             }
             reader.readAsDataURL(file);
         }
     });
 
-    // При отправке формы отключаем режим редактирования и скрываем кнопку загрузки аватара
+
     document.getElementById('profileForm').addEventListener('submit', disableEdit);
 
-    // При загрузке страницы проверяем поля формы
+
     document.addEventListener('DOMContentLoaded', () => {
         checkFormFields();
     });
 
-    // Проверка на изменения в полях
+
     document.querySelectorAll('.edit-mode input').forEach(input => {
         input.addEventListener('input', checkFormFields);
     });

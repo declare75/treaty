@@ -8,7 +8,7 @@ function filterSearch() {
         const username = messages[i].getElementsByClassName('username2')[0].textContent.toLowerCase();
         const messageContent = messages[i].getElementsByClassName('message-content')[0].textContent.toLowerCase();
 
-        // Если имя пользователя или текст сообщения содержит искомое слово, показываем сообщение
+
         if (username.includes(filter) || messageContent.includes(filter)) {
             messages[i].style.display = "";
         } else {

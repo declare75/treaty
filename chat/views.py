@@ -21,15 +21,15 @@ from django.utils import formats
 import os
 
 
-# Получаем кастомную модель пользователя
+
 CustomUser = get_user_model()
 
 
 def generate_room_link(request, lesson_id):
     while True:
         room_id = random.randint(1000, 9999)
-        if not cache.get(f"room:{room_id}"):  # Проверяем, не занята ли комната
-            cache.set(f"room:{room_id}", True, timeout=3600)  # Резервируем на 1 час
+        if not cache.get(f"room:{room_id}"):
+            cache.set(f"room:{room_id}", True, timeout=3600)
             break
     link = f"{request.scheme}://{request.get_host()}/videocall/?roomID={room_id}"
     return room_id, link
@@ -86,7 +86,6 @@ def chat_list_view(request):
 def chat_view(request, receiver_id):
     receiver = get_object_or_404(CustomUser, id=receiver_id)
 
-    # Фильтруем сообщения между текущим пользователем и получателем
     messages = Message.objects.filter(
         (
             Q(sender=request.user)
@@ -96,17 +95,17 @@ def chat_view(request, receiver_id):
         | (Q(sender=receiver) & Q(receiver=request.user))
     ).order_by("timestamp")
 
-    # Получаем ID последнего сообщения
+
     last_message_id = messages.last().id if messages.exists() else 0
 
-    # Получаем уроки
+
     lessons = Lesson.objects.filter(
         Q(teacher=request.user, student=receiver) | Q(teacher=receiver, student=request.user)
     ).order_by("date_time")
 
     lessons_count = lessons.count()
 
-    # Кнопки для начала/завершения занятия
+
     start_lesson_button = None
     end_lesson_button = None
     for lesson in lessons:
@@ -115,7 +114,7 @@ def chat_view(request, receiver_id):
         elif lesson.status == 'in_progress' and lesson.teacher == request.user:
             end_lesson_button = lesson
 
-    # Обработка отправки сообщений через AJAX
+
     if request.method == "POST" and ('content' in request.POST or 'file' in request.FILES):
         return send_message(request, receiver_id)
 
@@ -141,15 +140,15 @@ def send_message(request, receiver_id):
 
     receiver = get_object_or_404(CustomUser, id=receiver_id)
     content = request.POST.get("content")
-    file = request.FILES.get("file")  # Изменено с image и video на file
+    file = request.FILES.get("file")
 
     if not (content or file):
         return JsonResponse({"success": False, "error": "Сообщение пустое"}, status=400)
 
-    # Опциональная валидация типов файлов
+
     if file:
         allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'webm', 'ogg', 'txt', 'docx', 'doc', 'pdf']
-        extension = os.path.splitext(file.name)[1][1:].lower()  # Извлекаем расширение без точки
+        extension = os.path.splitext(file.name)[1][1:].lower()
         if extension not in allowed_extensions:
             return JsonResponse({"success": False, "error": "Недопустимый тип файла"}, status=400)
         if file and file.size > 10 * 1024 * 1024:  # 10MB
@@ -159,11 +158,11 @@ def send_message(request, receiver_id):
         message = Message.objects.create(
             sender=request.user,
             receiver=receiver,
-            content=content or '',  # Если content пустой, сохраняем пустую строку
-            file=file,  # Сохраняем файл в поле file
+            content=content or '',
+            file=file,
             timestamp=timezone.now(),
         )
-        # Возвращаем данные о новом сообщении для немедленного отображения
+
         return JsonResponse({
             "success": True,
             "message": {
@@ -172,16 +171,12 @@ def send_message(request, receiver_id):
                 "sender_name": message.sender.get_display_name(),
                 "content": message.content,
                 "timestamp": message.timestamp.strftime('%d %B %H:%M'),
-                "file": message.file.url if message.file else None,  # Возвращаем URL файла
+                "file": message.file.url if message.file else None,
             }
         })
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
 
-
-
-# Получаем кастомную модель пользователя
-CustomUser = get_user_model()
 
 @login_required
 def schedule_lesson(request, receiver_id):
@@ -197,35 +192,31 @@ def schedule_lesson(request, receiver_id):
     topic = request.POST.get("topic")
     price = request.POST.get("price")
 
-    # Очищаем price от лишних символов (например, "₽")
+
     try:
-        price = price.replace(" ₽", "").strip()  # Удаляем "₽" и пробелы
+        price = price.replace(" ₽", "").strip()
         price = Decimal(price)
     except (ValueError, AttributeError):
         return JsonResponse({"success": False, "error": "Введите корректную стоимость"}, status=400)
 
     if price <= 0:
         return JsonResponse({"success": False, "error": "Стоимость должна быть больше нуля"}, status=400)
-
     try:
-        # Преобразуем date_time в объект datetime
-        # Формат для datetime-local: 'YYYY-MM-DDThh:mm'
+
         date_time_obj = datetime.strptime(date_time, '%Y-%m-%dT%H:%M')
-        # Устанавливаем временную зону
         date_time_obj = timezone.make_aware(date_time_obj, timezone.get_current_timezone())
 
-        # Обрабатываем duration
         duration_obj = parse_duration(duration)
         if not duration_obj:
-            # parse_duration может не распознать "0:12:03", поэтому обрабатываем вручную
+
             time_parts = duration.split(":")
-            if len(time_parts) != 2:  # Ожидаем формат "HH:MM"
+            if len(time_parts) != 2:
                 raise ValueError("Некорректный формат длительности. Ожидается HH:MM")
             hours, minutes = map(int, time_parts)
             duration_obj = timedelta(hours=hours, minutes=minutes)
 
         lesson = Lesson.objects.create(
-            date_time=date_time_obj,  # Передаем объект datetime
+            date_time=date_time_obj,
             duration=duration_obj,
             topic=topic,
             teacher=request.user,
@@ -435,7 +426,7 @@ def get_new_messages(last_id, user, receiver):
         'sender_name': msg.sender.get_display_name(),
         'content': msg.content,
         'timestamp': msg.timestamp.strftime('%d %B %H:%M'),
-        'file': msg.file.url if msg.file else None,  # Заменили image и video на file
+        'file': msg.file.url if msg.file else None,
     } for msg in messages]
 
 
@@ -449,13 +440,13 @@ async def sse_messages(request, receiver_id):
         receiver = await get_receiver(receiver_id)
 
         while True:
-            # Получаем новые сообщения
+
             messages_data = await get_new_messages(last_message_id, request.user, receiver)
             for data in messages_data:
                 yield f"data: {json.dumps({'type': 'message', 'data': data})}\n\n"
                 last_message_id = data['id']
 
-            # Получаем обновления уроков
+
             lessons_data = await get_lesson_updates(last_updated_at, request.user, receiver)
             for data in lessons_data:
                 yield f"data: {json.dumps({'type': 'lesson', 'data': data})}\n\n"

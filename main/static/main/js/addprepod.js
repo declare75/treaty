@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('overlay');
     const modal = document.getElementById('modal');
     const form = document.getElementById('prepodForm');
-    const subjectSelect = document.querySelector('select[name="subject"]'); // Изменено: используем name
+    const subjectSelect = document.querySelector('select[name="subject"]');
 
     // Проверяем, если элемент существует
     if (subjectSelect) {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 // Очистить старые опции
-                subjectSelect.innerHTML = ''; // Сбросим опции перед добавлением новых
+                subjectSelect.innerHTML = '';
                 if (data.subjects && data.subjects.length > 0) {
                     const defaultOption = document.createElement('option');
                     defaultOption.value = '';
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     data.subjects.forEach(subject => {
                         const option = document.createElement('option');
                         option.value = subject.id;
-                        option.textContent = subject.name; // Изменено: выводим name
+                        option.textContent = subject.name;
                         subjectSelect.appendChild(option);
                     });
                 } else {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Элемент с name="subject" не найден.');
     }
 
-    // Функция открытия модального окна
+
     function openModal() {
         overlay.style.display = 'block';
         modal.style.display = 'block';
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 10);
     }
 
-    // Функция закрытия модального окна
+
     function closeModal() {
         overlay.classList.remove('show');
         modal.classList.remove('show');
@@ -64,18 +64,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     }
 
-    // Открытие модального окна при клике на кнопку
+
     if (openModalBtn) {
         openModalBtn.addEventListener('click', openModal);
     }
 
-    // Закрытие модального окна при клике на кнопку или оверлей
+
     if (closeModalBtn) {
         closeModalBtn.addEventListener('click', closeModal);
     }
     overlay.addEventListener('click', closeModal);
 
-    // Отправка формы через AJAX
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(form);
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Функция для получения CSRF токена
+
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {

@@ -1,23 +1,23 @@
-let currentIndex = 1; // Устанавливаем начальный индекс на 1, чтобы показывалось второе изображение
+let currentIndex = 1;
 const slides = document.querySelectorAll('.imgslide div');
 const totalSlides = slides.length;
-const slideWidth = 350;  // Ширина одного слайда
+const slideWidth = 350;
 
-// Получаем кнопки
+
 const leftButton = document.querySelector('.leftimg');
 const rightButton = document.querySelector('.rightimg');
 
-// Обработчик для кнопки "влево"
+
 leftButton.addEventListener('click', () => {
     moveSlide('prev');
 });
 
-// Обработчик для кнопки "вправо"
+
 rightButton.addEventListener('click', () => {
     moveSlide('next');
 });
 
-// Функция для движения слайдера
+
 function moveSlide(direction) {
     if (direction === 'next') {
         if (currentIndex < totalSlides - 1) {
@@ -33,29 +33,29 @@ function moveSlide(direction) {
     updateButtonStates();
 }
 
-// Обновление положения слайдера
+
 function updateSlider() {
     const offset = -currentIndex * slideWidth; // Сдвиг на ширину одного слайда (300px)
     document.querySelector('.imgslide').style.transform = `translateX(${offset}px)`;
 }
 
-// Обновление состояния кнопок
+
 function updateButtonStates() {
-    // Если первая картинка (engimg), блокируем кнопку "влево"
+
     if (currentIndex === 0) {
-        leftButton.style.pointerEvents = 'none';  // Отключаем кнопку
+        leftButton.style.pointerEvents = 'none';
     } else {
-        leftButton.style.pointerEvents = 'auto'; // Включаем кнопку
+        leftButton.style.pointerEvents = 'auto';
     }
 
-    // Если последняя картинка (chemistryimg), блокируем кнопку "вправо"
+
     if (currentIndex === 6) {
-        rightButton.style.pointerEvents = 'none'; // Отключаем кнопку
+        rightButton.style.pointerEvents = 'none';
     } else {
-        rightButton.style.pointerEvents = 'auto'; // Включаем кнопку
+        rightButton.style.pointerEvents = 'auto';
     }
 }
 
-// Инициализация состояния кнопок при загрузке
+
 updateSlider();
 updateButtonStates();

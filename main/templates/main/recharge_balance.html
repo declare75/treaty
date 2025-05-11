@@ -70,13 +70,13 @@
     });
 </script>
 <script>
-    // Получаем все нужные элементы
+
     const checkbox = document.getElementById('confirmCheckbox');
     const rechargeButton = document.getElementById('rechargeButton');
     const paymentOptions = document.querySelectorAll('.payment-option:not(.disabled)');
     let selectedOption = null;
 
-    // Функция для проверки условий
+
     function checkConditions() {
         const isCheckboxChecked = checkbox.checked;
         const isPaymentSelected = selectedOption !== null;
@@ -84,10 +84,10 @@
         rechargeButton.disabled = !(isCheckboxChecked && isPaymentSelected);
     }
 
-    // Слушатель на чекбокс
+
     checkbox.addEventListener('change', checkConditions);
 
-    // Слушатель на выбор метода оплаты
+
     paymentOptions.forEach(option => {
         option.addEventListener('click', () => {
             if (selectedOption) {
@@ -99,7 +99,7 @@
         });
     });
 
-    // Инициализация состояния кнопки при загрузке
+
     window.addEventListener('DOMContentLoaded', checkConditions);
 </script>
 {% endblock %}

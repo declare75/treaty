@@ -6,8 +6,8 @@ var username;
 var webSocket;
 var isScreenSharing = false;
 var currentCenterVideo = null;
-var mapAvatars = {}; // Хранит URL аватарок для каждого пользователя
-var localScreenStream = null; // Для хранения screenStream
+var mapAvatars = {};
+var localScreenStream = null;
 
 function webSocketOnMessage(event) {
     var parsedData = JSON.parse(event.data);
@@ -20,7 +20,7 @@ function webSocketOnMessage(event) {
     var receiver_channel_name = parsedData['message']['receiver_channel_name'];
 
     if (action == 'connection_rejected') {
-        // Сервер отклонил подключение
+
         var reason = parsedData['message']['reason'];
         alert(reason);
         if (webSocket) {
@@ -33,7 +33,7 @@ function webSocketOnMessage(event) {
         var avatarUrl = parsedData['message']['avatar_url'] || '/static/main/img/noimageavatar.svg';
         mapAvatars[peerUsername] = avatarUrl;
         createOfferer(peerUsername, receiver_channel_name);
-        // Первый пользователь отправляет свою аватарку второму
+
         sendSignal('send-avatar', {
             avatar_url: window.avatarUrl || '/static/main/img/noimageavatar.svg',
             receiver_channel_name: receiver_channel_name
@@ -131,7 +131,7 @@ btnJoin.addEventListener('click', () => {
     webSocket.addEventListener('message', webSocketOnMessage);
     webSocket.addEventListener('close', (e) => {
         console.log('Connection closed!');
-        // Возвращаем интерфейс в исходное состояние
+
         usernameInput.disabled = false;
         usernameInput.style.visibility = 'visible';
         btnJoin.disabled = false;
@@ -222,7 +222,7 @@ navigator.mediaDevices.enumerateDevices()
         const audioTracks = localStream.getAudioTracks();
         const videoTracks = localStream.getVideoTracks();
 
-        // Управляем отображением локального видео/аватарки
+
         localVideo.style.display = (videoTracks.length === 0 || !videoTracks[0].enabled) ? 'none' : 'block';
         localAvatar.style.display = (videoTracks.length === 0 || !videoTracks[0].enabled) ? 'block' : 'none';
 
@@ -419,7 +419,7 @@ function createScreenShareOfferer(peerUsername, receiver_channel_name, screenStr
         }
     });
 
-    // Инициализируем или обновляем запись в mapScreenSharePeers
+
     if (!mapScreenSharePeers[peerUsername]) {
         mapScreenSharePeers[peerUsername] = {
             senderPeer: null,
@@ -470,7 +470,7 @@ function createScreenShareOfferer(peerUsername, receiver_channel_name, screenStr
 }
 
 function createScreenShareAnswerer(offer, peerUsername, receiver_channel_name) {
-    // Проверяем, существует ли уже видео для этой демонстрации
+
     let remoteScreenVideo = document.getElementById(peerUsername + '-screen-video');
     if (!remoteScreenVideo) {
         remoteScreenVideo = createScreenVideo(peerUsername);
@@ -486,7 +486,7 @@ function createScreenShareAnswerer(offer, peerUsername, receiver_channel_name) {
 
     setScreenShareOnTrack(peer, remoteScreenVideo);
 
-    // Инициализируем или обновляем запись в mapScreenSharePeers
+
     if (!mapScreenSharePeers[peerUsername]) {
         mapScreenSharePeers[peerUsername] = {
             senderPeer: null,
@@ -578,14 +578,14 @@ function createVideo(peerUsername) {
     remoteAvatar.id = peerUsername + '-avatar';
     remoteAvatar.className = 'avatar';
     remoteAvatar.src = mapAvatars[peerUsername] || '/static/main/img/noimageavatar.svg';
-    // Изначально скрываем видео, пока не получим трек
+
     remoteVideo.style.display = 'none';
     remoteAvatar.style.display = 'block';
     videoContainer.appendChild(remoteVideo);
     videoContainer.appendChild(remoteAvatar);
     leftBlock.appendChild(videoContainer);
 
-    // Разрешаем перемещение только если есть видео
+
     videoContainer.addEventListener('click', (e) => {
         if (remoteVideo.style.display !== 'none') {
             moveToCenter(videoContainer);
@@ -621,7 +621,7 @@ function setOnTrack(peer, remoteVideo) {
             console.log(`Added track ${track.kind} to ${remoteVideo.id}`);
             remoteVideo.srcObject = remoteStream;
 
-            // Управляем отображением аватарки только для обычных видеоконтейнеров
+
             if (track.kind === 'video' && remoteVideo.id.endsWith('-video')) {
                 const videoContainer = remoteVideo.parentElement;
                 const avatar = videoContainer ? videoContainer.querySelector('img.avatar') : null;
@@ -659,14 +659,14 @@ function removeVideo(element) {
     if (!element) {
         return;
     }
-    // Проверяем, находится ли элемент в DOM
+
     if (element.parentNode && element.id !== 'local-video-container') {
         if (element === currentCenterVideo) {
             currentCenterVideo = null;
         }
         element.parentNode.removeChild(element);
     } else if (element === currentCenterVideo) {
-        // Если элемент уже удалён из DOM, но всё ещё является currentCenterVideo, сбрасываем его
+
         currentCenterVideo = null;
     }
 }
@@ -676,12 +676,12 @@ function moveToCenter(videoContainer) {
     const leftBlock = document.querySelector('#left-background-block');
 
     if (currentCenterVideo && currentCenterVideo !== videoContainer) {
-        // Перемещаем текущий элемент в центр обратно в leftBlock
+
         leftBlock.appendChild(currentCenterVideo);
         currentCenterVideo.classList.remove('video-entering');
     }
 
-    // Очищаем центр и добавляем новое видео
+
     while (centerBlock.firstChild) {
         centerBlock.removeChild(centerBlock.firstChild);
     }
@@ -715,7 +715,7 @@ btnShareScreen.addEventListener('click', () => {
 function startScreenShare() {
     navigator.mediaDevices.getDisplayMedia({video: true})
         .then(screenStream => {
-            localScreenStream = screenStream; // Сохраняем screenStream
+            localScreenStream = screenStream;
             const screenTrack = screenStream.getVideoTracks()[0];
 
             for (let peerUsername in mapPeers) {
@@ -758,13 +758,13 @@ function stopScreenShare() {
         removeVideo(localScreenVideo);
     }
 
-    // Завершаем все треки screenStream
+
     if (localScreenStream) {
         localScreenStream.getTracks().forEach(track => {
             console.log(`Stopping screen share track: ${track.kind}, id: ${track.id}`);
             track.stop();
         });
-        localScreenStream = null; // Очищаем переменную
+        localScreenStream = null;
     }
 
     isScreenSharing = false;
@@ -777,13 +777,13 @@ function stopScreenShareReceiver(peerUsername) {
         if (peerEntry.receiverPeer) {
             peerEntry.receiverPeer.close();
             peerEntry.receiverPeer = null;
-            // Сначала проверяем, является ли currentCenterVideo нужным видео
+
             if (currentCenterVideo && currentCenterVideo.id === peerUsername + '-screen-video') {
                 removeVideo(currentCenterVideo);
-                // Проверяем, есть ли другие демонстрации экрана
+
                 moveNextScreenShareToCenter();
             } else {
-                // Если видео не в центре, ищем его в DOM
+
                 const remoteScreenVideo = document.getElementById(peerUsername + '-screen-video');
                 if (remoteScreenVideo) {
                     removeVideo(remoteScreenVideo);
@@ -807,7 +807,6 @@ function moveNextScreenShareToCenter() {
     }
 }
 
-// Fullscreen functionality
 const btnToggleFullscreen = document.querySelector('#btnToggleFullscreen');
 btnToggleFullscreen.addEventListener('click', () => {
     const centerBlock = document.querySelector('#center-background-block');

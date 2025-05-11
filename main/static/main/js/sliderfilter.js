@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Сопоставляем div-классы с фильтрами
+
     const filters = {
         engimg: 'Английский язык',
         ruimg: 'Русский язык',
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         geoimg: 'География'
     };
 
-    // Добавляем клик-обработчики для оверлеев
+
     Object.keys(filters).forEach(className => {
         const overlay = document.querySelector(`.${className} .overlay`);
         if (overlay) {

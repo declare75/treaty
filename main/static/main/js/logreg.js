@@ -25,35 +25,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 modal.style.opacity = "1";
                 overlay.style.visibility = "visible";
                 modal.style.visibility = "visible";
-            }, 10); // Короткая задержка для корректной анимации
+            }, 10);
         }
 
         span.onclick = function() {
-            overlay.style.opacity = "0"; // Скрываем оверлей
-            modal.style.opacity = "0"; // Скрываем модал
+            overlay.style.opacity = "0";
+            modal.style.opacity = "0";
             setTimeout(() => {
-                overlay.style.visibility = "hidden"; // Прячем оверлей после завершения анимации
-                modal.style.visibility = "hidden"; // Прячем модал после завершения анимации
-                overlay.style.display = "none"; // Полностью убираем с экрана
-                modal.style.display = "none"; // Полностью убираем с экрана
-            }, 500); // Время, равное времени анимации
+                overlay.style.visibility = "hidden";
+                modal.style.visibility = "hidden";
+                overlay.style.display = "none";
+                modal.style.display = "none";
+            }, 500);
         }
 
         window.onclick = function(event) {
-            if (event.target == overlay) { // Если кликнули на оверлей
-                overlay.style.opacity = "0"; // Скрываем оверлей
-                modal.style.opacity = "0"; // Скрываем модал
+            if (event.target == overlay) {
+                overlay.style.opacity = "0";
+                modal.style.opacity = "0";
                 setTimeout(() => {
-                    overlay.style.visibility = "hidden"; // Прячем оверлей после завершения анимации
-                    modal.style.visibility = "hidden"; // Прячем модал после завершения анимации
-                    overlay.style.display = "none"; // Полностью убираем с экрана
-                    modal.style.display = "none"; // Полностью убираем с экрана
-                }, 500); // Время, равное времени анимации
+                    overlay.style.visibility = "hidden";
+                    modal.style.visibility = "hidden";
+                    overlay.style.display = "none";
+                    modal.style.display = "none";
+                }, 500);
             }
         }
     }
 
-    // Обработка формы входа
+
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', function(event) {
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Обработка формы регистрации
+
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         registerForm.addEventListener('submit', function(event) {
@@ -113,8 +113,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success) {
                     alert('Регистрация выполнена успешно');
-                    // После успешной регистрации выполняем редирект
-                    window.location.href = data.redirect_url; // Перенаправление на страницу профиля
+
+                    window.location.href = data.redirect_url;
                 } else {
                     alert('Ошибка регистрации: ' + data.message);
                 }
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Получение CSRF-токена для защиты запросов
+
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {

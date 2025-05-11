@@ -3,23 +3,23 @@ document.addEventListener("DOMContentLoaded", function() {
     const themeImage = document.getElementById("themeImage");
     const body = document.body;
 
-    // Получаем сохраненную тему из localStorage
+
     const savedTheme = localStorage.getItem("theme");
 
-    // Применяем сохраненную тему сразу, до рендера контента
+
     if (savedTheme === "dark") {
         body.classList.add("dark-theme");
-        if (toggle) toggle.checked = true;  // Устанавливаем состояние переключателя
+        if (toggle) toggle.checked = true;
         if (themeImage) themeImage.src = "/static/main/img/themedark.svg";
     } else {
         body.classList.remove("dark-theme");
         if (themeImage) themeImage.src = "/static/main/img/themelight.svg";
     }
 
-    // После того как тема загружена, показываем страницу
+
     body.classList.add("theme-loaded");
 
-    // Слушаем изменение переключателя темы
+
     if (toggle) {
         toggle.addEventListener("change", function() {
             if (toggle.checked) {

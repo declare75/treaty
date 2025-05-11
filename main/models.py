@@ -15,9 +15,9 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError("The Email field must be set")
         email = self.normalize_email(email)
-        # Убедитесь, что 'username' не передается в `self.model`
+
         if 'username' in extra_fields:
-            del extra_fields['username']  # Удаляем 'username', если оно передано
+            del extra_fields['username']
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -41,11 +41,11 @@ class CustomUser(AbstractUser):
     birthday = models.DateField(null=True, blank=True)
     phone = models.CharField(max_length=15, blank=True)
     contact = models.CharField(max_length=50, blank=True)
-    last_name = models.CharField(max_length=150, blank=False)  # Фамилия
-    first_name = models.CharField(max_length=150, blank=False)  # Имя
-    middle_name = models.CharField(max_length=150, blank=False)  # Отчество
+    last_name = models.CharField(max_length=150, blank=False)
+    first_name = models.CharField(max_length=150, blank=False)
+    middle_name = models.CharField(max_length=150, blank=False)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
-    is_teacher = models.BooleanField(default=False)  # Заменили is_active на is_teacher
+    is_teacher = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)

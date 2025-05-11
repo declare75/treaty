@@ -4,11 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('show');
-                observer.unobserve(entry.target); // Прекращаем наблюдение после появления
+                observer.unobserve(entry.target);
             }
         });
     }, {
-        threshold: 0.1 // Процент видимой области элемента
+        threshold: 0.1
     });
 
     elements.forEach(element => observer.observe(element));

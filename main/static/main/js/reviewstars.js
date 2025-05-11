@@ -19,29 +19,29 @@ document.querySelectorAll('.containerPrepods').forEach(container => {
         star.addEventListener('click', () => {
             const rating = star.getAttribute('data-value');
             hiddenRatingInput.value = rating;
-            reviewForm.classList.add('show'); // Появление формы отзыва с анимацией
+            reviewForm.classList.add('show');
         });
     });
 
-    // Обработчик кнопки "Отмена"
+
     if (cancelButton) {
         cancelButton.addEventListener('click', () => {
-            reviewForm.classList.remove('show'); // Скрытие формы отзыва с анимацией
-            hiddenRatingInput.value = ''; // Очистить значение рейтинга
-            stars.forEach(star => star.classList.remove('selected')); // Удаляем выделение
+            reviewForm.classList.remove('show');
+            hiddenRatingInput.value = '';
+            stars.forEach(star => star.classList.remove('selected'));
         });
     }
 
-    // Функция для подсветки звезд
+
     function highlightStars(container, rating) {
         const stars = container.querySelectorAll('.star');
         stars.forEach(star => {
             if (star.getAttribute('data-value') <= rating) {
-                star.style.color = '#466ee5'; // Подсвечиваем звезды
-                star.style.borderColor = '#466ee5'; // Синий цвет для рамки
+                star.style.color = '#466ee5';
+                star.style.borderColor = '#466ee5';
             } else {
-                star.style.color = '#ccc'; // Серый цвет для незаполненных звезд
-                star.style.borderColor = '#466ee5'; // Рамка остается синей
+                star.style.color = '#ccc';
+                star.style.borderColor = '#466ee5';
             }
         });
     }
