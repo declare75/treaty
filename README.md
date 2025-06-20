@@ -31,7 +31,7 @@
 ## Установка и запуск
 1. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com/yourusername/tutor-app.git
+   git clone https://github.com/declare75/treaty.git
 2. Установите зависимости:
    ```bash
    pip install -r requirements.txt
@@ -78,7 +78,7 @@ Indexes are implemented for performance optimization, and access control checks 
 ## Installation and Setup
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/tutor-app.git
+   git clone https://github.com/declare75/treaty.git
 2. Install dependencies:
    ```bash
    pip install -r requirements.txt
